@@ -1,9 +1,15 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import {Inter} from 'next/font/google'
-import styles from '@/styles/Home.module.scss'
+import React from "react";
 
 const inter = Inter({subsets: ['latin']})
+import Product from '@/components/Product'
+import ProductsProvider from '@/context/ProductsProvider'
+import UserProvider from '@/context/UserProvider'
+import {Provider} from "react-redux";
+import {store} from "@/redux/store";
+import {ThemeProvider} from "@mui/material";
+import {theme} from '@/theme'
 
 export default function Home() {
   return (
@@ -14,12 +20,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="icon" href="/favicon.ico"/>
       </Head>
-      <main className={styles.main}>
-        Hello world!
-      </main>
-      <footer className={styles.footer}>
-
-      </footer>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+            <UserProvider>
+              <ProductsProvider>
+                <Product/>
+              </ProductsProvider>
+            </UserProvider>
+        </ThemeProvider>
+      </Provider>
     </>
   )
 }

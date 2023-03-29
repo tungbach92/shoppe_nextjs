@@ -1,0 +1,217 @@
+@use "../index" as *;
+
+.footer {
+  background-color: #fbfbfb;
+  border-top: 1px solid #f5f5f5;
+  padding-top: 3rem;
+
+  &__ads {
+    height: 12rem;
+    border-top: 3px solid var(--primary-color);
+    background-color: var(--white-color);
+  }
+
+  &__heading {
+    margin-bottom: 1.6rem;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #737373;
+  }
+
+  &__list {
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    color: var(--grey-color);
+  }
+
+  &__item {
+    margin-bottom: 1.3rem;
+  }
+
+  &__item-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__item-link:hover {
+    color: var(--primary-color);
+  }
+
+  &__app-wrapper {
+    display: flex;
+    max-width: 100%;
+  }
+
+  &__qr-img {
+    width: 8rem;
+    object-fit: contain;
+  }
+
+  &__app {
+    margin-left: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+  }
+
+  &__app-img {
+    width: 8rem;
+  }
+
+  &__item-icon {
+    color: #4a4a4a;
+    font-size: 1.6rem;
+    margin-right: 1rem;
+  }
+
+  &__list-payment,
+  &__list-shipping {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 4rem;
+    margin-bottom: 2rem;
+  }
+
+  &__payment-item {
+    width: 5.5rem;
+    height: 2.9rem;
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  &__payment-backround {
+    display: inline-block;
+    background-image: url("../../img/payment&shipping.png");
+  }
+
+  &__payment-visa {
+    width: 5.5rem;
+    height: 1.8rem;
+    background-position: 77.55102040816327% 28.74251497005988%;
+  }
+
+  &__payment-master {
+    width: 5.5rem;
+    height: 2.9rem;
+    background-size: 1258.1818181818182% 637.9310344827586%;
+    background-position: 49.60753532182104% 6.410256410256411%;
+  }
+
+  &__payment-jcb {
+    width: 5.5rem;
+    height: 2.3rem;
+    background-size: 1258.1818181818182% 804.3478260869565%;
+    background-position: 41.444270015698585% 36.41975308641975%;
+  }
+
+  &__payment-amex {
+    width: 5.5rem;
+    height: 2.4rem;
+    background-size: 1384% 840.9090909090909%;
+    background-position: 12.461059190031152% 6.134969325153374%;
+  }
+
+  &__payment-cod {
+    width: 5rem;
+    height: 2.9rem;
+    background-size: 1384% 637.9310344827586%;
+    background-position: 65.26479750778816% 55.12820512820513%;
+  }
+
+  &__payment-installment {
+    width: 5.5rem;
+    height: 2.9rem;
+    background-size: 1258.1818181818182% 637.9310344827586%;
+    background-position: 76.76609105180533% 55.12820512820513%;
+  }
+
+  &__payment-airpay {
+    width: 2.3rem;
+    height: 2.9rem;
+    background-size: 1730% 355.7692307692308%;
+    background-position: 1.5337423312883436% 7.518796992481203%;
+  }
+
+  &__payment-express {
+    width: 5.5rem;
+    height: 1rem;
+    background-size: 623.4234234234234% 1027.7777777777778%;
+    background-position: 67.29776247848537% 5.9880239520958085%;
+  }
+
+  &__payment-ghtk {
+    width: 5.5rem;
+    height: 1.8rem;
+    background-size: 1258.1818181818182% 1027.7777777777778%;
+    background-position: 21.50706436420722% 61.07784431137725%;
+  }
+
+  &__payment-ghn {
+    width: 5.5rem;
+    height: 2.9rem;
+    background-size: 1258.1818181818182% 637.9310344827586%;
+    background-position: 9.733124018838305% 65.38461538461539%;
+  }
+
+  &__payment-viettel {
+    width: 5.5rem;
+    height: 1.8rem;
+    background-size: 1258.1818181818182% 1027.7777777777778%;
+    background-position: 65.77708006279435% 28.74251497005988%;
+  }
+
+  &__payment-vnpost {
+    width: 5.5rem;
+    height: 2.7rem;
+    background-size: 1258.1818181818182% 685.1851851851852%;
+    background-position: 100% 6.329113924050633%;
+  }
+
+  &__payment-jnt {
+    width: 5.5rem;
+    height: 1.6rem;
+    background-size: 1258.1818181818182% 1156.25%;
+    background-position: 81.94662480376766% 5.9171597633136095%;
+  }
+
+  &__payment-grab {
+    width: 5.5rem;
+    height: 1.5rem;
+    background-size: 516.4179104477612% 637.9310344827586%;
+    background-position: 29.032258064516128% 6.410256410256411%;
+  }
+
+  &__payment-now {
+    width: 3.8rem;
+    height: 3.2rem;
+    background-size: 865% 231.25%;
+    background-position: 51.63398692810458% 100%;
+  }
+
+  &__payment-ninja {
+    width: 5rem;
+    height: 2rem;
+    background-size: 1153.3333333333333% 711.5384615384615%;
+    background-position: 53.639240506329116% 37.106918238993714%;
+  }
+
+  &__payment-best {
+    width: 5.5rem;
+    height: 2.2rem;
+    background-size: 961.1111111111111% 616.6666666666666%;
+    background-position: 11.290322580645162% 33.54838709677419%;
+  }
+
+  &__lisence {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 1.3rem;
+    color: var(--text-color);
+  }
+}

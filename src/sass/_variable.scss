@@ -1,0 +1,24 @@
+// $dark-theme: true !default;
+// $primary-color: #f8bbd0 !default;
+// $accent-color: #6a1b9a !default;
+
+// @if $dark-theme {
+//   $primary-color: darken($primary-color, 60%);
+//   $accent-color: lighten($accent-color, 60%);
+// }
+
+$colors: (
+  "white": #fff,
+  "black": #000,
+  "text": #333,
+  "grey": #888,
+  "lighter-grey": #f5f5f5,
+  "primary": #ee4d2d,
+  "primary-light": #ee8e7a,
+  "primary-dark": #c02000,
+);
+
+$colNumbs: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+
+$mobile-width: 600px;
+$tablet-width: 1024px;
