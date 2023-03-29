@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useModal from "../../hooks/useModal";
 import PopupModal from "../Modal/PopupModal";
-import { useUser } from "../../context/UserProvider";
-import auth from '@/configs/firebase'
+import {auth} from '@/configs/firebase'
+import {useUser} from "@/context/UserProvider";
 
 const AccountEmail = ({ setEmail, email }) => {
   const { user } = useUser();
