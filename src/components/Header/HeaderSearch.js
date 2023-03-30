@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import React, {useEffect, useState} from "react";
-import shopeeLogo from "../../img/shoppe-logo.png";
 import HeaderCart from "./HeaderCart";
 import {Close} from "@mui/icons-material";
 import {useRef} from "react";
@@ -11,7 +10,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {changeSearchInput, changeSearchItems} from "../../redux/searchSlice";
 import {useProductsContext} from "../../context/ProductsProvider";
 import useSearchHistory from "../../hooks/useSearchHistory";
-import {useUser} from "../../context/UserProvider";
+import SearchIcon from '@mui/icons-material/Search';
+import Link from "next/link";
 
 const HeaderSearch = ({isCartPage, isCheckoutPage, xsBreakpointMatches}) => {
   const {items} = useProductsContext();
@@ -92,14 +92,14 @@ const HeaderSearch = ({isCartPage, isCheckoutPage, xsBreakpointMatches}) => {
       })}
     >
       <div className="header__logo-wrapper">
-        {/*<a*/}
-        {/*  href="/"*/}
-        {/*  className={classNames("header__logo-link", {*/}
-        {/*    "header__logo-link--notHome": isCartPage || isCheckoutPage,*/}
-        {/*  })}*/}
-        {/*>*/}
-        {/*  <img src={shopeeLogo} alt="shoppe-logo"/>*/}
-        {/*</a>*/}
+        <Link
+          href="/"
+          className={classNames("header__logo-link", {
+            "header__logo-link--notHome": isCartPage || isCheckoutPage,
+          })}
+        >
+          <img src={"/img/shoppe-logo.png"} alt="shoppe-logo"/>
+        </Link>
         {isCartPage && <div className="header__page-name">Giỏ hàng</div>}
         {isCheckoutPage && <div className="header__page-name">Thanh Toán</div>}
       </div>
@@ -128,7 +128,7 @@ const HeaderSearch = ({isCartPage, isCheckoutPage, xsBreakpointMatches}) => {
                 onClick={() => handleSearchIconClick(searchInput)}
                 className="header__search-icon"
               >
-                <i className="bi bi-search"></i>
+                <SearchIcon sx={{fontSize: '2rem', color: 'white'}}></SearchIcon>
               </div>
               {isHistory && (
                 <ul className="header__history-list">

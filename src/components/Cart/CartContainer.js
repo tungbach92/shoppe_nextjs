@@ -2,8 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import useModal from "../../hooks/useModal";
 import VoucherModal from "../Modal/VoucherModal";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-import noCartImg from "../../img/no-cart.png";
+import noCartImg from "../../../public/img/no-cart.png";
 import AddCartModal from "../Modal/AddCartModal";
 import PopupModal from "../../components/Modal/PopupModal";
 import { NumericFormat } from "react-number-format";
@@ -26,7 +25,7 @@ import {
   useFetchCartQuery,
 } from "../../services/cartApi";
 import useVoucher from "../../hooks/useVoucher";
-import withContainer from "../../pages/withContainer";
+import withContainer from "../withContainer";
 
 function CartContainer() {
   const { user } = useUser();
@@ -36,8 +35,6 @@ function CartContainer() {
   const [addCartToFireStore] = useAddCartToFireStoreMutation();
   const dispatch = useDispatch();
   const { checkoutDispatch } = useCheckoutContext();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [variation, setVariation] = useState("");
   const [isVariationChoose, setIsVariationChoose] = useState(false);
   const [deleteID, setDeleteID] = useState(null);
@@ -66,12 +63,12 @@ function CartContainer() {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    if (location.state) {
-      toggleIsAddCardPopup(true);
-    }
-    navigate(location.pathname, { replace: true });
-  }, [toggleIsAddCardPopup, location.state, location.pathname, navigate]);
+  // useEffect(() => {
+  //   if (location.state) {
+  //     toggleIsAddCardPopup(true);
+  //   }
+  //   navigate(location.pathname, { replace: true });
+  // }, [toggleIsAddCardPopup, location.state, location.pathname, navigate]);
 
   useEffect(() => {
     if (selectedProduct.length > 0) {
@@ -118,7 +115,7 @@ function CartContainer() {
         payload: checkoutItems,
       });
       addCartToFireStore({ user, cartProducts });
-      navigate("/checkout");
+      // navigate("/checkout");
     }
   };
 

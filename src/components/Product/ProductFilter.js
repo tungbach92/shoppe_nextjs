@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import MiniPageControl from "../Pagination/MiniPageControl";
-import { ArrowDownward, ArrowUpward, UnfoldMore } from "@mui/icons-material";
+import {ArrowDownward, ArrowUpward, ExpandMore, UnfoldMore} from "@mui/icons-material";
 import { Box, useMediaQuery } from "@mui/material";
 import * as sortType from "../../constants/sort";
 
@@ -139,7 +139,7 @@ const ProductFilter = ({
           {xsBreakpointMatches && sortPrice === "priceAsc" && (
             <ArrowUpward sx={{ color: "var(--primary-color)" }}></ArrowUpward>
           )}
-          <i className="app__input-icon bi bi-chevron-down"></i>
+          <ExpandMore className="app__input-icon"></ExpandMore>
           {isFilterPriceShow && (
             <ul className="app__input-list">
               {/* <!-- icon: <i className="app__input-item-icon bi bi-check"></i> --> */}

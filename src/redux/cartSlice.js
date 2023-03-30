@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { cartApi } from "../services/cartApi";
+import {cartApi} from "@/services/cartApi";
 
 const saveCartItemsToStorage = (cartProduct) => {
   const savedCartItems = cartProduct.map((item) => ({

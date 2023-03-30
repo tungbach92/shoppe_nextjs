@@ -474,7 +474,7 @@ header {
   border: none;
   outline: none;
 }
-/* 
+/*
 .header__search-input:focus ~ .header__history-list {
   display: block;
 } */
@@ -1460,7 +1460,7 @@ header {
   width: 25rem;
   padding: 0.5rem 2rem 0rem 1rem;
 }
-/* 
+/*
 .cart-product__variation:hover .cart-product__variation-notify {
   display: block;
 } */
@@ -3133,7 +3133,7 @@ header {
 }
 .detail-product__share-background {
   cursor: pointer;
-  background-image: url(../img/1876c121524255f7eb6a64b4d8d0b7e3.png);
+  background-image: url(../../public/img/1876c121524255f7eb6a64b4d8d0b7e3.png);
   width: 2.6rem;
   height: 2.6rem;
   margin-right: 0.6rem;
@@ -4654,7 +4654,7 @@ header {
 
 .footer__payment-backround {
   display: inline-block;
-  background-image: url("../img/payment&shipping.png");
+  background-image: url("../../public/img/payment&shipping.png");
 }
 
 .footer__payment-visa {

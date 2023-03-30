@@ -1,8 +1,8 @@
 import React from "react";
-import qrCodeNavImg from "../img/qr-code-home.png";
-import appShopeeImg from "../img/app-shopee.png";
-import ggShopeeImg from "../img/gg-shopee.png";
-import appGalShopeeImg from "../img/app-gal-shopee.png";
+import qrCodeNavImg from "../../public/img/qr-code-home.png";
+import appShopeeImg from "../../public/img/app-shopee.png";
+import ggShopeeImg from "../../public/img/gg-shopee.png";
+import appGalShopeeImg from "../../public/img/app-gal-shopee.png";
 import Grid from "./Grid";
 
 export default function Footer() {

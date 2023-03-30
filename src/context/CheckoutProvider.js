@@ -1,42 +1,42 @@
-import React, { useContext, useEffect } from "react";
-import { useReducer } from "react";
-import { ACTIONTYPES, CHECKOUT_ACTIONTYPES } from "../constants/actionType";
-import { getCheckoutItemsFromFirebase } from "../services/getCheckoutItemsFromFirebase";
-import { useUser } from "./UserProvider";
+import React, {useContext, useEffect} from "react";
+import {useReducer} from "react";
+import {ACTIONTYPES, CHECKOUT_ACTIONTYPES} from "@/constants/actionType";
+import {getCheckoutItemsFromFirebase} from "@/services/getCheckoutItemsFromFirebase";
+import {useUser} from "./UserProvider";
 
 const CheckoutContext = React.createContext();
 export const useCheckoutContext = () => {
   return useContext(CheckoutContext);
 };
 
-const INITIAL_STATE = { checkoutItems: [], loading: false, error: "" };
+const INITIAL_STATE = {checkoutItems: [], loading: false, error: ""};
 
 const checkoutReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ACTIONTYPES.FETCH_PENDING:
-      return { ...state, loading: true };
+      return {...state, loading: true};
     case ACTIONTYPES.FETCH_FULFILLED:
-      return { ...state, loading: false, checkoutItems: action.payload };
+      return {...state, loading: false, checkoutItems: action.payload};
     case ACTIONTYPES.FETCH_REJECTED:
-      return { ...state, loading: false, error: action.error };
+      return {...state, loading: false, error: action.error};
     case CHECKOUT_ACTIONTYPES.ADD_CHECKOUT:
-      return { ...state, checkoutItems: action.payload };
+      return {...state, checkoutItems: action.payload};
     default:
       return state;
   }
 };
 
-const CheckoutProvider = ({ children }) => {
-  const { user } = useUser();
+const CheckoutProvider = ({children}) => {
+  const {user} = useUser();
   const [state, dispatch] = useReducer(checkoutReducer, INITIAL_STATE);
-  const { checkoutItems } = state;
+  const {checkoutItems} = state;
 
 
   useEffect(() => {
-    dispatch({ type: ACTIONTYPES.FETCH_PENDING });
+    dispatch({type: ACTIONTYPES.FETCH_PENDING});
     if (getCheckoutItemsFromStorage().length > 0) {
       const checkoutItems = getCheckoutItemsFromStorage();
-      dispatch({ type: ACTIONTYPES.FETCH_FULFILLED, payload: checkoutItems });
+      dispatch({type: ACTIONTYPES.FETCH_FULFILLED, payload: checkoutItems});
     } else {
       getCheckoutItemsFromFirebase(user)
         .then((doc) => {
@@ -49,7 +49,7 @@ const CheckoutProvider = ({ children }) => {
           }
         })
         .catch((err) => {
-          dispatch({ type: ACTIONTYPES.FETCH_REJECTED, error: err.message });
+          dispatch({type: ACTIONTYPES.FETCH_REJECTED, error: err?.message ? err.message : err});
         });
     }
   }, [user]);

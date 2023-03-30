@@ -1,5 +1,5 @@
 import React from "react";
-import noCartImg from "../../img/no-cart.png";
+import noCartImg from "../../../public/img/no-cart.png";
 import classNames from "classnames";
 // import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
@@ -7,6 +7,7 @@ import { useMediaQuery } from "@mui/material";
 import { useUser } from "../../context/UserProvider";
 import { useSelector } from "react-redux";
 import { useFetchCartQuery } from "../../services/cartApi";
+import {ShoppingCart} from "@mui/icons-material";
 
 const HeaderCart = () => {
   const { user } = useUser();
@@ -28,14 +29,14 @@ const HeaderCart = () => {
         }}
       >
         <div className="header__cart-icon-link">
-          <i className="header__cart-icon bi bi-cart">
+          <ShoppingCart className="header__cart-icon">
             {/* <!-- No cart: empty --> */}
             {user && (
               <div className="header__cart-numb">
                 {!cartItemsLoading && cartProducts?.length}
               </div>
             )}
-          </i>
+          </ShoppingCart>
         </div>
         {!xsBreakpointMatches && user && (
           <div

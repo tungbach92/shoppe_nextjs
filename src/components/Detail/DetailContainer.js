@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import protectImg from "../../img/protect.png";
+import protectImg from "../../../public/img/protect.png";
 // import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useModal from "../../hooks/useModal";
 import AddCartModal from "../Modal/AddCartModal";
@@ -12,7 +12,7 @@ import { useUser } from "../../context/UserProvider";
 import { ClipLoading } from "../ClipLoading";
 import { useDispatch, useSelector } from "react-redux";
 import { addProducts, updateProducts } from "../../redux/cartSlice";
-import withContainer from "../../pages/withContainer";
+import withContainer from "../withContainer";
 
 function DetailContainer() {
   const { user } = useUser();

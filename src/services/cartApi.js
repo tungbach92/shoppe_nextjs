@@ -1,5 +1,4 @@
 import {createApi, fakeBaseQuery} from "@reduxjs/toolkit/query/react";
-import {db} from "../configs/firebase";
 import {cartDocRef} from "@/common/dbRef";
 
 export const cartApi = createApi({

@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
-import { cartApi } from "../services/cartApi";
-import { cartReducer } from "./cartSlice";
-import { searchReducer } from "./searchSlice";
+import { cartApi } from "@/services/cartApi";
+import {cartReducer} from "@/redux/cartSlice";
+import {searchReducer} from "@/redux/searchSlice";
 
 const rootReducer = {
   cart: cartReducer,
@@ -17,5 +17,4 @@ export const store = configureStore({
       cartApi.middleware
     ),
 });
-
 setupListeners(store.dispatch);

@@ -31,7 +31,7 @@ import {resetCart} from "../../redux/cartSlice";
 import {useDispatch} from "react-redux";
 import {useAddCartToFireStoreMutation} from "../../services/cartApi";
 import useVoucher from "../../hooks/useVoucher";
-import withContainer from "../../pages/withContainer";
+import withContainer from "../withContainer";
 import {checkoutDocRef, orderDocRef, productDocRef, productCollRef} from "../../common/dbRef";
 
 function CheckoutContainer({isCheckoutPage}) {
@@ -216,7 +216,7 @@ function CheckoutContainer({isCheckoutPage}) {
   const saveCheckoutItemsToFirebase = async (checkoutItems) => {
     try {
       const created = Date.now();
-      await checkoutDocRef(user?.uid).set({
+      user?.uid && await checkoutDocRef(user.uid).set({
           basket: checkoutItems,
           created: created,
         });

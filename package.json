@@ -49,7 +49,6 @@
     "prop-types": "^15.7.2",
     "react-image-gallery": "^1.1.1",
     "react-redux": "^7.2.9",
-    "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
     "react-spinners": "^0.13.4",
     "redux": "^4.1.1",

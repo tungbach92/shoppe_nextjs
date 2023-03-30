@@ -475,7 +475,7 @@ header {
   border: none;
   outline: none;
 }
-/* 
+/*
 .header__search-input:focus ~ .header__history-list {
   display: block;
 } */
@@ -495,17 +495,13 @@ header {
   background-color: #fb5533;
   border-radius: 0.2rem;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .header__search-icon:hover {
   opacity: 0.9;
-}
-
-.header__search-icon i {
-  font-size: 1.4rem;
-  display: block;
-  line-height: 3.3rem;
-  color: var(--white-color);
 }
 
 .header__history-list {
@@ -901,8 +897,7 @@ header {
 }
 
 .app__input-icon {
-  position: absolute;
-  right: 0.5rem;
+  align-self: center;
 }
 
 .app__input-lable--active {
@@ -964,6 +959,8 @@ header {
   color: var(--text-color);
   position: relative;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 
 .select-input--disabled {
@@ -1466,7 +1463,7 @@ header {
   width: 25rem;
   padding: 0.5rem 2rem 0rem 1rem;
 }
-/* 
+/*
 .cart-product__variation:hover .cart-product__variation-notify {
   display: block;
 } */

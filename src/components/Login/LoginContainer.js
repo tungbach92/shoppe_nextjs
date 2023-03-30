@@ -5,11 +5,11 @@ import * as Yup from "yup";
 import { Stack, TextField } from "@mui/material";
 import PropTypes from "prop-types";
 import { useUser } from "../../context/UserProvider";
-import withContainer from "../../pages/withContainer";
+import withContainer from "../withContainer";
+import Link from "next/link";
 
 function LoginContainer({ isRegisterPage, isLoginPage, submitText }) {
   const { signIn, register } = useUser();
-  const navigate = useNavigate();
 
   const onSubmit = async (values) => {
     if (isRegisterPage) {
@@ -153,17 +153,17 @@ function LoginContainer({ isRegisterPage, isLoginPage, submitText }) {
               {isLoginPage && (
                 <>
                   Bạn mới biết đến Shopee?
-                  {/*<Link to="/register" className="login-content__register">*/}
-                  {/*  Đăng ký*/}
-                  {/*</Link>*/}
+                  <Link href="/register" className="login-content__register">
+                    Đăng ký
+                  </Link>
                 </>
               )}
               {isRegisterPage && (
                 <>
                   Bạn đã có tài khoản?
-                  {/*<Link to="/login" className="login-content__register">*/}
-                  {/*  Đăng nhập*/}
-                  {/*</Link>*/}
+                  <Link href="/login" className="login-content__register">
+                    Đăng nhập
+                  </Link>
                 </>
               )}
             </span>

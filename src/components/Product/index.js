@@ -9,7 +9,7 @@ export default function Product() {
 
   return (
     <>
-      <Header isProductPage={true}></Header>
+      {/*<Header isProductPage={true}></Header>*/}
       <ProductContainer items={items}></ProductContainer>
     </>
   );

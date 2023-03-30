@@ -11,7 +11,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { FilterAlt } from "@mui/icons-material";
+import {FilterAlt, List} from "@mui/icons-material";
 import { useRef } from "react";
 
 const StyledBox = styled(Box)({
@@ -63,7 +63,7 @@ export default function ProductCategory({
   return (
     <div className="app__container-category">
       <div className="app__category-heading">
-        <i className="app__heading-icon bi bi-list-ul"></i>Danh mục
+        <List className="app__heading-icon"></List>Danh mục
       </div>
       <ul className="app__category-list">
         <li

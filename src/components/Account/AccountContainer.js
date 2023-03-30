@@ -9,7 +9,7 @@ import AccountProfile from "./AccountProfile";
 import useModal from "../../hooks/useModal";
 import PopupModal from "../Modal/PopupModal";
 import { useUser } from "../../context/UserProvider";
-import withContainer from "../../pages/withContainer";
+import withContainer from "../withContainer";
 import {db, storage} from "@/configs/firebase";
 import {infoDocRef} from "../../common/dbRef";
 

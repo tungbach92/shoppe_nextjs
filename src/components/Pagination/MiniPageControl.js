@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import {ChevronLeft, ChevronRight} from "@mui/icons-material";
 
 const MiniPageControl = ({
   totalItems,
@@ -27,7 +28,7 @@ const MiniPageControl = ({
           "app__pre-page--disabled": pageIndex <= 1,
         })}
       >
-        <i className="app__pre-icon bi bi-chevron-left"></i>
+        <ChevronLeft className="app__pre-icon"></ChevronLeft>
       </div>
       <div
         onClick={
@@ -37,7 +38,7 @@ const MiniPageControl = ({
           "app__next-page--disabled": pageIndex >= pageTotal,
         })}
       >
-        <i className="app__next-icon bi bi-chevron-right"></i>
+        <ChevronRight className="app__next-icon"></ChevronRight>
       </div>
     </>
   );

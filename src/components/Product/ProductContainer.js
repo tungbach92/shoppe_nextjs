@@ -6,7 +6,7 @@ import * as categoryType from "../../constants/category";
 import * as sortType from "../../constants/sort";
 import { useProductsContext } from "../../context/ProductsProvider";
 import usePagination from "../../hooks/usePagination";
-import withContainer from "../../pages/withContainer";
+import withContainer from "../withContainer";
 import Pagination from "../Pagination/Pagination";
 import ProductCategory from "./ProductCategory";
 import ProductFilter from "./ProductFilter";
