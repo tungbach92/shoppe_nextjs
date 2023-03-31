@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import axios from "../configs/axios";
+import axios from "@/configs/axios";
 
 const currentTimeinMs = new Date().valueOf();
 const sessionExpinHour = 24;
@@ -22,12 +22,12 @@ export const useCheckFirebaseIdTokenAuthTime = (user, signOut) => {
         });
         if (result.data.revoked) {
           // never be called cause idToken auto refresh after 1 hour by fỉrebase sdk unless manual refresh
-          alert("Id Token refreshed. Vui lòng đăng nhập lại!");
-          await signOut();
+          // alert("Id Token refreshed. Vui lòng đăng nhập lại!");
+          // await signOut();
         }
         if (result.data.invalid) {
-          alert("Token's invalid. Vui lòng đăng nhập lại!");
-          await signOut();
+          // alert("Token's invalid. Vui lòng đăng nhập lại!");
+          // await signOut();
         }
         if (result.data.succeeded) {
           const idToken = result.data.idToken;

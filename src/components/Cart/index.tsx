@@ -1,14 +1,11 @@
 import React from "react";
-import CartContainer from "./CartContainer";
 import {ReactNode} from "react";
 import Layout from "@/components/Layout/Layout";
+import CartContainer from "@/components/Cart/CartContainer";
 
 export default function Cart() {
   return (
-    <>
-      {/*<Header isCartPage={true}></Header>*/}
-      <CartContainer></CartContainer>
-    </>
+    <CartContainer></CartContainer>
   );
 }
 

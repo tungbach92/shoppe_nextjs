@@ -4,7 +4,7 @@ import {db} from "@/configs/firebase";
 
 const productCollRef = () => collection(db, 'products')
 
-const productDocRef = (id: string) => collection(db, 'products', id)
+const productDocRef = (id: string) => doc(db, 'products', id)
 const productQuery = () => {
   return query(
     collection(db, "products"),

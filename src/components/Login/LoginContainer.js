@@ -1,16 +1,16 @@
 import React from "react";
-// import { Link, useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
+import {useFormik} from "formik";
 import * as Yup from "yup";
-import { Stack, TextField } from "@mui/material";
+import {Stack, TextField} from "@mui/material";
 import PropTypes from "prop-types";
-import { useUser } from "../../context/UserProvider";
-import withContainer from "../withContainer";
 import Link from "next/link";
+import {useUser} from "@/context/UserProvider";
+import withContainer from "@/components/withContainer";
+import {useRouter} from "next/router";
 
-function LoginContainer({ isRegisterPage, isLoginPage, submitText }) {
-  const { signIn, register } = useUser();
-
+function LoginContainer({isRegisterPage, isLoginPage, submitText}) {
+  const {signIn, register} = useUser();
+  const router = useRouter()
   const onSubmit = async (values) => {
     if (isRegisterPage) {
       try {
@@ -33,7 +33,7 @@ function LoginContainer({ isRegisterPage, isLoginPage, submitText }) {
         }
       } finally {
         formik.setSubmitting(false);
-        navigate("/");
+        router.push("/");
       }
     }
     if (isLoginPage) {
@@ -49,7 +49,7 @@ function LoginContainer({ isRegisterPage, isLoginPage, submitText }) {
         }
       } finally {
         formik.setSubmitting(false);
-        navigate("/");
+        router.push("/");
       }
     }
   };
@@ -95,9 +95,9 @@ function LoginContainer({ isRegisterPage, isLoginPage, submitText }) {
                 size="small"
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
-                InputProps={{ style: { fontSize: "1.3rem" } }}
-                InputLabelProps={{ style: { fontSize: "1.3rem" } }}
-                FormHelperTextProps={{ style: { fontSize: "1.3rem" } }}
+                InputProps={{style: {fontSize: "1.3rem"}}}
+                InputLabelProps={{style: {fontSize: "1.3rem"}}}
+                FormHelperTextProps={{style: {fontSize: "1.3rem"}}}
               />
 
               <TextField
@@ -110,9 +110,9 @@ function LoginContainer({ isRegisterPage, isLoginPage, submitText }) {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
-                InputProps={{ style: { fontSize: "1.3rem" } }}
-                InputLabelProps={{ style: { fontSize: "1.3rem" } }}
-                FormHelperTextProps={{ style: { fontSize: "1.3rem" } }}
+                InputProps={{style: {fontSize: "1.3rem"}}}
+                InputLabelProps={{style: {fontSize: "1.3rem"}}}
+                FormHelperTextProps={{style: {fontSize: "1.3rem"}}}
               />
               {isRegisterPage && (
                 <TextField
@@ -129,9 +129,9 @@ function LoginContainer({ isRegisterPage, isLoginPage, submitText }) {
                     formik.touched.confirmPassword &&
                     formik.errors.confirmPassword
                   }
-                  InputProps={{ style: { fontSize: "1.3rem" } }}
-                  InputLabelProps={{ style: { fontSize: "1.3rem" } }}
-                  FormHelperTextProps={{ style: { fontSize: "1.3rem" } }}
+                  InputProps={{style: {fontSize: "1.3rem"}}}
+                  InputLabelProps={{style: {fontSize: "1.3rem"}}}
+                  FormHelperTextProps={{style: {fontSize: "1.3rem"}}}
                 />
               )}
             </Stack>

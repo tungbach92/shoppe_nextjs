@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
-import { storage } from "../configs/firebase";
+import {useEffect, useState} from "react";
+import {storage} from "@/configs/firebase";
+import {ref, getDownloadURL} from 'firebase/storage'
+import {updateProfile} from "firebase/auth"
 
 const useCheckPhotoURL = (user) => {
   const [isPhotoExist, setIsPhotoExist] = useState(true);
@@ -10,10 +12,9 @@ const useCheckPhotoURL = (user) => {
     }
     setLoading(true);
     const path = `users/${user.uid}/avatar`;
-    const storageRef = storage.ref(path);
+    const storageRef = ref(storage, path)
 
-    storageRef
-      .getDownloadURL()
+    getDownloadURL(storageRef)
       .then((photoURL) => {
         setIsPhotoExist(true);
         user.updateProfile({
@@ -23,15 +24,15 @@ const useCheckPhotoURL = (user) => {
       .catch((error) => {
         // 404
         setIsPhotoExist(false);
-        user.updateProfile({
+        updateProfile(user, {
           photoURL: null,
-        });
+        }).then();
       })
       .finally(() => {
         setLoading(false);
       });
   }, [user]);
-  return { checkingPhotoURL: loading, isPhotoExist, setIsPhotoExist };
+  return {checkingPhotoURL: loading, isPhotoExist, setIsPhotoExist};
 };
 
 export default useCheckPhotoURL;

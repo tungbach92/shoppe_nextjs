@@ -1,30 +1,30 @@
 import classNames from "classnames";
 import React from "react";
-// import { Link, useNavigate } from "react-router-dom";
-import useModal from "../../hooks/useModal";
-import AddCartModal from "../Modal/AddCartModal";
 import {NumericFormat} from "react-number-format";
 import Rating from "@mui/material/Rating";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import {useUser} from "../../context/UserProvider";
+import {useUser} from "@/context/UserProvider";
 import {useDispatch, useSelector} from "react-redux";
-import {addProducts} from "../../redux/cartSlice";
+import {addProducts} from "@/redux/cartSlice";
 import Link from "next/link";
+import useModal from "@/hooks/useModal";
+import AddCartModal from "@/components/Modal/AddCartModal";
+import {useRouter} from "next/router";
+import {Dialog, Modal} from "@mui/material";
 
 const ProductItem = function ({item, similarDisPlay}) {
+  const router = useRouter()
   const {user} = useUser();
   const cartProducts = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
   const {id, metaTitle, imageUrl, name, price, soldAmount, location, rating} =
     item;
   const {isAddCartPopup, toggleIsAddCardPopup} = useModal();
-  // const navigate = useNavigate();
   const isInCart = cartProducts.some((item) => item.id === id);
 
   const handleAddCart = () => {
     if (!user) {
-      navigate("/login", {replace: true});
-      return;
+      router.replace('/login')
     }
     const amount = 1;
     const variation = "";
@@ -49,13 +49,10 @@ const ProductItem = function ({item, similarDisPlay}) {
           <i className="app__product-cart-btn-icon bi bi-cart"></i>
           {isInCart ? `In Cart` : `Add to cart`}
         </button>
-        {isAddCartPopup && (
-          <AddCartModal
-            isAddCartPopup={isAddCartPopup}
-            toggleIsAddCardPopup={toggleIsAddCardPopup}
-          ></AddCartModal>
-        )}
-
+        <AddCartModal
+          isAddCartPopup={isAddCartPopup}
+          toggleIsAddCardPopup={toggleIsAddCardPopup}
+        />
         <Link
           href={''}
           // to={{

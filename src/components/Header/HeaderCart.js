@@ -4,39 +4,38 @@ import classNames from "classnames";
 // import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NumericFormat } from "react-number-format";
 import { useMediaQuery } from "@mui/material";
-import { useUser } from "../../context/UserProvider";
+import { useUser } from "@/context/UserProvider";
 import { useSelector } from "react-redux";
-import { useFetchCartQuery } from "../../services/cartApi";
+import { useFetchCartQuery } from "@/services/cartApi";
 import {ShoppingCart} from "@mui/icons-material";
+import {useRouter} from "next/router";
 
 const HeaderCart = () => {
+  const router = useRouter()
   const { user } = useUser();
   const cartProducts = useSelector((state) => state.cart.products);
   const { isLoading: cartItemsLoading } = useFetchCartQuery(user);
-
-  // const navigate = useNavigate();
-  // const location = useLocation();
   const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
-
+  console.log(user)
   return (
     <div className="header__cart">
       <div
         className="header__cart-wrapper"
         onClick={() => {
-          // if (location.pathname !== "cart") {
-          //   navigate("/cart");
-          // }
+          if (router.pathname !== "/cart") {
+            router.push("/cart");
+          }
         }}
       >
         <div className="header__cart-icon-link">
           <ShoppingCart className="header__cart-icon">
             {/* <!-- No cart: empty --> */}
-            {user && (
-              <div className="header__cart-numb">
-                {!cartItemsLoading && cartProducts?.length}
-              </div>
-            )}
           </ShoppingCart>
+          {user && (
+            <div className="header__cart-numb">
+              {!cartItemsLoading && cartProducts?.length}
+            </div>
+          )}
         </div>
         {!xsBreakpointMatches && user && (
           <div

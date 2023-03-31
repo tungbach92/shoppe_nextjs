@@ -30,7 +30,6 @@ const Header = ({
   const handleLogout = () => {
     signOut();
   };
-  console.log(isLoginPage, isCartPage, isProductPage)
   return (
     <header
       className={classNames(
@@ -221,15 +220,15 @@ const Header = ({
                       }}
                     >
                       <div className="header__user-arrow"></div>
-                      {/*<Link to="/user/account" className="header__user-item">*/}
-                      {/*  Tài khoản của tôi*/}
-                      {/*</Link>*/}
-                      {/*<Link*/}
-                      {/*  to="/user/account/purchase"*/}
-                      {/*  className="header__user-item"*/}
-                      {/*>*/}
-                      {/*  Đơn mua*/}
-                      {/*</Link>*/}
+                      <Link href="/account" className="header__user-item">
+                        Tài khoản của tôi
+                      </Link>
+                      <Link
+                        href="/account/purchase"
+                        className="header__user-item"
+                      >
+                        Đơn mua
+                      </Link>
                       <div onClick={handleLogout} className="header__user-item">
                         Đăng xuất
                       </div>

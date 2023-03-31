@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-// import { useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import {useUser} from "../../context/UserProvider";
+import {BaseModal} from "@/components/base";
+import {useRouter} from "next/router";
 
-export default function PopupModal(props) {
-  // const navigate = useNavigate();
+export default function PopupModal(props: any) {
+  const router = useRouter()
   const [title, setTitle] = useState("");
   const [isBackBtnHidden, setIsBackBtnHidden] = useState(false);
 
@@ -141,7 +140,7 @@ export default function PopupModal(props) {
   ]);
 
   //Back button
-  const handleBackClick = (e) => {
+  const handleBackClick = () => {
     togglePopup(false);
 
     // set those values to defaultm undefined if setState function true
@@ -160,26 +159,26 @@ export default function PopupModal(props) {
   };
 
   // Ok button
-  const handleApplyClick = (e) => {
+  const handleApplyClick = () => {
     togglePopup(!isPopupShowing);
     if (isCheckoutPage && shipInfos?.length <= 0) {
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      window.scrollTo({top: 0, left: 0, behavior: "smooth"});
     }
     if (isCheckoutPage && !Object.keys(shipUnit)?.length) {
-      window.scrollTo({ top: 300, left: 0, behavior: "smooth" });
+      window.scrollTo({top: 300, left: 0, behavior: "smooth"});
     }
     if (isCheckoutPage && defaultPaymentMethodID.length === 0) {
-      window.scrollTo({ top: 700, left: 0, behavior: "smooth" });
+      window.scrollTo({top: 700, left: 0, behavior: "smooth"});
     }
     if (isCheckoutPage && paymentMethod?.length === 0) {
-      window.scrollTo({ top: 600, left: 0, behavior: "smooth" });
+      window.scrollTo({top: 600, left: 0, behavior: "smooth"});
     }
     if (isCheckoutPage && succeeded) {
-      // navigate("/user/account/purchase");
+      router.push("/user/account/purchase");
     }
 
     if (isAccountPage && shipInfoIndex === null && !paymentMethodID) {
-      // navigate("/user");
+      router.push("/user");
     }
     if (isAccountPage && shipInfoIndex !== null) {
       handleDeleteTrue(shipInfoIndex);
@@ -199,36 +198,75 @@ export default function PopupModal(props) {
       setIsDeleteSelected(false);
     }
   };
-  if (typeof window !== 'undefined') {
-    return ReactDOM.createPortal(
-      <div className="cart-product__modal">
-        <div className="cart-product__modal-overlay"></div>
-        <div className="cart-product__modal-container">
-          <div className="cart-product__modal-header">
-            <span className="cart-product__popup-label">{title}</span>
-          </div>
-          <div className="cart-product__popup-footer">
-            {!isBackBtnHidden && (
-              <button
-                className="btn cart-product__popup-cancle"
-                onClick={handleBackClick}
-              >
-                Back
-              </button>
-            )}
+  return (
+    <BaseModal isOpen={isPopupShowing} handleClose={togglePopup}>
+      <span className="cart-product__popup-label">{title}</span>
+      {!isBackBtnHidden && (
+        <button
+          className="btn cart-product__popup-cancle"
+          onClick={handleBackClick}
+        >
+          Back
+        </button>
+      )}
 
-            <button
-              onClick={handleApplyClick}
-              className="btn cart-product__popup-apply"
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      </div>,
-    );
-  }
-}
+      <button
+        onClick={handleApplyClick}
+        className="btn cart-product__popup-apply"
+      >
+        OK
+      </button>
+      {/*<div className="cart-product__modal-container">*/}
+      {/*  <div className="cart-product__modal-header">*/}
+      {/*    <span className="cart-product__popup-label">{title}</span>*/}
+      {/*  </div>*/}
+      {/*  <div className="cart-product__popup-footer">*/}
+      {/*    {!isBackBtnHidden && (*/}
+      {/*      <button*/}
+      {/*        className="btn cart-product__popup-cancle"*/}
+      {/*        onClick={handleBackClick}*/}
+      {/*      >*/}
+      {/*        Back*/}
+      {/*      </button>*/}
+      {/*    )}*/}
+
+      {/*    <button*/}
+      {/*      onClick={handleApplyClick}*/}
+      {/*      className="btn cart-product__popup-apply"*/}
+      {/*    >*/}
+      {/*      OK*/}
+      {/*    </button>*/}
+      {/*  </div>*/}
+      {/*</div>*/}
+        </BaseModal>
+
+        // <div className="cart-product__modal">
+        //   <div className="cart-product__modal-overlay"></div>
+        //   <div className="cart-product__modal-container">
+        //     <div className="cart-product__modal-header">
+        //       <span className="cart-product__popup-label">{title}</span>
+        //     </div>
+        //     <div className="cart-product__popup-footer">
+        //       {!isBackBtnHidden && (
+        //         <button
+        //           className="btn cart-product__popup-cancle"
+        //           onClick={handleBackClick}
+        //         >
+        //           Back
+        //         </button>
+        //       )}
+        //
+        //       <button
+        //         onClick={handleApplyClick}
+        //         className="btn cart-product__popup-apply"
+        //       >
+        //         OK
+        //       </button>
+        //     </div>
+        //   </div>
+        // </div>
+        )
+      }
 
 PopupModal.propTypes = {
   isAccountPage: PropTypes.bool,
@@ -267,19 +305,27 @@ PopupModal.defaultProps = {
   isImageUploadFailed: false,
   isUpdateEmailSuccess: false,
   isUpdatePasswordSuccess: false,
-  handleDeleteTrue: () => {},
+  handleDeleteTrue: () => {
+  },
   shipInfoIndex: null,
-  setShipInfoIndex: () => {},
+  setShipInfoIndex: () => {
+  },
   paymentMethodID: "",
-  setPaymentMethodID: () => {},
-  handlePaymentDeleteTrue: () => {},
+  setPaymentMethodID: () => {
+  },
+  handlePaymentDeleteTrue: () => {
+  },
   isCartPage: false,
   deleteID: null,
-  setDeleteID: () => {},
+  setDeleteID: () => {
+  },
   isDeleteSelected: false,
-  setIsDeleteSelected: () => {},
-  handleDeleteSelectionTrue: () => {},
-  handleDeleteCartTrue: () => {},
+  setIsDeleteSelected: () => {
+  },
+  handleDeleteSelectionTrue: () => {
+  },
+  handleDeleteCartTrue: () => {
+  },
   isVariationChoose: false,
   checked: [],
   shipUnit: {},

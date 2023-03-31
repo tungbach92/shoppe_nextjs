@@ -19,20 +19,21 @@ import getCustomerID from "../../services/getCustomerID";
 import usePaymentMethodList from "../../hooks/usePaymentMethodList";
 import useDefaultPaymentMethodID from "../../hooks/useDefaultPaymentMethodID";
 import useGetUserByObserver from "../../hooks/useGetUserByObserver";
-import {getCardImgByBrand} from "../../services/getCardImgByBrand";
-import {getItemsPriceTotal} from "../../services/getItemsPriceTotal";
-import {getVoucherDiscount} from "../../services/getVoucherDiscount";
+import {getCardImgByBrand} from "@/services/getCardImgByBrand";
+import {getItemsPriceTotal} from "@/services/getItemsPriceTotal";
+import {getVoucherDiscount} from "@/services/getVoucherDiscount";
 import useNavigateAndRefreshBlocker from "../../hooks/useNavigateAndRefreshBlocker";
-import {useCheckoutContext} from "../../context/CheckoutProvider";
-import {updateCustomerBillingAddressStripe} from "../../services/updateCustomerBillingAddressStripe";
+import {useCheckoutContext} from "@/context/CheckoutProvider";
+import {updateCustomerBillingAddressStripe} from "@/services/updateCustomerBillingAddressStripe";
 import {ClipLoading} from "../ClipLoading";
-import {useUpdateDefaultPaymentMethodIDToStripe} from "../../hooks/useUpdateDefaultPaymentMethodIDToStripe";
-import {resetCart} from "../../redux/cartSlice";
+import {useUpdateDefaultPaymentMethodIDToStripe} from "@/hooks/useUpdateDefaultPaymentMethodIDToStripe";
+import {resetCart} from "@/redux/cartSlice";
 import {useDispatch} from "react-redux";
-import {useAddCartToFireStoreMutation} from "../../services/cartApi";
+import {useAddCartToFireStoreMutation} from "@/services/cartApi";
 import useVoucher from "../../hooks/useVoucher";
 import withContainer from "../withContainer";
-import {checkoutDocRef, orderDocRef, productDocRef, productCollRef} from "../../common/dbRef";
+import {checkoutDocRef, orderDocRef, productDocRef} from "@/common/dbRef";
+import {setDoc} from "firebase/firestore";
 
 function CheckoutContainer({isCheckoutPage}) {
   const [addCartToFireStore] = useAddCartToFireStoreMutation();
@@ -206,33 +207,33 @@ function CheckoutContainer({isCheckoutPage}) {
       }
     });
     orderDocRef(user?.uid, id).set({
-        basket: checkoutItems,
-        amount: amount,
-        shipInfo: {...shipInfo},
-        created: created,
-      });
+      basket: checkoutItems,
+      amount: amount,
+      shipInfo: {...shipInfo},
+      created: created,
+    });
   };
 
   const saveCheckoutItemsToFirebase = async (checkoutItems) => {
     try {
       const created = Date.now();
-      user?.uid && await checkoutDocRef(user.uid).set({
-          basket: checkoutItems,
-          created: created,
-        });
+      user?.uid && await setDoc(checkoutDocRef(user.uid), {
+        basket: checkoutItems,
+        created: created,
+      });
     } catch (error) {
       alert(error);
     }
   };
 
-  const handleOrderSucceeded = ({id, amount, created}) => {
+  const handleOrderSucceeded = async ({id, amount, created}) => {
     saveOrdersToFirebase(id, amount, created);
     updateSoldAmount();
-    updateCustomerBillingAddressStripe(user, shipInfos);
+    await updateCustomerBillingAddressStripe(user, shipInfos);
     dispatch(resetCart);
     checkoutDispatch({});
     addCartToFireStore({user, cartProducts: []});
-    saveCheckoutItemsToFirebase([]);
+    await saveCheckoutItemsToFirebase([]);
     setSucceeded(true);
     setProcessing(false);
     togglePopup(!isPopupShowing);
