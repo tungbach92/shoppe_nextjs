@@ -12,9 +12,11 @@ const useGetOrderItems = (user) => {
 
   useLayoutEffect(() => {
     let isMounted = true;
+    if (!user?.uid) return setOrderItems([]);
     const observer = onSnapshot(orderRef(user?.uid),
       (snapshot) => {
         if (!isMounted) {
+          setOrderItems([]);
           return;
         }
         if (snapshot.empty) {

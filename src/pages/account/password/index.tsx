@@ -3,8 +3,9 @@ import Layout from "@/components/Layout/Layout";
 import {useUser} from "@/context/UserProvider";
 import AccountMenu from "@/components/Account/AccountMenu";
 import AccountPassword from "@/components/Account/AccountPassword";
+import withContainer from "@/components/withContainer";
 
-export default function Password() {
+function Password() {
   const {user} = useUser();
   const [email, setEmail] = useState<string>('')
   useEffect(() => {
@@ -22,6 +23,8 @@ export default function Password() {
     </div>
   )
 }
+
 Password.getLayout = function (page: ReactElement) {
   return <Layout>{page}</Layout>
 }
+export default withContainer(Password, true)

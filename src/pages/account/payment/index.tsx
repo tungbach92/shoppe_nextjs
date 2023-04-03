@@ -6,8 +6,9 @@ import AccountMenu from "@/components/Account/AccountMenu";
 import AccountAddress from "@/components/Account/AccountAddress";
 import AccountPayment from "@/components/Account/AccountPayment";
 import {useUser} from "@/context/UserProvider";
+import withContainer from "@/components/withContainer";
 
-export default function Payment() {
+function Payment() {
   const {user} = useUser();
   return (
     <div className="main">
@@ -18,6 +19,10 @@ export default function Payment() {
     </div>
   )
 }
+
+
 Payment.getLayout = function (page: ReactElement) {
   return <Layout>{page}</Layout>
 }
+
+export default withContainer(Payment, true)

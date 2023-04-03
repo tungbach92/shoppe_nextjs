@@ -3,8 +3,9 @@ import Layout from "@/components/Layout/Layout";
 import {useUser} from "@/context/UserProvider";
 import AccountMenu from "@/components/Account/AccountMenu";
 import AccountOrder from "@/components/Account/AccountOrder";
+import withContainer from "@/components/withContainer";
 
-export default function Purchase() {
+function Purchase() {
   const {user} = useUser();
   return (
     <div className="main">
@@ -18,3 +19,5 @@ export default function Purchase() {
 Purchase.getLayout = function (page: ReactElement) {
   return <Layout>{page}</Layout>
 }
+
+export default withContainer(Purchase, true)
