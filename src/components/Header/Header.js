@@ -8,7 +8,7 @@ import appGalShopeeImg from "../../../public/img/app-gal-shopee.png";
 import { Box, Stack } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
-import { useUser } from "../../context/UserProvider";
+import { useUser } from "@/context/UserProvider";
 import HeaderSearch from "./HeaderSearch";
 import classNames from "classnames";
 import Link from "next/link";

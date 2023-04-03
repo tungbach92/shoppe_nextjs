@@ -1,12 +1,12 @@
-import { db } from "../configs/firebase";
-import {userDocRef} from "../common/dbRef";
+import {userDocRef} from "@/common/dbRef";
+import {setDoc} from "firebase/firestore";
 
 export const updateCustomerIDToFirebase = async (user, customerID) => {
   if (!user || !customerID) {
     return;
   }
   try {
-    await userDocRef(user?.uid).set({
+    await setDoc(userDocRef(user?.uid), {
       customerID: customerID,
     });
   } catch (error) {

@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 // import { UNSAFE_NavigationContext } from "react-router-dom";
 
 const useNavigateAndRefreshBlocker = (loading) => {
-  const { navigator } = useContext(UNSAFE_NavigationContext);
+  // const { navigator } = useContext(UNSAFE_NavigationContext);
 
   // useEffect(() => {
   //   if (!loading) return;

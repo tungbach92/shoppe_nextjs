@@ -16,7 +16,6 @@ const HeaderCart = () => {
   const cartProducts = useSelector((state) => state.cart.products);
   const { isLoading: cartItemsLoading } = useFetchCartQuery(user);
   const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
-  console.log(user)
   return (
     <div className="header__cart">
       <div

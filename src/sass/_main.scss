@@ -1272,7 +1272,7 @@ header {
   margin-left: 0.6rem;
 }
 
-.cart-product__header,
+//.cart-product__header,
 .order-product__header,
 .order-product__moment {
   display: flex;
@@ -1404,7 +1404,7 @@ header {
 }
 
 .cart-shop,
-.cart-product__item,
+//.cart-product__item,
 .order-product__item,
 .cart-product__voucher,
 .cart-product__shipping {
@@ -1634,8 +1634,8 @@ header {
   border: 1px solid rgba(0, 0, 0, 0.09);
   box-shadow: 0 5px 10px 0 rgb(0 0 0 / 9%);
   position: absolute;
-  top: 70%;
-  right: 50%;
+  top: 66%;
+  right: 37%;
   background-color: var(--white-color);
   z-index: 3;
 }

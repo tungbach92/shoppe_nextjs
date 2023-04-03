@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import useModal from "../../hooks/useModal";
 import useAddress from "../../hooks/useAddress";
 import AddressModal from "../Modal/AddressModal";
 import PopupModal from "../Modal/PopupModal";
 import useGetShipInfos from "../../hooks/useGetShipInfos";
-import { updateCustomerBillingAddressStripe } from "../../services/updateCustomerBillingAddressStripe";
-import { useUser } from "../../context/UserProvider";
+import {updateCustomerBillingAddressStripe} from "@/services/updateCustomerBillingAddressStripe";
+import {useUser} from "@/context/UserProvider";
 import useNavigateAndRefreshBlocker from "../../hooks/useNavigateAndRefreshBlocker";
-import { ClipLoading } from "../ClipLoading";
+import {ClipLoading} from "../ClipLoading";
 
 const AccountAddress = () => {
   const {
@@ -30,25 +30,25 @@ const AccountAddress = () => {
     handleProvinceChoose,
     handleWardChoose,
   } = useAddress();
-  const { user } = useUser();
+  const {user} = useUser();
   const {
     shipInfos,
     shipInfosLoading,
     shipInfosUpdateLoading,
     updateShipInfoToFirebase,
   } = useGetShipInfos(user);
-  const { isAddressAddShowing, toggleAddressAdd } = useModal();
+  const {isAddressAddShowing, toggleAddressAdd} = useModal();
   const [shipInfoIndex, setShipInfoIndex] = useState(null);
-  const { isPopupShowing, togglePopup } = useModal();
+  const {isPopupShowing, togglePopup} = useModal();
 
   useNavigateAndRefreshBlocker(shipInfosUpdateLoading);
 
-  const handleDefaultClick = async (index) => {
-    let tempShipInfos = [...shipInfos];
+  const handleDefaultClick = async (index: any) => {
+    let tempShipInfos: any = [...shipInfos];
     tempShipInfos = tempShipInfos.map(
-      (shipInfo) => (shipInfo = { ...shipInfo, isDefault: false })
+      (shipInfo: any) => (shipInfo = {...shipInfo, isDefault: false})
     );
-    tempShipInfos[index] = { ...tempShipInfos[index], isDefault: true };
+    tempShipInfos[index] = {...tempShipInfos[index], isDefault: true};
     await updateShipInfoToFirebase(tempShipInfos);
     await updateCustomerBillingAddressStripe(user, tempShipInfos); // TODO: refactor??
   };
@@ -64,7 +64,7 @@ const AccountAddress = () => {
     setShipInfoIndex(null);
   };
 
-  const handleEditClick = (index) => {
+  const handleEditClick = (index: any) => {
     toggleAddressAdd(!isAddressAddShowing);
     const name = shipInfos[index].name;
     const phone = shipInfos[index].phone;
@@ -81,12 +81,12 @@ const AccountAddress = () => {
     setShipInfoIndex(index);
   };
 
-  const handleDeleteClick = (index) => {
+  const handleDeleteClick = (index: any) => {
     setShipInfoIndex(index);
     togglePopup(!isPopupShowing);
   };
 
-  const handleDeleteTrue = async (index) => {
+  const handleDeleteTrue = async (index: any) => {
     let tempShipInfos = [...shipInfos];
     tempShipInfos = tempShipInfos.filter(
       (shipInfo) => tempShipInfos.indexOf(shipInfo) !== index
@@ -112,11 +112,8 @@ const AccountAddress = () => {
               street={street}
               setStreet={setStreet}
               district={district}
-              setDistrict={setDistrict}
               province={province}
-              setProvince={setProvince}
               ward={ward}
-              setWard={setWard}
               phone={phone}
               setPhone={setPhone}
               provinces={provinces}
@@ -133,10 +130,10 @@ const AccountAddress = () => {
         </div>
       </div>
       <div className="address-profile__address-container">
-        {shipInfos.length > 0 &&
+        {shipInfos?.length > 0 &&
           !shipInfosLoading &&
           !shipInfosUpdateLoading &&
-          shipInfos?.map((shipInfo, index) => (
+          shipInfos?.map((shipInfo: any, index: any) => (
             <div key={index} className="address-profile__address-content">
               <div className="address-profile__user-container">
                 <label className="address-profile__name-label">Họ Và Tên</label>
@@ -194,7 +191,7 @@ const AccountAddress = () => {
               </div>
             </div>
           ))}
-        {shipInfos.length === 0 &&
+        {shipInfos?.length === 0 &&
           !shipInfosLoading &&
           !shipInfosUpdateLoading && (
             <div className="address-profile__address--empty">

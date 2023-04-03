@@ -1,8 +1,4 @@
 import React from "react";
-import qrCodeNavImg from "../../public/img/qr-code-home.png";
-import appShopeeImg from "../../public/img/app-shopee.png";
-import ggShopeeImg from "../../public/img/gg-shopee.png";
-import appGalShopeeImg from "../../public/img/app-gal-shopee.png";
 import Grid from "./Grid";
 
 export default function Footer() {
@@ -208,23 +204,23 @@ export default function Footer() {
               <h3 className="footer__heading">TẢI ỨNG DỤNG SHOPEE NGAY THÔI</h3>
               <a href="# " className="footer__app-wrapper">
                 <img
-                  src={qrCodeNavImg}
+                  src={'/img/qr-code-home.png'}
                   alt="qr-code"
                   className="footer__qr-img"
                 />
                 <div className="footer__app">
                   <img
-                    src={appShopeeImg}
+                    src={'/img/app-shopee.png'}
                     alt="qr-code"
                     className="footer__app-img"
                   />
                   <img
-                    src={ggShopeeImg}
+                    src={'/img/gg-shopee.png'}
                     alt="qr-code"
                     className="footer__app-img"
                   />
                   <img
-                    src={appGalShopeeImg}
+                    src={'/img/app-gal-shopee.png'}
                     alt="qr-code"
                     className="footer__app-img"
                   />

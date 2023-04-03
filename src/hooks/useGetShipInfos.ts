@@ -1,11 +1,11 @@
 import {useLayoutEffect, useState} from "react";
-import {onSnapshot} from "firebase/firestore";
-import {shipInfoDocRef} from "../common/dbRef";
+import {getDoc, onSnapshot, setDoc, updateDoc} from "firebase/firestore";
+import {shipInfoDocRef} from "@/common/dbRef";
 
-const useGetShipInfos = (user) => {
-  const [shipInfos, setShipInfos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [updateLoading, setUpdateLoading] = useState(false);
+const useGetShipInfos = (user: any) => {
+  const [shipInfos, setShipInfos] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [updateLoading, setUpdateLoading] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     let isMounted = true;
@@ -15,9 +15,9 @@ const useGetShipInfos = (user) => {
           if (!isMounted) {
             return;
           }
-          if (doc.exists) {
-            const shipInfos = doc.data().shipInfos;
-            setShipInfos(shipInfos);
+          if (doc.exists()) {
+            const shipInfos = doc?.data()?.shipInfos;
+            setShipInfos(shipInfos || []);
           } else {
             setShipInfos([]);
           }
@@ -34,18 +34,18 @@ const useGetShipInfos = (user) => {
     };
   }, [user]);
 
-  const updateShipInfoToFirebase = async (shipInfos) => {
+  const updateShipInfoToFirebase = async (shipInfos: any) => {
     try {
       setUpdateLoading(true);
-      const doc = await shipInfoDocRef(user?.uid).get();
+      const doc = await getDoc(shipInfoDocRef(user?.uid));
       if (!doc.exists) {
-        await shipInfoDocRef(user?.uid).set({shipInfos: []});
+        await setDoc(shipInfoDocRef(user?.uid), {shipInfos: []});
       } else {
-        await shipInfoDocRef(user?.uid).update({
+        await updateDoc(shipInfoDocRef(user?.uid), {
           shipInfos: shipInfos,
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       alert("Lôi cập nhật địa chỉ ship:" + error.message);
     } finally {
       setUpdateLoading(false);

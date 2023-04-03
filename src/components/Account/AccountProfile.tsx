@@ -1,25 +1,37 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { FastField, Field, Form, Formik } from "formik";
+import {FastField, Field, Form, Formik} from "formik";
 import InputField from "../../custom-fields/InputField/InputField";
 import RadioGroupField from "../../custom-fields/RadioGroupField/RadioGroupField";
-// import { Link } from "react-router-dom";
 import ImageUploadField from "../../custom-fields/ImageUploadField/ImageUploadField";
 import * as yup from "yup";
 import useNavigateAndRefreshBlocker from "../../hooks/useNavigateAndRefreshBlocker";
+import Link from "next/link";
+
+interface Props {
+  userName: string
+  name: string
+  email: string
+  phone: string
+  gender: string
+  birthday: string
+  previewImage: string
+  setFileImage: any
+  isInfoUpdating: boolean
+  handleInfoSubmit: any
+}
 
 const AccountProfile = ({
-  userName,
-  name,
-  email,
-  phone,
-  gender,
-  birthday,
-  previewImage,
-  setFileImage,
-  isInfoUpdating,
-  handleInfoSubmit,
-}) => {
+                          userName,
+                          name,
+                          email,
+                          phone,
+                          gender,
+                          birthday,
+                          previewImage,
+                          setFileImage,
+                          isInfoUpdating,
+                          handleInfoSubmit,
+                        }: Props) => {
   const phoneRegex = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/;
   const validationSchema = yup.object({
     user: yup
@@ -68,7 +80,7 @@ const AccountProfile = ({
           onSubmit={handleInfoSubmit}
         >
           {(formikProps) => {
-            const { values, errors, touched, dirty } = formikProps;
+            const {values, errors, touched, dirty} = formikProps;
             return (
               <Form className="user-profile__info-form">
                 {/* onSubmit={handleInfoSubmit}> */}
@@ -99,12 +111,12 @@ const AccountProfile = ({
                     <label className="user-profile__email-label">Email</label>
                     <div className="user-profile__email-input">
                       {email}
-                      {/*<Link*/}
-                      {/*  to="/user/account/email"*/}
-                      {/*  className="user-profile__email-btn"*/}
-                      {/*>*/}
-                      {/*  Thay đổi*/}
-                      {/*</Link>*/}
+                      <Link
+                        href="/account/email"
+                        className="user-profile__email-btn"
+                      >
+                        Thay đổi
+                      </Link>
                     </div>
                     <FastField
                       name="phone"
@@ -197,31 +209,6 @@ const AccountProfile = ({
       </div>
     </>
   );
-};
-AccountProfile.propTypes = {
-  userName: PropTypes.string.isRequired,
-  name: PropTypes.string,
-  email: PropTypes.string.isRequired,
-  phone: PropTypes.string,
-  gender: PropTypes.string,
-  birthday: PropTypes.string,
-  previewImage: PropTypes.string,
-  setPreviewImage: PropTypes.func,
-  setFileImage: PropTypes.func,
-  isInfoUpdating: PropTypes.bool,
-  handleInfoSubmit: PropTypes.func,
-};
-
-AccountProfile.defaultProps = {
-  name: null,
-  phone: null,
-  gender: null,
-  birthday: null,
-  previewImage: null,
-  setPreviewImage: null,
-  setFileImage: null,
-  isInfoUpdating: false,
-  handleInfoSubmit: null,
 };
 
 export default AccountProfile;

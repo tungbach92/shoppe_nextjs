@@ -22,7 +22,6 @@ const UserProvider = ({children}) => {
   const cartProducts = useSelector((state) => state.cart.products);
   const [addCartToFireStore] = useAddCartToFireStoreMutation();
   const dispatch = useDispatch();
-  console.log(user)
   const signOut = useCallback(async () => {
     addCartToFireStore({user, cartProducts});
     dispatch(resetCart());

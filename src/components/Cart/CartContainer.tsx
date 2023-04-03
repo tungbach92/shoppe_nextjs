@@ -13,7 +13,7 @@ import {useCheckoutContext} from "@/context/CheckoutProvider";
 import {CHECKOUT_ACTIONTYPES} from "@/constants/actionType";
 import {ClipLoading} from "../ClipLoading";
 import {useUser} from "@/context/UserProvider";
-import {useSelector} from "react-redux";
+import {RootStateOrAny, useSelector} from "react-redux";
 import {
   deleteProducts, deleteSelectedProducts, updateProducts,
 } from "@/redux/cartSlice";
@@ -31,18 +31,18 @@ function CartContainer() {
   const {user} = useUser();
   const {voucher, resetVoucher} = useVoucher();
   const {isLoading: cartItemsLoading} = useFetchCartQuery(user);
-  const cartProducts = useSelector((state) => state.cart.products);
+  const cartProducts = useSelector((state: RootStateOrAny) => state.cart.products);
   const [addCartToFireStore] = useAddCartToFireStoreMutation();
   const dispatch = useDispatch();
   const {checkoutDispatch} = useCheckoutContext();
-  const [variation, setVariation] = useState("");
-  const [isVariationChoose, setIsVariationChoose] = useState(false);
-  const [deleteID, setDeleteID] = useState(null);
-  const [deleteVariation, setDeleteVariation] = useState();
-  const [isDeleteSelected, setIsDeleteSelected] = useState(false);
-  const [selectedIdVariation, setSelectedIdVariation] = useState([]);
+  const [variation, setVariation] = useState<string>("");
+  const [isVariationChoose, setIsVariationChoose] = useState<boolean>(false);
+  const [deleteID, setDeleteID] = useState<string>('');
+  const [deleteVariation, setDeleteVariation] = useState<string>('');
+  const [isDeleteSelected, setIsDeleteSelected] = useState<boolean>(false);
+  const [selectedIdVariation, setSelectedIdVariation] = useState<any[]>([]);
   const selectedProduct = useMemo(() => {
-    return cartProducts.filter((item) => selectedIdVariation.some((e) => e.id === item.id && e.variation === item.variation));
+    return cartProducts.filter((item: any) => selectedIdVariation.some((e: any) => e.id === item.id && e.variation === item.variation));
   }, [cartProducts, selectedIdVariation]);
 
   const {
@@ -66,35 +66,35 @@ function CartContainer() {
 
   useEffect(() => {
     if (selectedProduct.length > 0) {
-      const isVariationChoose = selectedProduct.every((item) => item.variation?.length > 0 || item.variationList.length === 0);
+      const isVariationChoose = selectedProduct.every((item: any) => item.variation?.length > 0 || item.variationList.length === 0);
       setIsVariationChoose(isVariationChoose);
     }
   }, [selectedProduct]);
 
-  const getItemsTotal = (items) => {
-    const result = items?.reduce((checkoutItemTotal, item) => checkoutItemTotal + item.amount, 0);
+  const getItemsTotal = (items: any) => {
+    const result = items?.reduce((checkoutItemTotal: number, item: any) => checkoutItemTotal + item.amount, 0);
     return result ? result : 0;
   };
 
-  const handleVariationClick = (event) => {
+  const handleVariationClick = (event: any) => {
     const variation = event.currentTarget.innerText;
     setVariation(variation);
   };
 
-  const handleVariationBack = (variation, id) => {
+  const handleVariationBack = (variation: string, id: string) => {
     setVariation("");
     changeVariationDisPlayCartItems(variation, id);
   };
 
-  const handleVariationApply = (variation, id) => {
+  const handleVariationApply = (variation: string, id: string) => {
     changeCartItemsVariation(variation, id);
   };
-  const handleCheckout = async (event) => {
-    if (selectedProduct?.length === 0 || isVariationChoose === false) {
+  const handleCheckout = async (event: any) => {
+    if (selectedProduct?.length === 0 || !isVariationChoose) {
       event.preventDefault();
       togglePopup(!isPopupShowing);
     } else {
-      const checkoutItems = selectedProduct.map((selectedEle) => {
+      const checkoutItems = selectedProduct.map((selectedEle: any) => {
         // return checkedItem without uneccessary field
         const {similarDisPlay, variationDisPlay, ...rest} = selectedEle;
         return rest;
@@ -108,14 +108,14 @@ function CartContainer() {
   };
 
   const delCartItems = () => {
-    const newCartProducts = cartProducts.filter((item) => selectedIdVariation.every((e) => e.id !== item.id || e.variation !== item.variation));
+    const newCartProducts = cartProducts.filter((item: any) => selectedIdVariation.every((e) => e.id !== item.id || e.variation !== item.variation));
     dispatch(deleteSelectedProducts(newCartProducts));
     // if (newCartItems.length === 0) {
     //   await saveCartItemsToFirebase(newCartItems);
     // }
   };
 
-  const handleDelete = (id, variation) => {
+  const handleDelete = (id: string, variation: string) => {
     setDeleteID(id);
     setDeleteVariation(variation);
     togglePopup(!isPopupShowing);
@@ -139,7 +139,7 @@ function CartContainer() {
     setSelectedIdVariation([]);
   };
 
-  const changeAmountCartItem = (id, variation, amount) => {
+  const changeAmountCartItem = (id: string, variation: string, amount: number) => {
     const newCartProducts = [...cartProducts];
     const indexOfItem = newCartProducts.findIndex((item) => item.id === id && item.variation === variation);
     newCartProducts[indexOfItem] = {
@@ -148,7 +148,7 @@ function CartContainer() {
     dispatch(updateProducts(newCartProducts));
   };
 
-  const incrCartItem = (id, variation) => {
+  const incrCartItem = (id: string, variation: string) => {
     const newCartProducts = [...cartProducts];
     const indexOfItem = newCartProducts.findIndex((item) => item.id === id && item.variation === variation);
     newCartProducts[indexOfItem] = {
@@ -157,7 +157,7 @@ function CartContainer() {
     dispatch(updateProducts(newCartProducts));
   };
 
-  const decrCartItem = (id, variation) => {
+  const decrCartItem = (id: string, variation: string) => {
     const newCartProducts = [...cartProducts];
     const indexOfItem = newCartProducts.findIndex((item) => item.id === id && item.variation === variation);
     if (newCartProducts[indexOfItem].amount > 1) {
@@ -168,21 +168,24 @@ function CartContainer() {
     }
   };
 
-  const changeVariationDisPlayCartItems = (variation, id) => {
-    const newCartProducts = cartProducts.map((item) => item.id === id && item.variation === variation ? {...item, variationDisPlay: !item.variationDisPlay} : item);
+  const changeVariationDisPlayCartItems = (variation: string, id: string) => {
+    const newCartProducts = cartProducts.map((item: any) => item.id === id && item.variation === variation ? {
+      ...item,
+      variationDisPlay: !item.variationDisPlay
+    } : item);
     dispatch(updateProducts(newCartProducts));
   };
 
-  const changeCartItemsVariation = (oldVariation, id) => {
-    const newCartProducts = cartProducts.map((item) => item.id === id && item.variation === oldVariation ? {
+  const changeCartItemsVariation = (oldVariation: string, id: string) => {
+    const newCartProducts = cartProducts.map((item: any) => item.id === id && item.variation === oldVariation ? {
       ...item, variation: variation, variationDisPlay: !item.variationDisPlay,
     } : item);
     dispatch(updateProducts(newCartProducts));
-    const newCheckedId = selectedIdVariation.map((item) => item.id === id ? {...item, variation} : item);
+    const newCheckedId = selectedIdVariation.map((item: any) => item.id === id ? {...item, variation} : item);
     setSelectedIdVariation(newCheckedId);
   };
 
-  const handlePopup = (variation, id) => {
+  const handlePopup = (variation: string, id: string) => {
     changeVariationDisPlayCartItems(variation, id);
     setVariation(variation);
   };
@@ -195,17 +198,17 @@ function CartContainer() {
     resetVoucher();
   };
 
-  const handleCheck = (item) => {
+  const handleCheck = (item: any) => {
     if (isCheck(item)) {
-      const newCheckedId = selectedIdVariation.filter((e) => e.id !== item.id || e.variation !== item.variation);
+      const newCheckedId = selectedIdVariation.filter((e: any) => e.id !== item.id || e.variation !== item.variation);
       setSelectedIdVariation(newCheckedId);
       return;
     }
     setSelectedIdVariation([...selectedIdVariation, {id: item.id, variation: item.variation},]);
   };
 
-  const isCheck = (item) => {
-    const result = selectedIdVariation.some((e) => e.id === item.id && e.variation === item.variation);
+  const isCheck = (item: any) => {
+    const result = selectedIdVariation.some((e: any) => e.id === item.id && e.variation === item.variation);
     return result;
   };
 
@@ -218,15 +221,15 @@ function CartContainer() {
     if (isCheckAll()) {
       setSelectedIdVariation([]);
     } else {
-      const newCheckedId = cartProducts.map((e) => {
+      const newCheckedId = cartProducts.map((e: any) => {
         return {id: e.id, variation: e.variation};
       });
       setSelectedIdVariation(newCheckedId);
     }
   };
 
-  const isIDVariationExist = (id, variation) => {
-    const result = cartProducts.some((item) => item.variation === variation && item.id === id);
+  const isIDVariationExist = (id: string, variation: string) => {
+    const result = cartProducts.some((item: any) => item.variation === variation && item.id === id);
     return result;
   };
 
@@ -297,25 +300,26 @@ function CartContainer() {
             Nhấn vào mục nhập mã shopee voucher để nhập mã giảm giá
               </span>
         </div>
-        <div className="cart-product__header">
+        <div className="grid grid-cols-10 gap-3 place-items-center bg-white my-2 p-2 shadow-sm">
           <input
             name="all"
             onChange={handleCheckAll}
             checked={isCheckAll()}
             type="checkbox"
-            className="grid__col cart-product__checkbox"
+            // className="grid__col cart-product__checkbox"
+            className="cart-product__checkbox"
           />
-          <div className="grid__col cart-product__product">Sản Phẩm</div>
-          <div className="grid__col cart-product__price">Đơn Giá</div>
-          <div className="grid__col cart-product__amount">Số Lượng</div>
-          <div className="grid__col cart-product__header-total">
-            Số Tiền
-          </div>
-          <div className="grid__col cart-product__action">Thao Tác</div>
+          <div className="col-span-4">Sản Phẩm</div>
+          <div className="">Đơn Giá</div>
+          <div className="">Số Lượng</div>
+          <div className="">Số Tiền</div>
+          <div className="">Thao Tác</div>
         </div>
-        {cartProducts.map((item) => (
-          <CartItem key={item.id} item={item} decrCartItem={decrCartItem} variation={variation} changeAmountCartItem={changeAmountCartItem} handleVariationBack={handleVariationBack}
-                    handleVariationClick={handleVariationClick} handlePopup={handlePopup} handleCheck={handleCheck} handleDelete={handleDelete} handleVariationApply={handleVariationApply}
+        {cartProducts.map((item: any) => (
+          <CartItem key={item.id} item={item} decrCartItem={decrCartItem} variation={variation}
+                    changeAmountCartItem={changeAmountCartItem} handleVariationBack={handleVariationBack}
+                    handleVariationClick={handleVariationClick} handlePopup={handlePopup} handleCheck={handleCheck}
+                    handleDelete={handleDelete} handleVariationApply={handleVariationApply}
                     incrCartItem={incrCartItem} isCheck={isCheck} isIDVariationExist={isIDVariationExist}/>))}
         <div className="cart-product__footer">
           <div className="cart-product__anonymous-shopee"></div>
@@ -380,7 +384,8 @@ function CartContainer() {
                     Shopee Voucher
                   </span>
             </div>
-            <CartVoucher voucher={voucher} handleVoucherDelete={handleVoucherDelete} handleVoucherModal={handleVoucherModal}/>
+            <CartVoucher voucher={voucher} handleVoucherDelete={handleVoucherDelete}
+                         handleVoucherModal={handleVoucherModal}/>
           </div>
           <div className="cart-product__checkout-wrapper">
             <input

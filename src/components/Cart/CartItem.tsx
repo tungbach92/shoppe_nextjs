@@ -35,33 +35,39 @@ export default function CartItem({
                                    handleDelete
                                  }: Props) {
   return (
-    <div key={item.id} className="cart-product__item">
+    <div key={item.id}
+         className="cart-product__item grid grid-cols-10 gap-3 place-items-center bg-white my-2 p-2 shadow-sm">
       <input
         type="checkbox"
         checked={isCheck(item)}
         onChange={() => handleCheck(item)}
-        className="grid__col cart-product__checkbox"
+        // className="grid__col cart-product__checkbox"
+        className="cart-product__checkbox"
       />
-      <Link
-        // href={{
-        //   pathname: `/product/${item.metaTitle}/${item.id}`,
-        //   state: { id: item.id },
-        // }}
-        href={`/product/${item.metaTitle}/${item.id}`}
-        className="grid__col cart-product__overview"
-      >
-        <img
-          src={item.imageUrl}
-          alt=""
-          className="cart-product__img"
-        />
-        <span className="cart-product__name">{item.name}</span>
-      </Link>
-      <div
-        data-name="variation"
-        onClick={() => handlePopup(item.variation, item.id)}
-        className="grid__col cart-product__variation"
-      >
+      <div className={'col-span-4'}>
+        <div className={'flex justify-center items-center'}>
+          <Link
+            // href={{
+            //   pathname: `/product/${item.metaTitle}/${item.id}`,
+            //   state: { id: item.id },
+            // }}
+            href={`/product/${item.metaTitle}/${item.id}`}
+            // className="grid__col cart-product__overview"
+            className="flex text no-underline text-black"
+          >
+            <img
+              src={item.imageUrl}
+              alt=""
+              className="cart-product__img"
+            />
+            <span className="cart-product__name">{item.name}</span>
+          </Link>
+          <div
+            data-name="variation"
+            onClick={() => handlePopup(item.variation, item.id)}
+            // className="grid__col cart-product__variation"
+            className="cart-product__variation"
+          >
                   <span className="cart-product__variation-label">
                     Phân Loại Hàng:
                     <span
@@ -71,82 +77,84 @@ export default function CartItem({
                       })}
                     ></span>
                   </span>
-        <span className="cart-product__variation-numb">
+            <span className="cart-product__variation-numb">
                     {item.variation}
                   </span>
-      </div>
-      {item.variationDisPlay && (
-        <div className="cart-product__variation-notify">
-          <div className="cart-product__arrow-outer">
-            <div className="cart-product__notify-arrow"></div>
           </div>
-          <div className="cart-product__notify-content">
-            <div className="cart-product__notify-label">Kích cỡ:</div>
-            <div className="cart-product__variation-container">
-              {item.variationList.length === 0 && "Không có"}
-              {item.variationList?.map((listItem: any, i: number) => (
-                <div
-                  onClick={
-                    !isIDVariationExist(item.id, listItem) ||
-                    item.variation === listItem
-                      ? handleVariationClick
-                      : undefined
-                  }
-                  key={i}
-                  className={
-                    variation === listItem
-                      ? "cart-product__notify-variation cart-product__notify-variation--active"
-                      : isIDVariationExist(item.id, listItem) &&
-                      !(item.variation === listItem)
-                        ? "cart-product__notify-variation cart-product__notify-variation--deactive"
-                        : "cart-product__notify-variation"
-                  }
-                >
-                  {listItem}
-                  {variation === listItem && (
-                    <div className="cart-product__variation-tick">
-                      <svg
-                        enableBackground="new 0 0 12 12"
-                        viewBox="0 0 12 12"
-                        x="0"
-                        y="0"
-                        className="cart-product__tick-icon"
-                      >
-                        <g>
-                          <path
-                            d="m5.2 10.9c-.2 0-.5-.1-.7-.2l-4.2-3.7c-.4-.4-.5-1-.1-1.4s1-.5 1.4-.1l3.4 3 5.1-7c .3-.4 1-.5 1.4-.2s.5 1 .2 1.4l-5.7 7.9c-.2.2-.4.4-.7.4 0-.1 0-.1-.1-.1z"></path>
-                        </g>
-                      </svg>
+          {item.variationDisPlay && (
+            <div className="cart-product__variation-notify">
+              <div className="cart-product__arrow-outer">
+                <div className="cart-product__notify-arrow"></div>
+              </div>
+              <div className="cart-product__notify-content">
+                <div className="cart-product__notify-label">Kích cỡ:</div>
+                <div className="cart-product__variation-container">
+                  {item.variationList.length === 0 && "Không có"}
+                  {item.variationList?.map((listItem: any, i: number) => (
+                    <div
+                      onClick={
+                        !isIDVariationExist(item.id, listItem) ||
+                        item.variation === listItem
+                          ? handleVariationClick
+                          : undefined
+                      }
+                      key={i}
+                      className={
+                        variation === listItem
+                          ? "cart-product__notify-variation cart-product__notify-variation--active"
+                          : isIDVariationExist(item.id, listItem) &&
+                          !(item.variation === listItem)
+                            ? "cart-product__notify-variation cart-product__notify-variation--deactive"
+                            : "cart-product__notify-variation"
+                      }
+                    >
+                      {listItem}
+                      {variation === listItem && (
+                        <div className="cart-product__variation-tick">
+                          <svg
+                            enableBackground="new 0 0 12 12"
+                            viewBox="0 0 12 12"
+                            x="0"
+                            y="0"
+                            className="cart-product__tick-icon"
+                          >
+                            <g>
+                              <path
+                                d="m5.2 10.9c-.2 0-.5-.1-.7-.2l-4.2-3.7c-.4-.4-.5-1-.1-1.4s1-.5 1.4-.1l3.4 3 5.1-7c .3-.4 1-.5 1.4-.2s.5 1 .2 1.4l-5.7 7.9c-.2.2-.4.4-.7.4 0-.1 0-.1-.1-.1z"></path>
+                            </g>
+                          </svg>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div className="cart-product__notify-button">
+                <button
+                  onClick={() => handleVariationBack(
+                    item.variation,
+                    item.id
+                  )}
+                  className="btn cart-product__notify-back"
+                >
+                  Trở Lại
+                </button>
+                {item.variationList.length > 0 && (
+                  <button
+                    onClick={() =>
+                      handleVariationApply(item.variation, item.id)
+                    }
+                    className="btn cart-product__notify-ok"
+                  >
+                    Xác nhận
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="cart-product__notify-button">
-            <button
-              onClick={() => handleVariationBack(
-                item.variation,
-                item.id
-              )}
-              className="btn cart-product__notify-back"
-            >
-              Trở Lại
-            </button>
-            {item.variationList.length > 0 && (
-              <button
-                onClick={() =>
-                  handleVariationApply(item.variation, item.id)
-                }
-                className="btn cart-product__notify-ok"
-              >
-                Xác nhận
-              </button>
-            )}
-          </div>
+          )}
         </div>
-      )}
-      <div className="grid__col cart-product__price">
+      </div>
+      <div className="cart-product__price">
         {/* cart-product__price-item--before  */}
         {/* cart-product__price-item--after  */}
         {/* <span className="cart-product__price-item cart-product__price-item--before">
@@ -161,7 +169,7 @@ export default function CartItem({
                     ></NumericFormat>
                   </span>
       </div>
-      <div className="grid__col cart-product__amount">
+      <div className="cart-product__amount">
         <div className="cart-product__amount-wrapper">
           <button
             onClick={() => {
@@ -198,7 +206,7 @@ export default function CartItem({
           </button>
         </div>
       </div>
-      <div className="grid__col cart-product__total">
+      <div className="cart-product__total">
         <NumericFormat
           value={item.price * item.amount}
           thousandSeparator={true}
@@ -206,7 +214,7 @@ export default function CartItem({
           prefix={"₫"}
         ></NumericFormat>
       </div>
-      <div className="grid__col cart-product__action">
+      <div className="cart-product__action">
                   <span
                     onClick={() => handleDelete(item.id, item.variation)}
                     className="cart-product__action-del"

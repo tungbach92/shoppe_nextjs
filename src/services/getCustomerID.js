@@ -1,12 +1,12 @@
-import { db } from "../configs/firebase";
-import {userDocRef} from "../common/dbRef";
+import {userDocRef} from "@/common/dbRef";
+import {getDoc} from "firebase/firestore";
 
 export default async function getCustomerID(user) {
   let customerID = "";
   if (!user) return customerID;
   try {
-    const doc = await userDocRef(user?.uid).get();
-    if (doc.exists) {
+    const doc = await getDoc(userDocRef(user?.uid));
+    if (doc.exists()) {
       customerID = doc.data().customerID;
     }
   } catch (error) {
