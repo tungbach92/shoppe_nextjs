@@ -667,7 +667,7 @@ function CheckoutContainer({isCheckoutPage}) {
             </div>
           ))}
           {loading && <ClipLoading></ClipLoading>}
-          {checkoutItems?.length === 0 && !loading && <ErrorModal></ErrorModal>}
+          <ErrorModal isErrorOpen={checkoutItems?.length === 0 && !loading}></ErrorModal>
         </ul>
         <div className="checkout-product__first-addition">
           <span className="checkout-product__message-wrapper">

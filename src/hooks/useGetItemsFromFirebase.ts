@@ -5,8 +5,8 @@ import {
 import {productQuery} from "@/common/dbRef";
 
 const useGetItemsFromFirebase = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     let isMounted = true;

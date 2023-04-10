@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { auth } from "../configs/firebase";
+import { auth } from "@/configs/firebase";
 
 const useGetUserByObserver = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

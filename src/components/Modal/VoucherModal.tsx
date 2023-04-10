@@ -1,9 +1,7 @@
 import React, {useState} from "react";
-import ReactDOM from "react-dom";
 import useVoucher from "../../hooks/useVoucher";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {useUser} from "../../context/UserProvider";
 
 interface Props {
   isVoucherShowing: boolean

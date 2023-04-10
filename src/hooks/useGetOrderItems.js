@@ -1,6 +1,5 @@
 import {useLayoutEffect, useState} from "react";
-import {db} from "../configs/firebase";
-import {orderRef} from "../common/dbRef";
+import {orderRef} from "@/common/dbRef";
 import {onSnapshot} from "firebase/firestore";
 
 const useGetOrderItems = (user) => {

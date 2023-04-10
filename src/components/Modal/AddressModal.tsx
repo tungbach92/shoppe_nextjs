@@ -1,12 +1,23 @@
 import React, {useRef, useState} from "react";
-import ReactDOM from "react-dom";
-import {Autocomplete, Button, styled, TextField} from "@mui/material";
-import useGetShipInfos from "../../hooks/useGetShipInfos";
-import {useUser} from "../../context/UserProvider";
+import {
+  Autocomplete,
+  ButtonProps,
+  styled,
+  TextField,
+  TextFieldProps,
+} from "@mui/material";
+import {useUser} from "@/context/UserProvider";
+import {BaseModal} from "@/components/base";
+import useGetShipInfos from "@/hooks/useGetShipInfos";
+import {BaseButton} from "@/components/base/BaseButton";
+
+type StyledTextFieldProps = TextFieldProps & {
+  isValid: boolean
+}
 
 const StyledTextField = styled(TextField, {
   shouldForwardProp: (props) => props !== "isValid",
-})(({isValid}) => ({
+})(({isValid}: StyledTextFieldProps) => ({
   "& .MuiInputBase-root, & .MuiOutlinedInput-root": {
     fontSize: "1.3rem",
   },
@@ -14,13 +25,13 @@ const StyledTextField = styled(TextField, {
     fontSize: "1.3rem",
   },
   "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: isValid === false && "red",
+    borderColor: !isValid && "red",
   },
 }));
 
 const StyleAutocomplete = styled(Autocomplete, {
   shouldForwardProp: (props) => props !== "isValid",
-})(({isValid}) => ({
+})(({isValid}: StyledTextFieldProps) => ({
   "& .MuiFormLabel-root, & .MuiInputLabel-root": {
     fontSize: "1.3rem",
   },
@@ -31,12 +42,35 @@ const StyleAutocomplete = styled(Autocomplete, {
     top: "calc(50% - 10px)",
   },
   "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: isValid === false && "red",
+    borderColor: !isValid && "red",
   },
   "& .Mui-disabled": {
     cursor: "not-allowed",
   },
 }));
+
+type RefButtonProps = ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement> & {}
+
+interface AddressModalProps {
+  isAddressAddShowing: boolean
+  toggleAddressAdd: any
+  phone: string
+  setPhone: any
+  name: string
+  setName: any
+  street: string
+  setStreet: any
+  ward: any
+  province: any
+  district: any
+  provinces: any[]
+  districts: any[]
+  wards: any[]
+  handleDistrictChoose: any
+  handleProvinceChoose: any
+  handleWardChoose: any
+  shipInfoIndex: any
+}
 
 const AddressModal = ({
                         isAddressAddShowing,
@@ -57,20 +91,20 @@ const AddressModal = ({
                         handleProvinceChoose,
                         handleWardChoose,
                         shipInfoIndex,
-                      }) => {
+                      }: AddressModalProps) => {
   const {user} = useUser();
   const {shipInfos, updateShipInfoToFirebase} = useGetShipInfos(user);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<any>({});
 
-  const [isNameValid, setIsNameValid] = useState(true);
-  const [isPhoneValid, setIsPhoneValid] = useState(true);
-  const [isStreetValid, setIsStreetValid] = useState(true);
-  const [isProvinceValid, setIsProvinceValid] = useState(true);
-  const [isDistrictValid, setIsDistrictValid] = useState(true);
-  const [isWardsValid, setIsWardsValid] = useState(true);
-  const buttonRef = useRef();
+  const [isNameValid, setIsNameValid] = useState<boolean | null>(true);
+  const [isPhoneValid, setIsPhoneValid] = useState<boolean | null>(true);
+  const [isStreetValid, setIsStreetValid] = useState<boolean | null>(true);
+  const [isProvinceValid, setIsProvinceValid] = useState<boolean | null>(true);
+  const [isDistrictValid, setIsDistrictValid] = useState<boolean | null>(true);
+  const [isWardsValid, setIsWardsValid] = useState<boolean | null>(true);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const validateName = () => {
-    let error;
+    let error: string;
     setIsNameValid(true);
     // contain atleast 3 space
     if (!name) {
@@ -83,11 +117,11 @@ const AddressModal = ({
       setIsNameValid(false);
       error = "Nhập đầy đủ cả họ và tên, không chứa số!";
     }
-    setErrors((prev) => ({...prev, name: error}));
+    setErrors((prev: any) => ({...prev, name: error}));
   };
 
   const validatePhone = () => {
-    let error;
+    let error: string;
     setIsPhoneValid(true);
     if (!phone) {
       setIsPhoneValid(false);
@@ -99,49 +133,49 @@ const AddressModal = ({
       setIsPhoneValid(false);
       error = "Số điện thoại không hợp lệ!";
     }
-    setErrors((prev) => ({...prev, phone: error}));
+    setErrors((prev: any) => ({...prev, phone: error}));
   };
 
   const validateProvince = () => {
     let isValid = true;
-    let error;
+    let error: string;
     setIsProvinceValid(true);
     if (!province) {
       error = "Vui lòng chọn Tỉnh/thành phố";
       setIsProvinceValid(false);
     }
-    setErrors((prev) => ({...prev, province: error}));
+    setErrors((prev: any) => ({...prev, province: error}));
     return isValid;
   };
 
   const validateDistrict = () => {
-    let error;
+    let error: string;
     setIsDistrictValid(true);
     if (!district) {
       setIsDistrictValid(false);
       error = "Vui lòng chọn Quận/huyện";
     }
-    setErrors((prev) => ({...prev, district: error}));
+    setErrors((prev: any) => ({...prev, district: error}));
   };
 
   const validateWard = () => {
-    let error;
+    let error: string;
     setIsWardsValid(true);
     if (!ward) {
       setIsWardsValid(false);
       error = "Vui lòng chọn Phường/xã/thị trấn";
     }
-    setErrors((prev) => ({...prev, ward: error}));
+    setErrors((prev: any) => ({...prev, ward: error}));
   };
 
   const validateStreet = () => {
-    let error;
+    let error: string;
     setIsStreetValid(true);
     if (!street) {
       setIsStreetValid(false);
       error = "Vui lòng nhập Tổ dân phố, ngõ, số nhà, đường(thôn, xóm)";
     }
-    setErrors((prev) => ({...prev, street: error}));
+    setErrors((prev: any) => ({...prev, street: error}));
   };
   //TODO use formik
   const handleBack = () => {
@@ -155,7 +189,7 @@ const AddressModal = ({
     setErrors({});
   };
 
-  const handleApply = (e) => {
+  const handleApply = (e: any) => {
     e.preventDefault();
     validateName();
     validatePhone();
@@ -235,15 +269,15 @@ const AddressModal = ({
     }
   };
 
-  const handlePhoneChange = (e) => {
+  const handlePhoneChange = (e: any) => {
     e.target.value = e.target.value
       .replace(/[^0-9.]/g, "")
       .replace(/(\..*)\./g, "$1");
     setPhone(e.target.value);
   };
 
-  return isAddressAddShowing
-    ? (
+  return (
+    <BaseModal isOpen={isAddressAddShowing} handleClose={toggleAddressAdd}>
       <div className="address-profile__modal">
         <div className="address-profile__modal-overlay"></div>
         <div className="address-profile__modal-container">
@@ -254,10 +288,10 @@ const AddressModal = ({
             className="address-profile__modal-content"
             onSubmit={handleApply}
           >
-            <StyledTextField
-              isValid={isNameValid}
+            <TextField
+              // isValid={isNameValid}
               size="small"
-              variant="outlined"
+              // variant="outlined"
               label="Họ và tên"
               type="text"
               name="name"
@@ -266,11 +300,11 @@ const AddressModal = ({
               onBlur={validateName}
               className="address-profile__name"
             />
-            <StyledTextField
-              isValid={isPhoneValid}
+            <TextField
+              // isValid={isPhoneValid}
               size="small"
               type="text"
-              variant="outlined"
+              // variant="outlined"
               name="phone"
               value={phone}
               onChange={handlePhoneChange}
@@ -281,11 +315,11 @@ const AddressModal = ({
             <div className="address-profile__name-error">{errors.name}</div>
             <div className="address-profile__phone-error">{errors.phone}</div>
             <div className="address-profile__province">
-              <StyleAutocomplete
+              <Autocomplete
                 selectOnFocus
                 clearOnBlur
                 handleHomeEndKeys
-                isValid={isProvinceValid}
+                // isValid={isProvinceValid}
                 size="small"
                 ListboxProps={{
                   sx: {fontSize: "1.3rem"},
@@ -302,12 +336,12 @@ const AddressModal = ({
               />
             </div>
             <div className="address-profile__district">
-              <StyleAutocomplete
+              <Autocomplete
                 selectOnFocus
                 clearOnBlur
                 handleHomeEndKeys
                 sx={{cursor: "not-allowed !important"}}
-                isValid={isDistrictValid}
+                // isValid={isDistrictValid}
                 size="small"
                 ListboxProps={{
                   sx: {fontSize: "1.3rem"},
@@ -325,11 +359,11 @@ const AddressModal = ({
               />
             </div>
             <div className="address-profile__ward">
-              <StyleAutocomplete
+              <Autocomplete
                 selectOnFocus
                 clearOnBlur
                 handleHomeEndKeys
-                isValid={isWardsValid}
+                // isValid={isWardsValid}
                 size="small"
                 ListboxProps={{
                   sx: {fontSize: "1.3rem"},
@@ -354,11 +388,11 @@ const AddressModal = ({
               {errors.district}
             </div>
             <div className="address-profile__ward-error">{errors.ward}</div>
-            <StyledTextField
-              isValid={isStreetValid}
+            <TextField
+              // isValid={isStreetValid}
               size="small"
               type="text"
-              variant="outlined"
+              // variant="outlined"
               value={street}
               onChange={(e) => setStreet(e.target.value)}
               onBlur={validateStreet}
@@ -368,11 +402,11 @@ const AddressModal = ({
             <div className="address-profile__street-error">
               {errors.street}
             </div>
-            <Button
-              sx={{display: "none"}}
+            <BaseButton
+              type={"submit"}
               ref={buttonRef}
-              type="submit"
-            ></Button>
+              className={'hidden'}
+            ></BaseButton>
           </form>
 
           <div className="address-profile__popup-footer">
@@ -384,7 +418,7 @@ const AddressModal = ({
             </button>
             <button
               onClick={() => {
-                buttonRef.current.click();
+                buttonRef?.current?.click();
               }}
               className="btn address-profile__popup-apply "
             >
@@ -392,6 +426,8 @@ const AddressModal = ({
             </button>
           </div>
         </div>
-      </div>) : null;
+      </div>
+    </BaseModal>
+  )
 };
 export default AddressModal;
