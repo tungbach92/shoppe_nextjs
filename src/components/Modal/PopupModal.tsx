@@ -79,7 +79,7 @@ export default function PopupModal(props: any) {
         title = "Bạn chắc chắn muốn xóa thẻ này ?";
       }
 
-      if (isCartPage && (deleteID !== null || isDeleteSelected)) {
+      if (isCartPage && (deleteID || isDeleteSelected)) {
         isBackBtnHidden = false;
         title = "Bạn chắc chắn muốn xóa (các) sản phẩm này khỏi giỏ hàng ?";
       } else if (isCartPage && checked?.length === 0) {
@@ -199,74 +199,28 @@ export default function PopupModal(props: any) {
     }
   };
   return (
-    <BaseModal isOpen={isPopupShowing} handleClose={togglePopup}>
+    <BaseModal isOpen={isPopupShowing} handleClose={togglePopup} className={`gap-8`}>
       <span className="cart-product__popup-label">{title}</span>
-      {!isBackBtnHidden && (
+      <div className={`flex`}>
+        {!isBackBtnHidden && (
+          <button
+            className="btn cart-product__popup-cancle"
+            onClick={handleBackClick}
+          >
+            Back
+          </button>
+        )}
+
         <button
-          className="btn cart-product__popup-cancle"
-          onClick={handleBackClick}
+          onClick={handleApplyClick}
+          className="btn cart-product__popup-apply"
         >
-          Back
+          OK
         </button>
-      )}
-
-      <button
-        onClick={handleApplyClick}
-        className="btn cart-product__popup-apply"
-      >
-        OK
-      </button>
-      {/*<div className="cart-product__modal-container">*/}
-      {/*  <div className="cart-product__modal-header">*/}
-      {/*    <span className="cart-product__popup-label">{title}</span>*/}
-      {/*  </div>*/}
-      {/*  <div className="cart-product__popup-footer">*/}
-      {/*    {!isBackBtnHidden && (*/}
-      {/*      <button*/}
-      {/*        className="btn cart-product__popup-cancle"*/}
-      {/*        onClick={handleBackClick}*/}
-      {/*      >*/}
-      {/*        Back*/}
-      {/*      </button>*/}
-      {/*    )}*/}
-
-      {/*    <button*/}
-      {/*      onClick={handleApplyClick}*/}
-      {/*      className="btn cart-product__popup-apply"*/}
-      {/*    >*/}
-      {/*      OK*/}
-      {/*    </button>*/}
-      {/*  </div>*/}
-      {/*</div>*/}
-        </BaseModal>
-
-        // <div className="cart-product__modal">
-        //   <div className="cart-product__modal-overlay"></div>
-        //   <div className="cart-product__modal-container">
-        //     <div className="cart-product__modal-header">
-        //       <span className="cart-product__popup-label">{title}</span>
-        //     </div>
-        //     <div className="cart-product__popup-footer">
-        //       {!isBackBtnHidden && (
-        //         <button
-        //           className="btn cart-product__popup-cancle"
-        //           onClick={handleBackClick}
-        //         >
-        //           Back
-        //         </button>
-        //       )}
-        //
-        //       <button
-        //         onClick={handleApplyClick}
-        //         className="btn cart-product__popup-apply"
-        //       >
-        //         OK
-        //       </button>
-        //     </div>
-        //   </div>
-        // </div>
-        )
-      }
+      </div>
+    </BaseModal>
+  )
+}
 
 PopupModal.propTypes = {
   isAccountPage: PropTypes.bool,

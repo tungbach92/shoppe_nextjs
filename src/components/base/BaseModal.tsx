@@ -10,7 +10,7 @@ export interface BaseModalProps
   handleClose: () => void;
 }
 
-export const BaseModal: React.FC<BaseModalProps> = ({ handleClose, isOpen, children, footer, header, ...props }) => {
+export const BaseModal: React.FC<BaseModalProps> = ({ handleClose, isOpen, children, footer, header, className, ...props }) => {
   return (
     <>
       <Dialog
@@ -21,7 +21,7 @@ export const BaseModal: React.FC<BaseModalProps> = ({ handleClose, isOpen, child
         aria-describedby="alert-dialog-description"
         className="justify-center items-center flex"
       >
-        <div className="bg-white rounded-lg p-6 space-y-6 justify-center flex flex-col items-center" {...props}>
+        <div className={`bg-white rounded-lg p-6 space-y-6 justify-center flex flex-col items-center ${className}`} {...props}>
           {header}
           {children}
           {footer}
