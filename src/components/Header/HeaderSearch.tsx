@@ -3,58 +3,63 @@ import React, {useEffect, useState} from "react";
 import HeaderCart from "./HeaderCart";
 import {Close} from "@mui/icons-material";
 import {useRef} from "react";
-// import {useNavigate} from "react-router-dom";
 import {Box, Stack} from "@mui/material";
-import PropTypes from "prop-types";
-import {useDispatch, useSelector} from "react-redux";
-import {changeSearchInput, changeSearchItems} from "../../redux/searchSlice";
-import {useProductsContext} from "../../context/ProductsProvider";
-import useSearchHistory from "../../hooks/useSearchHistory";
+import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
+import {changeSearchInput, changeSearchItems} from "@/redux/searchSlice";
+import {useProductsContext} from "@/context/ProductsProvider";
 import SearchIcon from '@mui/icons-material/Search';
 import Link from "next/link";
+import {useRouter} from "next/router";
+import useSearchHistory from "@/hooks/useSearchHistory";
 
-const HeaderSearch = ({isCartPage, isCheckoutPage, xsBreakpointMatches}) => {
+interface Props {
+  isCartPage: boolean,
+  isCheckoutPage: boolean,
+  xsBreakpointMatches: boolean
+}
+
+const HeaderSearch: React.FC<Props> = ({isCartPage, isCheckoutPage, xsBreakpointMatches}) => {
   const {items} = useProductsContext();
   const {addToSearchHistory, deleteFromSearchHistory, suggestions} =
     useSearchHistory();
-  const searchInput = useSelector((state) => state.search.searchInput);
+  const searchInput = useSelector((state: RootStateOrAny) => state.search.searchInput);
   const dispatch = useDispatch();
-  const wrapperRef = useRef();
-  // const navigate = useNavigate();
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter()
 
   const [isHistory, setIsHistory] = useState(false);
 
-  const handleInputClick = (e) => {
+  const handleInputClick = () => {
     if (!xsBreakpointMatches) {
       setIsHistory(!isHistory);
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     const text = e.target.value;
     // setSearchInput(text);
     dispatch(changeSearchInput(text));
   };
 
-  const handleSuggestionClick = (text) => {
+  const handleSuggestionClick = (text: string) => {
     // setSearchInput(text);
     dispatch(changeSearchInput(text));
     handleSearchIconClick(text);
   };
 
-  const handleSearchIconClick = async (text) => {
+  const handleSearchIconClick = (text: string) => {
     addToSearchHistory(text);
     // handleSearchInputChange(text);
     dispatch(changeSearchItems(items));
     setIsHistory(false);
-    // navigate("/search"); // navigate to search 1 time
+    router.push(`/search?keyword=${searchInput}`)
   };
 
-  const handleHistoryDelete = (item) => {
+  const handleHistoryDelete = (item: string) => {
     deleteFromSearchHistory(item);
   };
 
-  const inputOnKeyUp = (event) => {
+  const inputOnKeyUp = (event: any) => {
     const enter = 13;
     if (event.keyCode === enter) {
       event.currentTarget.blur();
@@ -68,20 +73,20 @@ const HeaderSearch = ({isCartPage, isCheckoutPage, xsBreakpointMatches}) => {
     }
   }, [xsBreakpointMatches]);
 
-  const onMouseDown = (e) => {
+  const onMouseDown = (e: any) => {
     if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
       setIsHistory(false);
     }
   };
 
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     document.addEventListener("mousedown", onMouseDown);
-  //     return () => {
-  //       document.removeEventListener("mousedown", onMouseDown);
-  //     };
-  //   }
-  // }, [window]);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.addEventListener("mousedown", onMouseDown);
+      return () => {
+        document.removeEventListener("mousedown", onMouseDown);
+      };
+    }
+  }, []);
 
   return (
     <div
@@ -149,7 +154,7 @@ const HeaderSearch = ({isCartPage, isCheckoutPage, xsBreakpointMatches}) => {
                         onClick={() => handleSuggestionClick(item)}
                         className="header__history-item"
                       >
-                        <a href="# " className="header__history-link">
+                        <a href="" className="header__history-link">
                           {item}
                         </a>
                       </li>
@@ -190,14 +195,4 @@ const HeaderSearch = ({isCartPage, isCheckoutPage, xsBreakpointMatches}) => {
     </div>
   );
 };
-HeaderSearch.propTypes = {
-  isCartPage: PropTypes.bool,
-  isCheckoutPage: PropTypes.bool,
-  xsBreakpointMatches: PropTypes.bool.isRequired,
-};
-HeaderSearch.defaultProps = {
-  isCartPage: false,
-  isCheckoutPage: false,
-};
-
 export default HeaderSearch;

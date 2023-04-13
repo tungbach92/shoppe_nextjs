@@ -10,8 +10,7 @@ const searchSlice = createSlice({
   initialState,
   reducers: {
     changeSearchInput: (state, action) => {
-      const input = action.payload;
-      state.searchInput = input;
+      state.searchInput = action.payload;
     },
     changeSearchItems: (state, action) => {
       if (state.searchInput.length === 0) {

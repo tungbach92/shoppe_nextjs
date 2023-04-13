@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
-import { useUser } from "../context/UserProvider";
+import {useEffect, useState} from "react";
+import {useMemo} from "react";
+import {useSelector} from "react-redux";
+import {useUser} from "../context/UserProvider";
 import getSearchHistoryFromFirebase from "../services/getSearchHistoryFromFirebase";
-import { saveSearchHistoryToFirebase } from "../services/saveSearchHistoryToFirebase";
+import {saveSearchHistoryToFirebase} from "../services/saveSearchHistoryToFirebase";
 
 const useSearchHistory = () => {
-  const { user } = useUser();
+  const {user} = useUser();
   const searchInput = useSelector((state) => state.search.searchInput);
   const [searchHistory, setSearchHistory] = useState([]);
   const suggestions = useMemo(
@@ -34,7 +34,7 @@ const useSearchHistory = () => {
     if (text.length > 0) {
       const newSearchHistory = [...searchHistory, text];
       const uniqueNewSearchHistory = [...new Set(newSearchHistory)];
-      saveSearchHistoryToFirebase(user, uniqueNewSearchHistory);
+      saveSearchHistoryToFirebase(user, uniqueNewSearchHistory).then();
       setSearchHistory(uniqueNewSearchHistory);
     }
   };
@@ -46,7 +46,7 @@ const useSearchHistory = () => {
         (item) => item !== text
       );
       setSearchHistory(newSearchHistory);
-      saveSearchHistoryToFirebase(user, newSearchHistory);
+      saveSearchHistoryToFirebase(user, newSearchHistory).then();
     }
   };
 
