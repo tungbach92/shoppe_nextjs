@@ -142,6 +142,7 @@ const ProductContainer = ({ items }) => {
           setEndPrice={setEndPrice}
           handleResetAll={handleResetAll}
           setRatingValue={setRatingValue}
+          ratingValue={ratingValue}
           startPriceRef={startPriceRef}
           endPriceRef={endPriceRef}
         ></ProductCategory>

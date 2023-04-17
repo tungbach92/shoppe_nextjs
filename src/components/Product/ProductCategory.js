@@ -12,7 +12,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import {FilterAlt, List} from "@mui/icons-material";
-import { useRef } from "react";
 
 const StyledBox = styled(Box)({
   display: "flex",
@@ -35,18 +34,19 @@ const StyledTextField = styled(TextField)({
 });
 
 export default function ProductCategory({
-  category,
-  setCategory,
-  filteredItems,
-  setStartPrice,
-  setEndPrice,
-  handleResetAll,
-  setSortPrice,
-  setSort,
-  setRatingValue,
-  startPriceRef,
-  endPriceRef,
-}) {
+                                          category,
+                                          setCategory,
+                                          filteredItems,
+                                          setStartPrice,
+                                          setEndPrice,
+                                          handleResetAll,
+                                          setSortPrice,
+                                          setSort,
+                                          setRatingValue,
+                                          startPriceRef,
+                                          endPriceRef,
+                                          ratingValue,
+                                        }) {
   const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
   const fiveRating = 5;
   const fourRating = 4;
@@ -108,7 +108,7 @@ export default function ProductCategory({
           className={classNames(
             "app__category-item",
             "app__category-discount",
-            { "app__category-item--active": category === categoryType.PANT }
+            {"app__category-item--active": category === categoryType.PANT}
           )}
         >
           <Box
@@ -208,7 +208,7 @@ export default function ProductCategory({
         <>
           <Box
             p="2rem 0"
-            sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.05)" }}
+            sx={{borderBottom: "1px solid rgba(0, 0, 0, 0.05)"}}
             display="flex"
             alignItems="center"
           >
@@ -219,7 +219,7 @@ export default function ProductCategory({
           </Box>
           <Box
             p="2rem 0"
-            sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.05)" }}
+            sx={{borderBottom: "1px solid rgba(0, 0, 0, 0.05)"}}
           >
             <Typography fontSize="1.4rem">Khoảng giá</Typography>
             <Box
@@ -230,7 +230,7 @@ export default function ProductCategory({
             >
               <StyledTextField
                 type="text"
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                inputProps={{inputMode: "numeric", pattern: "[0-9]*"}}
                 name="startPrice"
                 inputRef={startPriceRef}
                 onChange={(e) => {
@@ -245,7 +245,7 @@ export default function ProductCategory({
               <Typography fontSize="1.4rem">-</Typography>
               <StyledTextField
                 type="text"
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                inputProps={{inputMode: "numeric", pattern: "[0-9]*"}}
                 name="endPrice"
                 inputRef={endPriceRef}
                 onChange={(e) => {
@@ -265,7 +265,7 @@ export default function ProductCategory({
                 marginTop: "1rem",
                 fontSize: "1.3rem",
                 color: "white",
-                "&:disabled": { cursor: "not-allowed" },
+                "&:disabled": {cursor: "not-allowed"},
               }}
               onClick={() => {
                 setStartPrice(startPriceRef.current.value);
@@ -283,7 +283,7 @@ export default function ProductCategory({
             }}
           >
             <Typography
-              sx={{ fontSize: "1.4rem", marginBottom: "0.6rem" }}
+              sx={{fontSize: "1.4rem", marginBottom: "0.6rem"}}
               component="p"
             >
               Đánh giá
@@ -296,6 +296,7 @@ export default function ProductCategory({
                 defaultValue={fiveRating}
                 readOnly
                 disabled={filterDisabled}
+                size={ratingValue === 5 ? "large" : "medium"}
               />
             </StyledBox>
             <StyledBox
@@ -306,6 +307,7 @@ export default function ProductCategory({
                 defaultValue={fourRating}
                 readOnly
                 disabled={filterDisabled}
+                size={ratingValue === 4 ? "large" : "medium"}
               />
               <StyledTypography>trở lên</StyledTypography>
             </StyledBox>
@@ -317,6 +319,7 @@ export default function ProductCategory({
                 defaultValue={threeRating}
                 readOnly
                 disabled={filterDisabled}
+                size={ratingValue === 3 ? "large" : "medium"}
               />
               <StyledTypography>trở lên</StyledTypography>
             </StyledBox>
@@ -328,6 +331,7 @@ export default function ProductCategory({
                 defaultValue={twoRating}
                 readOnly
                 disabled={filterDisabled}
+                size={ratingValue === 2 ? "large" : "medium"}
               />
               <StyledTypography>trở lên</StyledTypography>
             </StyledBox>
@@ -339,6 +343,7 @@ export default function ProductCategory({
                 defaultValue={oneRating}
                 readOnly
                 disabled={filterDisabled}
+                size={ratingValue === 1 ? "large" : "medium"}
               />
               <StyledTypography>trở lên</StyledTypography>
             </StyledBox>
