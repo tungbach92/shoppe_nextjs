@@ -1,26 +1,30 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import protectImg from "../../../public/img/protect.png";
 // import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useModal from "../../hooks/useModal";
 import AddCartModal from "../Modal/AddCartModal";
 import ImageGallery from "react-image-gallery";
 import DetailCheckShipPrice from "./DetailCheckShipPrice";
-import { NumericFormat } from "react-number-format";
-import { Rating } from "@mui/material";
-import { useProductsContext } from "../../context/ProductsProvider";
-import { useUser } from "../../context/UserProvider";
-import { ClipLoading } from "../ClipLoading";
-import { useDispatch, useSelector } from "react-redux";
-import { addProducts, updateProducts } from "../../redux/cartSlice";
+import {NumericFormat} from "react-number-format";
+import {Rating} from "@mui/material";
+import {useProductsContext} from "../../context/ProductsProvider";
+import {useUser} from "../../context/UserProvider";
+import {ClipLoading} from "../ClipLoading";
+import {useDispatch, useSelector} from "react-redux";
+import {addProducts, updateProducts} from "../../redux/cartSlice";
 import withContainer from "../withContainer";
+import {useRouter} from "next/router";
+import Link from "next/link";
+import {iconImg} from "@/services/getIcon";
 
 function DetailContainer() {
-  const { user } = useUser();
-  const { productId } = useParams();
-  const location = useLocation();
+  const {user} = useUser();
+  const router = useRouter()
+  const {id} = router.query
+  // const location = useLocation();
   const scrolltoEl = useRef();
-  const navigate = useNavigate();
-  const { items, bestSelling } = useProductsContext();
+  // const navigate = useNavigate();
+  const {items, bestSelling} = useProductsContext();
   const cartProducts = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
 
@@ -30,7 +34,7 @@ function DetailContainer() {
 
   const [item, setItem] = useState(null);
   const [images, setImages] = useState([]);
-  const { isAddCartPopup, toggleIsAddCardPopup } = useModal();
+  const {isAddCartPopup, toggleIsAddCardPopup} = useModal();
   const [amount, setAmount] = useState(1);
   const [variation, setVariation] = useState("");
   const [isPickerShow, setIsPickerShow] = useState(false);
@@ -52,7 +56,7 @@ function DetailContainer() {
   // set rendering item with amount + soldAmount
   useEffect(() => {
     if (items.length > 0) {
-      let item = items.find((i) => i.id === productId);
+      let item = items.find((i) => i.id === id);
       item = {
         ...item,
         amount: 1,
@@ -62,7 +66,7 @@ function DetailContainer() {
       };
       setItem(item);
     }
-  }, [productId, items]);
+  }, [id, items]);
 
   useEffect(() => {
     //Img by item
@@ -138,27 +142,29 @@ function DetailContainer() {
     if (isExistId && isExistVariation) {
       cartProductsUpdated = cartProducts.map((cartItem) =>
         cartItem.id === item.id && cartItem.variation === variation
-          ? { ...cartItem, amount: cartItem.amount + amount }
+          ? {...cartItem, amount: cartItem.amount + amount}
           : cartItem
       );
       dispatch(updateProducts(cartProductsUpdated));
     } else {
-      dispatch(addProducts({ ...item, amount, variation }));
+      dispatch(addProducts({...item, amount, variation}));
     }
   };
 
   const handleBuyNow = () => {
     if (!user) {
-      navigate("/login", { replace: true });
+      // router.push("/login", {replace: true});
+      router.push("/login");
       return;
     }
     addToCartItems(item.id, item.variation, item.amount);
-    navigate("/cart", { replace: true, state: location });
+    // router.push("/cart", {replace: true, state: location});
+    router.push("/cart");
   };
 
   const handleAddCart = () => {
     if (!user) {
-      navigate("/login", { replace: true });
+      router.push("/login", {replace: true});
       return;
     }
     addToCartItems();
@@ -179,9 +185,9 @@ function DetailContainer() {
     return (
       <div className="container bg-lighter-grey">
         <div className="detail-breadcrumb">
-          {/*<Link to="/" className="detail-breadcrumb__home">*/}
-          {/*  Shopee*/}
-          {/*</Link>*/}
+          <Link href="/" className="detail-breadcrumb__home">
+            Shopee
+          </Link>
           <svg
             enableBackground="new 0 0 11 11"
             viewBox="0 0 11 11"
@@ -553,7 +559,7 @@ function DetailContainer() {
               </div>
               <div className="detail-product__protect-wrapper">
                 <img
-                  src={protectImg}
+                  src={iconImg.protectIcon}
                   alt="protect"
                   className="detail-product__protect-icon"
                 />
@@ -578,9 +584,9 @@ function DetailContainer() {
                     Danh Mục
                   </div>
                   <div className="detail-content__breadcrumb-item">
-                    {/*<Link to="/" className="detail-breadcrumb__home">*/}
-                    {/*  Shopee*/}
-                    {/*</Link>*/}
+                    <Link href="/" className="detail-breadcrumb__home">
+                      Shopee
+                    </Link>
                     <svg
                       enableBackground="new 0 0 11 11"
                       viewBox="0 0 11 11"
@@ -812,4 +818,5 @@ function DetailContainer() {
       </div>
     );
 }
+
 export default withContainer(DetailContainer);

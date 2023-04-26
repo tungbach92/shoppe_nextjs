@@ -27,7 +27,11 @@ import Link from "next/link";
 import CartItem from "@/components/Cart/CartItem";
 import CartVoucher from "@/components/Cart/CartVoucher";
 
-function CartContainer() {
+interface Props {
+  isCartPage: boolean
+}
+
+function CartContainer({isCartPage}: Props) {
   const {user} = useUser();
   const {voucher, resetVoucher} = useVoucher();
   const {isLoading: cartItemsLoading} = useFetchCartQuery(user);
@@ -233,7 +237,7 @@ function CartContainer() {
     return result;
   };
 
-  return (<div className="main">
+  return (<div className={`main ${isCartPage && '!grid-cols-1 place-items-center'}`}>
     {cartProducts.length > 0 && domLoaded && (<Grid2 container maxWidth="100%" width="120rem" m="0 auto">
       <Grid2
         sm={12}

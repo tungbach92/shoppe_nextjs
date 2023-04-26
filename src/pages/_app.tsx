@@ -19,7 +19,8 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
-  // Use the layout defined at the page level, if available
+  // each page define a getLayout func to get layout and pass it to getLayout variable here
+  // ?? -> still use the layout defined for each page, if getLayout not call at page
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 
   return (
@@ -27,7 +28,10 @@ export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
       <ThemeProvider theme={theme}>
         <UserProvider>
           <ProductsProvider>
+            {/* use get layout variable here to return a page */}
+            {/*Component -> each page*/}
             {getLayout(<Component {...pageProps} />)}
+            {/*{Component.getLayout ?? ((page: ReactElement) => <Layout>{page}</Layout>)}*/}
           </ProductsProvider>
         </UserProvider>
       </ThemeProvider>

@@ -1,10 +1,9 @@
 import React from "react";
 import Header from "../Header/Header";
-import ProductContainer from "./ProductContainer";
-import { useProductsContext } from "../../context/ProductsProvider";
+import { useProductsContext } from "@/context/ProductsProvider";
+import ProductContainer from "@/components/Product/ProductContainer";
 
 export default function Product() {
-  // const { setSearchInput } = useProduct();
   const { items } = useProductsContext();
 
   return (

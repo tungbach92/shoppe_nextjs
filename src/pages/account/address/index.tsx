@@ -1,5 +1,3 @@
-import AccountContainer from "@/components/Account/AccountContainer";
-import AccountProfile from "@/components/Account/AccountProfile";
 import React, {ReactElement} from "react";
 import Layout from "@/components/Layout/Layout";
 import AccountAddress from "@/components/Account/AccountAddress";

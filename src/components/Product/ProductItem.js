@@ -54,7 +54,7 @@ const ProductItem = function ({item, similarDisPlay}) {
           toggleIsAddCardPopup={toggleIsAddCardPopup}
         />
         <Link
-          href={''}
+          href={`/product/${item.id}`}
           // to={{
           //   pathname: `/product/${metaTitle}/${item.id}`,
           //   state: { id: id },

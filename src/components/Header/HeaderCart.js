@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useFetchCartQuery } from "@/services/cartApi";
 import {ShoppingCart} from "@mui/icons-material";
 import {useRouter} from "next/router";
+import {iconImg} from "@/services/getIcon";
 
 const HeaderCart = () => {
   const router = useRouter()
@@ -74,7 +75,7 @@ const HeaderCart = () => {
               </div>
             </div>
             <img
-              src={noCartImg}
+              src={iconImg.noCartIcon}
               className="header__cart-empty-img"
               alt="no-cart"
             />
