@@ -201,7 +201,7 @@ function DetailContainer() {
         </div>
         <div className="detail-product">
           <div className="detail-product__info bg-white">
-            <div className="detail-product__info-left">
+            <div className="detail-product__info-left basis-1/2">
               <div className="detail-product__img-wrapper">
                 <ImageGallery
                   showPlayButton={false}
