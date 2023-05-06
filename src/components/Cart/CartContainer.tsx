@@ -26,12 +26,15 @@ import withContainer from "@/components/withContainer";
 import Link from "next/link";
 import CartItem from "@/components/Cart/CartItem";
 import CartVoucher from "@/components/Cart/CartVoucher";
+import {useRouter} from "next/router";
+import {DETAIL} from "@/constants/detail";
 
 interface Props {
   isCartPage: boolean
 }
 
 function CartContainer({isCartPage}: Props) {
+  const router = useRouter();
   const {user} = useUser();
   const {voucher, resetVoucher} = useVoucher();
   const {isLoading: cartItemsLoading} = useFetchCartQuery(user);
@@ -56,17 +59,21 @@ function CartContainer({isCartPage}: Props) {
   useEffect(() => {
     setDomLoaded(true);
   }, []);
-  // scrollToTop
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
 
-  // useEffect(() => {
-  //   if (location.state) {
-  //     toggleIsAddCardPopup(true);
-  //   }
-  //   navigate(location.pathname, { replace: true });
-  // }, [toggleIsAddCardPopup, location.state, location.pathname, navigate]);
+  // scrollToTop
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
+
+  useEffect(() => {
+    if (router?.query?.name === DETAIL) {
+      toggleIsAddCardPopup(true);
+    }
+    // navigate(location.pathname, { replace: true });
+  }, []);
 
   useEffect(() => {
     if (selectedProduct.length > 0) {

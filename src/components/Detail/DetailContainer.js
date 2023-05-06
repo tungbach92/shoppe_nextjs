@@ -16,6 +16,7 @@ import withContainer from "../withContainer";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import {iconImg} from "@/services/getIcon";
+import {DETAIL} from "@/constants/detail";
 
 function DetailContainer() {
   const {user} = useUser();
@@ -159,7 +160,10 @@ function DetailContainer() {
     }
     addToCartItems(item.id, item.variation, item.amount);
     // router.push("/cart", {replace: true, state: location});
-    router.push("/cart");
+    router.push({
+      pathname: '/cart',
+      query: {name: DETAIL}
+    });
   };
 
   const handleAddCart = () => {
