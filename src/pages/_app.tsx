@@ -19,7 +19,7 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function MyApp({Component, pageProps}: AppPropsWithLayout) {
-  // each page define a getLayout func to get layout and pass it to getLayout variable here
+  // each page define a getLayout func to get layout and pass it to const getLayout variable here
   // ?? -> still use the layout defined for each page, if getLayout not call at page
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>)
 

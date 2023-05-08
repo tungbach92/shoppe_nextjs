@@ -1,17 +1,10 @@
 import React, {useEffect, useMemo, useState} from "react";
-import classNames from "classnames";
-import useModal from "../../hooks/useModal";
-import VoucherModal from "../Modal/VoucherModal";
-import noCartImg from "../../../public/img/no-cart.png";
-import AddCartModal from "../Modal/AddCartModal";
-import PopupModal from "../Modal/PopupModal";
 import {NumericFormat} from "react-number-format";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {getItemsPriceTotal} from "@/services/getItemsPriceTotal";
 import {getVoucherDiscount} from "@/services/getVoucherDiscount";
 import {useCheckoutContext} from "@/context/CheckoutProvider";
 import {CHECKOUT_ACTIONTYPES} from "@/constants/actionType";
-import {ClipLoading} from "../ClipLoading";
 import {useUser} from "@/context/UserProvider";
 import {RootStateOrAny, useSelector} from "react-redux";
 import {
@@ -28,6 +21,10 @@ import CartItem from "@/components/Cart/CartItem";
 import CartVoucher from "@/components/Cart/CartVoucher";
 import {useRouter} from "next/router";
 import {DETAIL} from "@/constants/detail";
+import useModal from "@/hooks/useModal";
+import PopupModal from "@/components/Modal/PopupModal";
+import AddCartModal from "@/components/Modal/AddCartModal";
+import {ClipLoading} from "@/components/ClipLoading";
 
 interface Props {
   isCartPage: boolean
@@ -105,16 +102,18 @@ function CartContainer({isCartPage}: Props) {
       event.preventDefault();
       togglePopup(!isPopupShowing);
     } else {
-      const checkoutItems = selectedProduct.map((selectedEle: any) => {
+      const checkoutItems = selectedProduct.map((item: any) => {
         // return checkedItem without uneccessary field
-        const {similarDisPlay, variationDisPlay, ...rest} = selectedEle;
-        return rest;
+        const _item = {...item}
+        delete _item.similarDisPlay
+        delete _item.variationDisPlay
+        return _item;
       });
       checkoutDispatch({
         type: CHECKOUT_ACTIONTYPES.ADD_CHECKOUT, payload: checkoutItems,
       });
       addCartToFireStore({user, cartProducts});
-      // navigate("/checkout");
+      router.push('/checkout')
     }
   };
 
