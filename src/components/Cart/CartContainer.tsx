@@ -6,14 +6,9 @@ import {getVoucherDiscount} from "@/services/getVoucherDiscount";
 import {useCheckoutContext} from "@/context/CheckoutProvider";
 import {CHECKOUT_ACTIONTYPES} from "@/constants/actionType";
 import {useUser} from "@/context/UserProvider";
-import {RootStateOrAny, useSelector} from "react-redux";
-import {
-  deleteProducts, deleteSelectedProducts, updateProducts,
-} from "@/redux/cartSlice";
-import {useDispatch} from "react-redux";
-import {
-  useAddCartToFireStoreMutation, useFetchCartQuery,
-} from "@/services/cartApi";
+import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
+import {deleteProducts, deleteSelectedProducts, updateProducts,} from "@/redux/cartSlice";
+import {useAddCartToFireStoreMutation, useFetchCartQuery,} from "@/services/cartApi";
 import useVoucher from "@/hooks/useVoucher";
 import withContainer from "@/components/withContainer";
 import Link from "next/link";
@@ -113,7 +108,7 @@ function CartContainer({isCartPage}: Props) {
         type: CHECKOUT_ACTIONTYPES.ADD_CHECKOUT, payload: checkoutItems,
       });
       addCartToFireStore({user, cartProducts});
-      router.push('/checkout')
+      await router.push('/checkout')
     }
   };
 

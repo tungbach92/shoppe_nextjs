@@ -1,13 +1,17 @@
 //set up routing for Account feature
-import React, {ReactElement, ReactNode, useEffect} from "react";
-import Header from "../../components/Header/Header";
-import AccountContainer from "../../components/Account/AccountContainer";
+import React, {ReactElement, useEffect} from "react";
 import Layout from "@/components/Layout/Layout";
-import Cart from "@/components/Cart";
 import {useRouter} from "next/router";
+import {loadStripe} from "@stripe/stripe-js";
+import {Elements} from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST ?? '');
 
 export default function Account() {
   const router = useRouter()
+
+  if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST) console.error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST environment variable is not set')
+
   useEffect(() => {
     router.push("/account/profile")
   }, [])
@@ -15,5 +19,9 @@ export default function Account() {
 }
 
 Account.getLayout = function (page: ReactElement) {
-  return <Layout>{page}</Layout>
+  return (
+    <Elements stripe={stripePromise}>
+      <Layout>{page}</Layout>
+    </Elements>
+  )
 }

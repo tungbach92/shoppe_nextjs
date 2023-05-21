@@ -1,10 +1,13 @@
-import Cart from "@/components/Cart";
-import CheckoutProvider from "@/context/CheckoutProvider";
+import React, {ReactNode} from "react";
+import Layout from "@/components/Layout/Layout";
+import CartContainer from "@/components/Cart/CartContainer";
 
-export default function CartPage() {
+export default function Cart() {
   return (
-    <CheckoutProvider>
-      <Cart/>
-    </CheckoutProvider>
-  )
+    // <CheckoutProvider>
+    <CartContainer isCartPage={true}></CartContainer>
+    // </CheckoutProvider>
+  );
 }
+
+Cart.getLayout = (page: ReactNode) => <Layout isCartPage={true}>{page}</Layout>

@@ -1,17 +1,27 @@
 import React, {ReactNode} from "react";
-import Header from "../../components/Header/Header";
 import CheckoutContainer from "../../components/Checkout/CheckoutContainer";
 import Layout from "@/components/Layout/Layout";
-import CheckoutProvider from "@/context/CheckoutProvider";
+import {loadStripe} from "@stripe/stripe-js";
+import {Elements} from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST ?? '');
+
 
 export default function Checkout() {
+
+  if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST) console.error('NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST environment variable is not set')
+
   return (
-    <CheckoutProvider>
-      <CheckoutContainer isCheckoutPage={true}></CheckoutContainer>
-    </CheckoutProvider>
-  );
+    <CheckoutContainer isCheckoutPage={true}></CheckoutContainer>
+  )
 }
 
 Checkout.getLayout = function (page: ReactNode) {
-  return <Layout isCheckoutPage={true}>{page}</Layout>
+  return (
+    <Elements stripe={stripePromise}>
+      {/*<CheckoutProvider>*/}
+      <Layout isCheckoutPage={true}>{page}</Layout>
+      {/*</CheckoutProvider>*/}
+    </Elements>
+  )
 }

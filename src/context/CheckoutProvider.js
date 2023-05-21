@@ -1,5 +1,4 @@
-import React, {useContext, useEffect} from "react";
-import {useReducer} from "react";
+import React, {useContext, useEffect, useReducer} from "react";
 import {ACTIONTYPES, CHECKOUT_ACTIONTYPES} from "@/constants/actionType";
 import {getCheckoutItemsFromFirebase} from "@/services/getCheckoutItemsFromFirebase";
 import {useUser} from "./UserProvider";
@@ -33,6 +32,7 @@ const CheckoutProvider = ({children}) => {
 
 
   useEffect(() => {
+    // get checkout item from localstorage or firebase
     dispatch({type: ACTIONTYPES.FETCH_PENDING});
     if (getCheckoutItemsFromStorage().length > 0) {
       const checkoutItems = getCheckoutItemsFromStorage();
@@ -43,8 +43,7 @@ const CheckoutProvider = ({children}) => {
           if (doc.exists) {
             const checkoutItems = doc.data().basket;
             dispatch({
-              type: ACTIONTYPES.FETCH_FULFILLED,
-              payload: checkoutItems,
+              type: ACTIONTYPES.FETCH_FULFILLED, payload: checkoutItems,
             });
           }
         })
@@ -55,10 +54,7 @@ const CheckoutProvider = ({children}) => {
   }, [user]);
 
   const saveCheckoutItemsToStorage = () => {
-    localStorage.setItem(
-      "checkoutProduct",
-      JSON.stringify(checkoutItems === null ? [] : checkoutItems)
-    );
+    localStorage.setItem("checkoutProduct", JSON.stringify(checkoutItems === null ? [] : checkoutItems));
   };
 
   const getCheckoutItemsFromStorage = () => {
@@ -67,14 +63,11 @@ const CheckoutProvider = ({children}) => {
   };
 
   const value = {
-    checkoutState: state,
-    checkoutDispatch: dispatch,
+    checkoutState: state, checkoutDispatch: dispatch,
   };
-  return (
-    <CheckoutContext.Provider value={value}>
-      {children}
-    </CheckoutContext.Provider>
-  );
+  return (<CheckoutContext.Provider value={value}>
+    {children}
+  </CheckoutContext.Provider>);
 };
 
 export default CheckoutProvider;

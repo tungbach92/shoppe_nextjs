@@ -1,12 +1,6 @@
-import React, {useEffect, useState, useMemo} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import classNames from "classnames";
-// import { Link } from "react-router-dom";
 import useModal from "../../hooks/useModal";
-import ShipUnitsModal from "../Modal/ShipUnitsModal";
-import VoucherModal from "../Modal/VoucherModal";
-import PopupModal from "../Modal/PopupModal";
-import CardInfoModal from "../Modal/CardInfoModal";
-import ErrorModal from "../Modal/ErrorModal";
 import {NumericFormat} from "react-number-format";
 import axios from "../../configs/axios";
 import {useStripe} from "@stripe/react-stripe-js";
@@ -34,6 +28,11 @@ import useVoucher from "../../hooks/useVoucher";
 import withContainer from "../withContainer";
 import {checkoutDocRef, orderDocRef, productDocRef} from "@/common/dbRef";
 import {setDoc} from "firebase/firestore";
+import ErrorModal from "@/components/Modal/ErrorModal";
+import ShipUnitsModal from "@/components/Modal/ShipUnitsModal";
+import VoucherModal from "@/components/Modal/VoucherModal";
+import CardInfoModal from "@/components/Modal/CardInfoModal";
+import PopupModal from "@/components/Modal/PopupModal";
 
 function CheckoutContainer({isCheckoutPage}) {
   const [addCartToFireStore] = useAddCartToFireStoreMutation();
