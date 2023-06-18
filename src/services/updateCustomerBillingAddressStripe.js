@@ -1,11 +1,11 @@
 import axios from "../configs/axios";
 import getCustomerID from "./getCustomerID";
-import { getDefaultPaymentMethodID } from "./getDefaultPaymentMethodID";
-import { getPaymentMethodList } from "./getPaymentMethodList";
+import {getDefaultPaymentMethodID} from "./getDefaultPaymentMethodID";
+import {getPaymentMethodList} from "./getPaymentMethodList";
 
 export const updateCustomerBillingAddressStripe = async (user, shipInfos) => {
   const customerID = await getCustomerID(user);
-  const defaultPaymentMethodID = await getDefaultPaymentMethodID(customerID);
+  const defaultPaymentMethodID = await getDefaultPaymentMethodID(user);
   const paymentMethodList = await getPaymentMethodList(user);
   if (customerID && paymentMethodList && defaultPaymentMethodID) {
     let defaultshipInfo;

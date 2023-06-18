@@ -1,15 +1,8 @@
-import React, {useRef, useState} from "react";
-import {
-  Autocomplete,
-  ButtonProps,
-  styled,
-  TextField,
-  TextFieldProps,
-} from "@mui/material";
+import React, {useState} from "react";
+import {Autocomplete, ButtonProps, styled, TextField, TextFieldProps,} from "@mui/material";
 import {useUser} from "@/context/UserProvider";
 import {BaseModal} from "@/components/base";
 import useGetShipInfos from "@/hooks/useGetShipInfos";
-import {BaseButton} from "@/components/base/BaseButton";
 
 type StyledTextFieldProps = TextFieldProps & {
   isValid: boolean
@@ -95,109 +88,106 @@ const AddressModal = ({
   const {user} = useUser();
   const {shipInfos, updateShipInfoToFirebase} = useGetShipInfos(user);
   const [errors, setErrors] = useState<any>({});
-
-  const [isNameValid, setIsNameValid] = useState<boolean | null>(true);
-  const [isPhoneValid, setIsPhoneValid] = useState<boolean | null>(true);
-  const [isStreetValid, setIsStreetValid] = useState<boolean | null>(true);
-  const [isProvinceValid, setIsProvinceValid] = useState<boolean | null>(true);
-  const [isDistrictValid, setIsDistrictValid] = useState<boolean | null>(true);
-  const [isWardsValid, setIsWardsValid] = useState<boolean | null>(true);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  console.log(shipInfos)
   const validateName = () => {
     let error: string;
-    setIsNameValid(true);
+    let isNameValid = true
     // contain atleast 3 space
     if (!name) {
-      setIsNameValid(false);
+      isNameValid = false
       error = "Vui lòng nhập Họ tên!";
     }
 
     const nameRegex = /(\D*[\s]){2,}/; // contain atleast 2 space, only char
     if (name && !nameRegex.test(name)) {
-      setIsNameValid(false);
+      isNameValid = false
       error = "Nhập đầy đủ cả họ và tên, không chứa số!";
     }
     setErrors((prev: any) => ({...prev, name: error}));
+    return isNameValid
   };
 
   const validatePhone = () => {
     let error: string;
-    setIsPhoneValid(true);
+    let isPhoneValid = true
     if (!phone) {
-      setIsPhoneValid(false);
+      isPhoneValid = false
       error = "Vui lòng nhập Số điện thoại";
     }
 
     const phoneRegex = /(((\+|)84)|0)(3|5|7|8|9)+([0-9]{8})\b/; // đầu số 03, 05, 07, 08, 09, bắt đầu với +84 hoặc 84
     if (phone && !phoneRegex.test(phone)) {
-      setIsPhoneValid(false);
+      isPhoneValid = false
       error = "Số điện thoại không hợp lệ!";
     }
     setErrors((prev: any) => ({...prev, phone: error}));
+    return isPhoneValid
   };
 
   const validateProvince = () => {
-    let isValid = true;
+    let isProvinceValid = true;
     let error: string;
-    setIsProvinceValid(true);
     if (!province) {
       error = "Vui lòng chọn Tỉnh/thành phố";
-      setIsProvinceValid(false);
+      isProvinceValid = false
     }
     setErrors((prev: any) => ({...prev, province: error}));
-    return isValid;
+    return isProvinceValid;
   };
 
   const validateDistrict = () => {
     let error: string;
-    setIsDistrictValid(true);
+    let isDistrictValid = true
     if (!district) {
-      setIsDistrictValid(false);
+      isDistrictValid = false
       error = "Vui lòng chọn Quận/huyện";
     }
     setErrors((prev: any) => ({...prev, district: error}));
+    return isDistrictValid
   };
 
   const validateWard = () => {
     let error: string;
-    setIsWardsValid(true);
+    let isWardValid = true
     if (!ward) {
-      setIsWardsValid(false);
+      isWardValid = false
       error = "Vui lòng chọn Phường/xã/thị trấn";
     }
     setErrors((prev: any) => ({...prev, ward: error}));
+    return isWardValid
   };
 
   const validateStreet = () => {
     let error: string;
-    setIsStreetValid(true);
+    let isStreetValid = true
     if (!street) {
-      setIsStreetValid(false);
+      isStreetValid = false
       error = "Vui lòng nhập Tổ dân phố, ngõ, số nhà, đường(thôn, xóm)";
     }
     setErrors((prev: any) => ({...prev, street: error}));
+    return isStreetValid
   };
   //TODO use formik
   const handleBack = () => {
     toggleAddressAdd(false);
-    setIsNameValid(null);
-    setIsPhoneValid(null);
-    setIsStreetValid(null);
-    setIsProvinceValid(null);
-    setIsDistrictValid(null);
-    setIsWardsValid(null);
+    // setIsNameValid(null);
+    // setIsPhoneValid(null);
+    // setIsStreetValid(null);
+    // setIsProvinceValid(null);
+    // setIsDistrictValid(null);
+    // setIsWardsValid(null);
     setErrors({});
   };
 
   const handleApply = (e: any) => {
     e.preventDefault();
-    validateName();
-    validatePhone();
-    validateProvince();
-    validateDistrict();
-    validateWard();
-    validateStreet();
-
+    const isNameValid = validateName();
+    const isPhoneValid = validatePhone();
+    const isProvinceValid = validateProvince();
+    const isDistrictValid = validateDistrict();
+    const isWardsValid = validateWard();
+    const isStreetValid = validateStreet();
+    debugger
     if (
       !isNameValid ||
       !isPhoneValid ||
@@ -206,7 +196,7 @@ const AddressModal = ({
       !isWardsValid ||
       !isStreetValid
     ) {
-      return false;
+      return;
     }
     if (shipInfoIndex !== null) {
       updateShipInfo().then();
@@ -220,7 +210,7 @@ const AddressModal = ({
     try {
       let tempShipInfos = [...shipInfos];
       const created = Date.now();
-      const fullAddress = `${street}, ${ward.full_name}`;
+      const fullAddress = `${street}, ${ward?.full_name ?? ''}`;
 
       tempShipInfos = tempShipInfos.map((shipInfo) => {
         if (tempShipInfos.indexOf(shipInfo) === shipInfoIndex) {
@@ -248,7 +238,7 @@ const AddressModal = ({
     try {
       let tempShipInfos = shipInfos ? [...shipInfos] : [];
       const created = Date.now();
-      const fullAddress = `${street}, ${ward.full_name}`;
+      const fullAddress = `${street}, ${ward?.full_name ?? ''}`;
 
       const shipInfo = {
         name: name,
@@ -285,6 +275,7 @@ const AddressModal = ({
             <span className="address-profile__header-label">Địa Chỉ Mới</span>
           </div>
           <form
+            id={'address_form'}
             className="address-profile__modal-content"
             onSubmit={handleApply}
           >
@@ -402,11 +393,6 @@ const AddressModal = ({
             <div className="address-profile__street-error">
               {errors.street}
             </div>
-            <BaseButton
-              type={"submit"}
-              ref={buttonRef}
-              className={'hidden'}
-            ></BaseButton>
           </form>
 
           <div className="address-profile__popup-footer">
@@ -417,9 +403,8 @@ const AddressModal = ({
               Trở lại
             </button>
             <button
-              onClick={() => {
-                buttonRef?.current?.click();
-              }}
+              form={'address_form'}
+              type={'submit'}
               className="btn address-profile__popup-apply "
             >
               Xác nhận

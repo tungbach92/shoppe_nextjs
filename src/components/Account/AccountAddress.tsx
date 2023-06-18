@@ -46,7 +46,7 @@ const AccountAddress = () => {
   const handleDefaultClick = async (index: any) => {
     let tempShipInfos: any = [...shipInfos];
     tempShipInfos = tempShipInfos.map(
-      (shipInfo: any) => (shipInfo = {...shipInfo, isDefault: false})
+      (shipInfo: any) => ({...shipInfo, isDefault: false})
     );
     tempShipInfos[index] = {...tempShipInfos[index], isDefault: true};
     await updateShipInfoToFirebase(tempShipInfos);

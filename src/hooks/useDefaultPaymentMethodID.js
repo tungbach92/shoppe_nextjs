@@ -1,5 +1,5 @@
-import { useLayoutEffect, useState } from "react";
-import { getDefaultPaymentMethodID } from "../services/getDefaultPaymentMethodID";
+import {useLayoutEffect, useState} from "react";
+import {getDefaultPaymentMethodID} from "@/services/getDefaultPaymentMethodID";
 
 const useDefaultPaymentMethodID = (user) => {
   const [defaultPaymentMethodID, setDefaultPaymentMethodID] = useState("");
