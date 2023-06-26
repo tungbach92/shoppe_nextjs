@@ -1,20 +1,18 @@
-import visaImg from "../../public/img/visa.png";
-import masterImg from "../../public/img/master.png";
-import jcbImg from "../../public/img/jcb.png";
-import expressImg from "../../public/img/express.png";
 import nobrand from "../../public/img/nobrand.png";
+import {iconImg} from "@/services/getIcon";
+
 export const getCardImgByBrand = (brand) => {
   if (brand === "visa") {
-    return visaImg;
+    return iconImg.visaIcon;
   }
   if (brand === "american Express") {
-    return expressImg;
+    return iconImg.expressIcon;
   }
   if (brand === "mastercard") {
-    return masterImg;
+    return iconImg.masterIcon;
   }
   if (brand === "jcb") {
-    return jcbImg;
+    return iconImg.jcbIcon;
   }
   return nobrand;
 };
