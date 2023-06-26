@@ -27,12 +27,13 @@ import {useAddCartToFireStoreMutation} from "@/services/cartApi";
 import useVoucher from "../../hooks/useVoucher";
 import withContainer from "../withContainer";
 import {checkoutDocRef, orderDocRef, productDocRef} from "@/common/dbRef";
-import {setDoc} from "firebase/firestore";
+import {runTransaction, setDoc} from "firebase/firestore";
 import ErrorModal from "@/components/Modal/ErrorModal";
-import ShipUnitsModal from "@/components/Modal/ShipUnitsModal";
+import {ShipUnitsModal} from "@/components/Modal/ShipUnitsModal";
 import VoucherModal from "@/components/Modal/VoucherModal";
 import CardInfoModal from "@/components/Modal/CardInfoModal";
 import PopupModal from "@/components/Modal/PopupModal";
+import Link from "next/link";
 
 function CheckoutContainer({isCheckoutPage}) {
   const [addCartToFireStore] = useAddCartToFireStoreMutation();
@@ -94,6 +95,7 @@ function CheckoutContainer({isCheckoutPage}) {
   const [isDeliveryPayment, setIsDeliveryPayment] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [succeeded, setSucceeded] = useState(false);
+  const [loadingOrder, setLoadingOrder] = useState(false)
 
   const shipPriceProvince = useMemo(() => {
     let shipPrice = [0, 0];
@@ -164,9 +166,9 @@ function CheckoutContainer({isCheckoutPage}) {
     toggleCardInfo(true);
   };
 
-  const updateSoldAmount = () => {
+  const updateSoldAmount = async () => {
     // transaction need to read first and write
-    db.runTransaction((transaction) => {
+    runTransaction(db, (transaction) => {
       // make an docsId (array of doc name) first by checkoutItem.id
       // Promise.all([transaction.get(docsId)])
       // or forEach checkut and run multi transaction
@@ -197,20 +199,24 @@ function CheckoutContainer({isCheckoutPage}) {
         console.log(error);
       });
   };
-  const saveOrdersToFirebase = (id, amount, created) => {
-    let shipInfo;
-    shipInfos.forEach((item) => {
-      if (item.isDefault) {
-        const {isDefault, province, district, street, ward, ...rest} = item;
-        shipInfo = {...rest};
-      }
-    });
-    orderDocRef(user?.uid, id).set({
-      basket: checkoutItems,
-      amount: amount,
-      shipInfo: {...shipInfo},
-      created: created,
-    });
+  const saveOrdersToFirebase = async (id, amount, created) => {
+    try {
+      let shipInfo;
+      shipInfos.forEach((item) => {
+        if (item.isDefault) {
+          const {isDefault, province, district, street, ward, ...rest} = item;
+          shipInfo = {...rest};
+        }
+      });
+      await setDoc(orderDocRef(user?.uid, id,), {
+        basket: checkoutItems,
+        amount: amount,
+        shipInfo: {...shipInfo},
+        created: created,
+      });
+    } catch (e) {
+      console.log(e)
+    }
   };
 
   const saveCheckoutItemsToFirebase = async (checkoutItems) => {
@@ -226,16 +232,23 @@ function CheckoutContainer({isCheckoutPage}) {
   };
 
   const handleOrderSucceeded = async ({id, amount, created}) => {
-    saveOrdersToFirebase(id, amount, created);
-    updateSoldAmount();
-    await updateCustomerBillingAddressStripe(user, shipInfos);
-    dispatch(resetCart);
-    checkoutDispatch({});
-    addCartToFireStore({user, cartProducts: []});
-    await saveCheckoutItemsToFirebase([]);
-    setSucceeded(true);
-    setProcessing(false);
-    togglePopup(!isPopupShowing);
+    try {
+      setLoadingOrder(true)
+      await saveOrdersToFirebase(id, amount, created);
+      await updateSoldAmount();
+      await updateCustomerBillingAddressStripe(user, shipInfos);
+      dispatch(resetCart);
+      checkoutDispatch({});
+      addCartToFireStore({user, cartProducts: []});
+      await saveCheckoutItemsToFirebase([]);
+    } catch (e) {
+      console.log(e)
+    } finally {
+      setSucceeded(true);
+      setProcessing(false);
+      setLoadingOrder(false)
+      togglePopup();
+    }
   };
 
   //Update after edit shipchecked + edit info
@@ -298,8 +311,8 @@ function CheckoutContainer({isCheckoutPage}) {
     let tempShipInfos = [...shipInfos];
     tempShipInfos = tempShipInfos.map((shipInfo) =>
       tempShipInfos.indexOf(shipInfo) === Number(index)
-        ? (shipInfo = {...shipInfo, isDefault: true})
-        : (shipInfo = {...shipInfo, isDefault: false})
+        ? ({...shipInfo, isDefault: true})
+        : ({...shipInfo, isDefault: false})
     );
     await updateShipInfoToFirebase(tempShipInfos);
   };
@@ -329,7 +342,7 @@ function CheckoutContainer({isCheckoutPage}) {
       paymentMethod.length > 0
     ) {
       if (isCardPayment && defaultPaymentMethodID.length === 0) {
-        togglePopup(!isPopupShowing);
+        togglePopup();
       }
 
       if (isCardPayment && defaultPaymentMethodID) {
@@ -446,10 +459,10 @@ function CheckoutContainer({isCheckoutPage}) {
           amount: getItemsPriceFinal(checkoutItems, shipUnit, voucher),
           created: Math.floor(Date.now() / 1000),
         };
-        handleOrderSucceeded(paymentIntent);
+        await handleOrderSucceeded(paymentIntent);
       }
     } else {
-      togglePopup(!isPopupShowing);
+      togglePopup();
     }
   };
 
@@ -458,7 +471,7 @@ function CheckoutContainer({isCheckoutPage}) {
   };
 
   return (
-    <div className="main">
+    <div className="main !grid-cols-1">
       <div className="grid checkout-product">
         <div className="checkout-product__address-line"></div>
         <div className="checkout-product__address-wrapper">
@@ -509,12 +522,11 @@ function CheckoutContainer({isCheckoutPage}) {
                   isAddressAddShowing={isAddressAddShowing}
                   toggleAddressAdd={toggleAddressAdd}
                 ></AddressModal>
-                {/*<Link*/}
-                {/*  to="/user/account/address"*/}
-                {/*  className="btn checkout-product__shipInfo-edit"*/}
-                {/*>*/}
-                {/*  Thiết lập địa chỉ*/}
-                {/*</Link>*/}
+                <Link
+                  className="btn checkout-product__shipInfo-edit"
+                  href={"/account/address"}>
+                  Thiết lập địa chỉ
+                </Link>
               </div>
             )}
           </div>
@@ -590,12 +602,11 @@ function CheckoutContainer({isCheckoutPage}) {
             )}
             {shipInfos?.length === 0 && (
               <>
-                {/*<Link*/}
-                {/*  to="/user/account/address"*/}
-                {/*  className="checkout-product__address-action"*/}
-                {/*>*/}
-                {/*  Thêm*/}
-                {/*</Link>*/}
+                <Link
+                  className="checkout-product__address-action"
+                  href={"/user/account/address"}>
+                  Thêm
+                </Link>
               </>
             )}
           </div>
@@ -1087,11 +1098,11 @@ function CheckoutContainer({isCheckoutPage}) {
               Điều khoản Shopee
             </span>
             <button
-              disabled={processing}
+              disabled={processing || loadingOrder}
               onClick={handleOrder}
               className="btn checkout-product__order-btn"
             >
-              {processing ? "Đang xử lý" : " Đặt hàng"}
+              {processing || loadingOrder ? "Đang xử lý" : " Đặt hàng"}
             </button>
             {isPopupShowing && (
               <PopupModal

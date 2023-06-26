@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import useModal from "../../hooks/useModal";
 import PopupModal from "../Modal/PopupModal";
 import CardInfoModal from "../Modal/CardInfoModal";
 import usePaymentMethodList from "../../hooks/usePaymentMethodList";
 import useDefaultPaymentMethodID from "../../hooks/useDefaultPaymentMethodID";
-import { getCardImgByBrand } from "../../services/getCardImgByBrand";
-import { detachPaymentMethodID } from "../../services/detachPaymentMethodID";
-import { useUser } from "../../context/UserProvider";
+import {getCardImgByBrand} from "../../services/getCardImgByBrand";
+import {detachPaymentMethodID} from "../../services/detachPaymentMethodID";
+import {useUser} from "../../context/UserProvider";
 import getCustomerID from "../../services/getCustomerID";
 import useNavigateAndRefreshBlocker from "../../hooks/useNavigateAndRefreshBlocker";
-import { ClipLoading } from "../ClipLoading";
-import { useUpdateDefaultPaymentMethodIDToStripe } from "../../hooks/useUpdateDefaultPaymentMethodIDToStripe";
+import {ClipLoading} from "../ClipLoading";
+import {useUpdateDefaultPaymentMethodIDToStripe} from "../../hooks/useUpdateDefaultPaymentMethodIDToStripe";
+
 const AccountPayment = () => {
   const { user } = useUser();
   const { defaultPaymentMethodID, setDefaultPaymentMethodID } =
@@ -38,7 +39,7 @@ const AccountPayment = () => {
 
   const handlePaymentDeleteClick = (id) => {
     setPaymentMethodID(id);
-    togglePopup(!isPopupShowing);
+    togglePopup();
   };
 
   const handlePaymentDeleteTrue = async (id) => {

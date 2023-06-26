@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { auth } from "@/configs/firebase";
+import React, {useEffect, useState} from "react";
+import {auth} from "@/configs/firebase";
 import useModal from "../../hooks/useModal";
 import PopupModal from "../Modal/PopupModal";
 import PasswordResetModal from "../Modal/PasswordResetModal";
-import { styled } from "@mui/material";
-import { useUser } from "../../context/UserProvider";
+import {styled} from "@mui/material";
+import {useUser} from "../../context/UserProvider";
 
 const StyledInput = styled("input", {
   shouldForwardProp: (props) => props !== "isValid",
@@ -62,7 +62,7 @@ function AccountPassword({ setEmail, email }) {
           .updatePassword(newPassword)
           .then(() => {
             setIsUpdatingPasswordProcess(false);
-            togglePopup(!isPopupShowing);
+            togglePopup();
             setIsUpdatePasswordSuccess(true);
           })
           .catch((err) => {

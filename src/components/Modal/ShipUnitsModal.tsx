@@ -1,26 +1,34 @@
 import React, {useRef} from "react";
-import ReactDOM from "react-dom";
-import {BaseModal} from "@/components/base";
+import {BaseModal, BaseModalProps} from "@/components/base";
 
-interface Props {
-  shipChecked: any
-  setShipChecked: any
-  shipUnit: any
-  setShipUnit: any
-  shipUnitList: any
+interface Props extends BaseModalProps, ShipUnitsModalFooterProps {
+  shipChecked?: any
+  setShipChecked?: any
+  shipUnit?: any
+  setShipUnit?: any
+  shipUnitList?: any
   isShipUnits: boolean
   toggleShipUnits: any
 }
 
-export default function ShipUnitsModal({
-                                         shipChecked,
-                                         setShipChecked,
-                                         shipUnit,
-                                         setShipUnit,
-                                         shipUnitList,
-                                         isShipUnits,
-                                         toggleShipUnits,
-                                       }: Props) {
+interface ShipUnitsModalFooterProps {
+  handleBack: () => void
+  handleApply: () => void
+}
+
+interface ShipUnitsModalInterface {
+  footer: React.FC<ShipUnitsModalFooterProps>
+}
+
+export const ShipUnitsModal: React.FC<Props> & ShipUnitsModalInterface = ({
+                                                                            shipChecked,
+                                                                            setShipChecked,
+                                                                            shipUnit,
+                                                                            setShipUnit,
+                                                                            shipUnitList,
+                                                                            isShipUnits,
+                                                                            toggleShipUnits,
+                                                                          }) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -50,7 +58,7 @@ export default function ShipUnitsModal({
     setShipChecked(checked);
   };
 
-  const handleApply = (e: any) => {
+  const handleApply = () => {
     let selectedShipUnit;
     shipUnitList.forEach((item: any) => {
       if (shipChecked[item.id]) {
@@ -65,56 +73,62 @@ export default function ShipUnitsModal({
     toggleShipUnits(!isShipUnits);
   };
   return (
-    <BaseModal isOpen={isShipUnits} handleClose={toggleShipUnits}>
-      <div className="cart-product__modal-overlay"></div>
-      <div className="cart-product__modal-container">
-        <div className="cart-product__modal-header">
+    <BaseModal
+      isOpen={isShipUnits}
+      handleClose={toggleShipUnits}
+      header={<div className="cart-product__modal-header">
           <span className="cart-product__shipunit-label">
             Chọn đơn vị vận chuyển
           </span>
-        </div>
-        <ul className="cart-product__shipunit-list">
-          {shipUnitList.map((item: any, index: any) => (
-            <div key={index} className="cart-product__shipunit-wrapper">
-              <li className="cart-product__shipunit-item">
-                <input
-                  ref={inputRef}
-                  name={item.name}
-                  type="checkbox"
-                  value={item}
-                  checked={shipChecked[item.id]}
-                  onChange={(e) => handleShipUnitChange(item, e)}
-                  className="cart-product__shipunit-checkbox"
-                />
-                <label className="cart-product__shipunit-name">
-                  {item.name}
-                </label>
-                <span className="cart-product__shipunit-price">
+      </div>}
+      footer={<ShipUnitsModal.footer handleApply={handleApply} handleBack={handleBack}></ShipUnitsModal.footer>}
+    >
+      <ul className="cart-product__shipunit-list">
+        {shipUnitList.map((item: any, index: any) => (
+          <div key={index} className="cart-product__shipunit-wrapper">
+            <li className="cart-product__shipunit-item">
+              <input
+                ref={inputRef}
+                name={item.name}
+                type="checkbox"
+                value={item}
+                checked={shipChecked[item.id]}
+                onChange={(e) => handleShipUnitChange(item, e)}
+                className="cart-product__shipunit-checkbox"
+              />
+              <label className="cart-product__shipunit-name">
+                {item.name}
+              </label>
+              <span className="cart-product__shipunit-price">
                   {Number(item.price)}
                 </span>
-                <span className="cart-product__shipunit-date">{item.date}</span>
-                <span className="cart-product__shipunit-pay">
+              <span className="cart-product__shipunit-date">{item.date}</span>
+              <span className="cart-product__shipunit-pay">
                   {item.method}
                 </span>
-              </li>
-            </div>
-          ))}
-        </ul>
-        <div className="cart-product__modal-footer">
-          <button
-            onClick={handleBack}
-            className="btn cart-product__modal-close"
-          >
-            Trở lại
-          </button>
-          <button
-            onClick={handleApply}
-            className="btn cart-product__modal-apply"
-          >
-            OK
-          </button>
-        </div>
-      </div>
+            </li>
+          </div>
+        ))}
+      </ul>
     </BaseModal>)
 
+}
+
+ShipUnitsModal.footer = function ({handleBack, handleApply}) {
+  return (
+    <div className="cart-product__modal-footer">
+      <button
+        onClick={handleBack}
+        className="btn cart-product__modal-close"
+      >
+        Trở lại
+      </button>
+      <button
+        onClick={handleApply}
+        className="btn cart-product__modal-apply"
+      >
+        OK
+      </button>
+    </div>
+  )
 }

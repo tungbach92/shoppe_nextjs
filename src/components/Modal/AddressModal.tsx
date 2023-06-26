@@ -62,7 +62,7 @@ interface AddressModalProps {
   handleDistrictChoose: any
   handleProvinceChoose: any
   handleWardChoose: any
-  shipInfoIndex: any
+  shipInfoIndex?: number | null
 }
 
 const AddressModal = ({

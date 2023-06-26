@@ -38,7 +38,7 @@ const AccountAddress = () => {
     updateShipInfoToFirebase,
   } = useGetShipInfos(user);
   const {isAddressAddShowing, toggleAddressAdd} = useModal();
-  const [shipInfoIndex, setShipInfoIndex] = useState(null);
+  const [shipInfoIndex, setShipInfoIndex] = useState<number | null>(null);
   const {isPopupShowing, togglePopup} = useModal();
 
   useNavigateAndRefreshBlocker(shipInfosUpdateLoading);
@@ -83,7 +83,7 @@ const AccountAddress = () => {
 
   const handleDeleteClick = (index: any) => {
     setShipInfoIndex(index);
-    togglePopup(!isPopupShowing);
+    togglePopup();
   };
 
   const handleDeleteTrue = async (index: any) => {

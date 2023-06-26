@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import useModal from "../../hooks/useModal";
 import PopupModal from "../Modal/PopupModal";
 import {auth} from '@/configs/firebase'
@@ -49,14 +49,14 @@ const AccountEmail = ({ setEmail, email }) => {
         userCredential.user
           .updateEmail(newEmail)
           .then(() => {
-            togglePopup(!isPopupShowing);
+            togglePopup();
             setIsUpdateEmailSuccess(true);
             setEmail(newEmail);
             setIsUpdatingEmailProcess(false);
             //success
           })
           .catch((err) => {
-            togglePopup(!isPopupShowing);
+            togglePopup();
             setIsUpdatingEmailProcess(false);
             console.log(err);
           });
@@ -164,7 +164,7 @@ const AccountEmail = ({ setEmail, email }) => {
             isUpdateEmailSuccess={isUpdateEmailSuccess}
             isPopupShowing={isPopupShowing}
             togglePopup={togglePopup}
-          ></PopupModal>
+            isCheckoutPage></PopupModal>
         )}
       </div>
     </>

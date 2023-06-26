@@ -1,4 +1,3 @@
-import AccountContainer from "@/components/Account/AccountContainer";
 import React, {ReactElement, useEffect, useState} from "react";
 import Layout from "@/components/Layout/Layout";
 import AccountProfile from "@/components/Account/AccountProfile";
@@ -71,7 +70,7 @@ function Profile() {
       });
       setIsInfoUpdating(false);
     } catch (error) {
-      togglePopup(!isPopupShowing);
+      togglePopup();
       setIsInfoUpdating(false);
       setIsUserUpdateFailed(true);
     }
@@ -97,7 +96,7 @@ function Profile() {
         (error) => {
           setIsInfoUpdating(false);
           setIsImageUploadFailed(true);
-          togglePopup(!isPopupShowing);
+          togglePopup();
         },
         //handle successful uploads
         () => {
@@ -110,12 +109,12 @@ function Profile() {
             })
             .then(() => {
               setIsInfoUpdating(false);
-              togglePopup(!isPopupShowing);
+              togglePopup();
             });
         }
       );
     } else {
-      togglePopup(!isPopupShowing);
+      togglePopup();
     }
   };
   return (

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import {useCallback, useState} from "react";
 
 const useModal = () => {
   const [isVoucherShowing, setIsVoucherShowing] = useState(false);
@@ -25,9 +25,9 @@ const useModal = () => {
     setIsVoucherShowing(value);
   }, []);
 
-  const togglePopup = useCallback((value) => {
-    setIsPopupShowing(value);
-  }, []);
+  const togglePopup = useCallback(() => {
+    setIsPopupShowing(!isPopupShowing);
+  }, [isPopupShowing]);
 
   const toggleCardInfo = useCallback((value) => {
     setIsCardInfoShowing(value);

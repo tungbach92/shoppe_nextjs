@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import ReactDOM from "react-dom";
 import validCardCheck from "card-validator";
-import {CardElement, useStripe, useElements} from "@stripe/react-stripe-js";
-import {Input, styled} from "@mui/material";
+import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
+import {Input} from "@mui/material";
 import {updateCustomerIDToFirebase} from "@/services/updateCustomerIDToFirebase";
 import {getPaymentMethodList} from "@/services/getPaymentMethodList";
 import {useCustomerID} from "@/hooks/useCustomerID";
@@ -182,8 +181,6 @@ export default function CardInfoModal({
   }, [user]);
   return (
     <BaseModal isOpen={isCardInfoShowing} handleClose={toggleCardInfo}>
-      <div className="cart-product__modal-overlay"></div>
-      <div className="cart-product__modal-container">
         <div className="cart-product__modal-header">
           <span className="cart-product__header-label">Thêm thẻ</span>
         </div>
@@ -272,7 +269,6 @@ export default function CardInfoModal({
             </button>
           </div>
         </form>
-      </div>
     </BaseModal>
   )
 

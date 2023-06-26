@@ -95,7 +95,7 @@ function CartContainer({isCartPage}: Props) {
   const handleCheckout = async (event: any) => {
     if (selectedProduct?.length === 0 || !isVariationChoose) {
       event.preventDefault();
-      togglePopup(!isPopupShowing);
+      togglePopup();
     } else {
       const checkoutItems = selectedProduct.map((item: any) => {
         // return checkedItem without uneccessary field
@@ -123,7 +123,7 @@ function CartContainer({isCartPage}: Props) {
   const handleDelete = (id: string, variation: string) => {
     setDeleteID(id);
     setDeleteVariation(variation);
-    togglePopup(!isPopupShowing);
+    togglePopup();
   };
 
   const handleDeleteCartTrue = () => {
@@ -135,7 +135,7 @@ function CartContainer({isCartPage}: Props) {
   const handleDeleteSelection = () => {
     if (selectedIdVariation?.length > 0) {
       setIsDeleteSelected(true);
-      togglePopup(!isPopupShowing);
+      togglePopup();
     }
   };
 

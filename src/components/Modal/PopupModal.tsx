@@ -1,44 +1,84 @@
 import React, {useEffect, useState} from "react";
-import PropTypes from "prop-types";
 import {BaseModal} from "@/components/base";
 import {useRouter} from "next/router";
 
-export default function PopupModal(props: any) {
+interface Props {
+  isCheckoutPage?: boolean,
+  isAccountPage?: boolean,
+  isCartPage?: boolean,
+  isUserUpdateFailed?: boolean,
+  isImageUploadFailed?: boolean,
+  isUpdateEmailSuccess?: boolean,
+  isUpdatePasswordSuccess?: boolean,
+  handleDeleteTrue?: (arg: number) => void,
+  shipInfoIndex?: number | null,
+  setShipInfoIndex?: (arg: number | null) => void,
+  paymentMethodID?: string,
+  setPaymentMethodID?: (arg: string | null) => void,
+  handlePaymentDeleteTrue?: () => void,
+  deleteID?: string,
+  setDeleteID?: (arg: string | null) => void,
+  isDeleteSelected?: boolean,
+  setIsDeleteSelected?: (arg: boolean) => void,
+  handleDeleteSelectionTrue?: () => void,
+  handleDeleteCartTrue?: () => void,
+  isVariationChoose?: boolean,
+  checked?: any[],
+  shipUnit?: any,
+  paymentMethod?: string,
+  defaultPaymentMethodID?: string,
+  isCardPayment?: boolean,
+  succeeded?: boolean,
+  shipInfos?: any[],
+  togglePopup: () => void,
+  isPopupShowing: boolean,
+}
+
+export default function PopupModal(props: Props) {
   const router = useRouter()
   const [title, setTitle] = useState("");
   const [isBackBtnHidden, setIsBackBtnHidden] = useState(false);
 
   const {
-    isCheckoutPage,
-    isAccountPage,
-    isUserUpdateFailed,
-    isImageUploadFailed,
-    isUpdateEmailSuccess,
-    isUpdatePasswordSuccess,
-    handleDeleteTrue,
-    shipInfoIndex,
-    setShipInfoIndex,
-    shipInfos,
-    defaultPaymentMethodID,
-    paymentMethodID,
-    setPaymentMethodID,
-    handlePaymentDeleteTrue,
-    isCartPage,
-    deleteID,
-    setDeleteID,
-    isDeleteSelected,
-    setIsDeleteSelected,
-    handleDeleteSelectionTrue,
-    handleDeleteCartTrue,
-    isVariationChoose,
-    checked,
-    shipUnit,
+    isCheckoutPage = false,
+    isAccountPage = false,
+    isUserUpdateFailed = false,
+    isImageUploadFailed = false,
+    isUpdateEmailSuccess = false,
+    isUpdatePasswordSuccess = false,
+    handleDeleteTrue = () => {
+    },
+    shipInfoIndex = null,
+    setShipInfoIndex = () => {
+    },
+    shipInfos = [],
+    defaultPaymentMethodID = '',
+    paymentMethodID = '',
+    setPaymentMethodID = () => {
+    },
+    handlePaymentDeleteTrue = (arg: string) => {
+    },
+    isCartPage = false,
+    deleteID = '',
+    setDeleteID = () => {
+    },
+    isDeleteSelected = false,
+    setIsDeleteSelected = () => {
+    },
+    handleDeleteSelectionTrue = () => {
+    },
+    handleDeleteCartTrue = () => {
+    },
+    isVariationChoose = false,
+    checked = [],
+    shipUnit = {},
     isPopupShowing,
     togglePopup,
-    paymentMethod,
-    isCardPayment,
-    succeeded,
-  } = props;
+    paymentMethod = '',
+    isCardPayment = false,
+    succeeded = false,
+  }
+    = props;
 
   useEffect(() => {
     const setTitleAndBackBtnHidden = () => {
@@ -74,7 +114,7 @@ export default function PopupModal(props: any) {
         isBackBtnHidden = false;
         title = "Bạn chắc chắn muốn xóa địa chỉ này ?";
       }
-      if (isAccountPage && paymentMethodID.length > 0) {
+      if (isAccountPage && paymentMethodID?.length > 0) {
         isBackBtnHidden = false;
         title = "Bạn chắc chắn muốn xóa thẻ này ?";
       }
@@ -85,7 +125,7 @@ export default function PopupModal(props: any) {
       } else if (isCartPage && checked?.length === 0) {
         isBackBtnHidden = true;
         title = "Bạn vẫn chưa chọn sản phẩm nào để mua.";
-      } else if (isCartPage && isVariationChoose === false) {
+      } else if (isCartPage && !isVariationChoose) {
         isBackBtnHidden = true;
         title = "Bạn vẫn chưa chọn loại hay kích cỡ sản phẩm để mua.";
       }
@@ -141,7 +181,7 @@ export default function PopupModal(props: any) {
 
   //Back button
   const handleBackClick = () => {
-    togglePopup(false);
+    togglePopup();
 
     // set those values to defaultm undefined if setState function true
     if (setDeleteID) {
@@ -160,7 +200,7 @@ export default function PopupModal(props: any) {
 
   // Ok button
   const handleApplyClick = () => {
-    togglePopup(!isPopupShowing);
+    togglePopup();
     if (isCheckoutPage && shipInfos?.length <= 0) {
       window.scrollTo({top: 0, left: 0, behavior: "smooth"});
     }
@@ -174,24 +214,24 @@ export default function PopupModal(props: any) {
       window.scrollTo({top: 600, left: 0, behavior: "smooth"});
     }
     if (isCheckoutPage && succeeded) {
-      router.push("/user/account/purchase");
+      router.push("/account/purchase");
     }
 
     if (isAccountPage && shipInfoIndex === null && !paymentMethodID) {
-      router.push("/user");
+      router.push("/account");
     }
     if (isAccountPage && shipInfoIndex !== null) {
       handleDeleteTrue(shipInfoIndex);
-      setShipInfoIndex();
+      setShipInfoIndex(null);
     }
     if (isAccountPage && paymentMethodID) {
       handlePaymentDeleteTrue(paymentMethodID);
-      setPaymentMethodID();
+      setPaymentMethodID(null);
     }
 
     if (isCartPage && deleteID) {
       handleDeleteCartTrue();
-      setDeleteID();
+      setDeleteID(null);
     }
     if (isCartPage && isDeleteSelected) {
       handleDeleteSelectionTrue();
@@ -221,71 +261,3 @@ export default function PopupModal(props: any) {
     </BaseModal>
   )
 }
-
-PopupModal.propTypes = {
-  isAccountPage: PropTypes.bool,
-  isUserUpdateFailed: PropTypes.bool,
-  isImageUploadFailed: PropTypes.bool,
-  isUpdateEmailSuccess: PropTypes.bool,
-  isUpdatePasswordSuccess: PropTypes.bool,
-  handleDeleteTrue: PropTypes.func,
-  shipInfoIndex: PropTypes.number,
-  setShipInfoIndex: PropTypes.func,
-  paymentMethodID: PropTypes.string,
-  setPaymentMethodID: PropTypes.func,
-  handlePaymentDeleteTrue: PropTypes.func,
-  isCartPage: PropTypes.bool,
-  deleteID: PropTypes.string,
-  setDeleteID: PropTypes.func,
-  isDeleteSelected: PropTypes.bool,
-  setIsDeleteSelected: PropTypes.func,
-  handleDeleteSelectionTrue: PropTypes.func,
-  handleDeleteCartTrue: PropTypes.func,
-  isVariationChoose: PropTypes.bool,
-  checked: PropTypes.arrayOf(PropTypes.object),
-  shipUnit: PropTypes.object,
-  isPopupShowing: PropTypes.bool.isRequired,
-  togglePopup: PropTypes.func.isRequired,
-  paymentMethod: PropTypes.string,
-  defaultPaymentMethodID: PropTypes.string,
-  isCardPayment: PropTypes.bool,
-  succeeded: PropTypes.bool,
-  shipInfos: PropTypes.arrayOf(PropTypes.object),
-};
-
-PopupModal.defaultProps = {
-  isAccountPage: false,
-  isUserUpdateFailed: false,
-  isImageUploadFailed: false,
-  isUpdateEmailSuccess: false,
-  isUpdatePasswordSuccess: false,
-  handleDeleteTrue: () => {
-  },
-  shipInfoIndex: null,
-  setShipInfoIndex: () => {
-  },
-  paymentMethodID: "",
-  setPaymentMethodID: () => {
-  },
-  handlePaymentDeleteTrue: () => {
-  },
-  isCartPage: false,
-  deleteID: null,
-  setDeleteID: () => {
-  },
-  isDeleteSelected: false,
-  setIsDeleteSelected: () => {
-  },
-  handleDeleteSelectionTrue: () => {
-  },
-  handleDeleteCartTrue: () => {
-  },
-  isVariationChoose: false,
-  checked: [],
-  shipUnit: {},
-  paymentMethod: "",
-  defaultPaymentMethodID: undefined,
-  isCardPayment: false,
-  succeeded: false,
-  shipInfos: null,
-};

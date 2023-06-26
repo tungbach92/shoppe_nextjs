@@ -5,10 +5,9 @@ import appShopeeImg from "../../../public/img/app-shopee.png";
 import ggShopeeImg from "../../../public/img/gg-shopee.png";
 import appGalShopeeImg from "../../../public/img/app-gal-shopee.png";
 // import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Box, Stack } from "@mui/material";
-import { useMediaQuery } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
-import { useUser } from "@/context/UserProvider";
+import {Box, Stack, useMediaQuery} from "@mui/material";
+import {ArrowBack} from "@mui/icons-material";
+import {useUser} from "@/context/UserProvider";
 import HeaderSearch from "./HeaderSearch";
 import classNames from "classnames";
 import Link from "next/link";
@@ -151,7 +150,7 @@ const Header = ({
                       : "header__nav-item-right header__nav-item-right--reg"
                   }
                   onClick={(e) => {
-                    if (user && location.pathname !== "/user/account/profile") {
+                    if (user && location.pathname !== "/account/profile") {
                       // navigate("/user/account/profile");
                     }
                   }}

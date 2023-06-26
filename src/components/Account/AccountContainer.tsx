@@ -1,4 +1,4 @@
-import React, {useState, useEffect, ReactNode} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 import useModal from "../../hooks/useModal";
 import PopupModal from "../Modal/PopupModal";
 import {useUser} from "@/context/UserProvider";
@@ -8,8 +8,6 @@ import {infoDocRef} from "@/common/dbRef";
 import {updateProfile} from "firebase/auth";
 import {getDoc, setDoc} from "firebase/firestore";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
-import Link from "next/link";
-import AccountMenu from "@/components/Account/AccountMenu";
 
 interface Props {
   children: ReactNode
@@ -74,7 +72,7 @@ const AccountContainer = ({children}: Props) => {
       });
       setIsInfoUpdating(false);
     } catch (error) {
-      togglePopup(!isPopupShowing);
+      togglePopup();
       setIsInfoUpdating(false);
       setIsUserUpdateFailed(true);
     }
@@ -100,7 +98,7 @@ const AccountContainer = ({children}: Props) => {
         (error) => {
           setIsInfoUpdating(false);
           setIsImageUploadFailed(true);
-          togglePopup(!isPopupShowing);
+          togglePopup();
         },
         //handle successful uploads
         () => {
@@ -113,12 +111,12 @@ const AccountContainer = ({children}: Props) => {
             })
             .then(() => {
               setIsInfoUpdating(false);
-              togglePopup(!isPopupShowing);
+              togglePopup();
             });
         }
       );
     } else {
-      togglePopup(!isPopupShowing);
+      togglePopup();
     }
   };
 
