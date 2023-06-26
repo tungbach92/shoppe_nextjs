@@ -3,9 +3,10 @@ import useModal from "../../hooks/useModal";
 import PopupModal from "../Modal/PopupModal";
 import {auth} from '@/configs/firebase'
 import {useUser} from "@/context/UserProvider";
+import {signInWithEmailAndPassword} from "firebase/auth";
 
-const AccountEmail = ({ setEmail, email }) => {
-  const { user } = useUser();
+const AccountEmail = ({setEmail, email}) => {
+  const {user} = useUser();
   const [verifyPassword, setVerifyPassword] = useState();
   const [isWrongPassword, setIsWrongPassword] = useState(false);
   const [newEmail, setNewEmail] = useState("");
@@ -14,7 +15,7 @@ const AccountEmail = ({ setEmail, email }) => {
   const [isCredentialsValid, setIsCredentialsValid] = useState(false);
   const [isUpdateEmailSuccess, setIsUpdateEmailSuccess] = useState(false);
 
-  const { isPopupShowing, togglePopup } = useModal();
+  const {isPopupShowing, togglePopup} = useModal();
   useEffect(() => {
     if (user) {
       const email = user.email;
@@ -24,8 +25,7 @@ const AccountEmail = ({ setEmail, email }) => {
 
   const checkSignIn = () => {
     setIsCheckSignInProcess(true);
-    auth
-      .signInWithEmailAndPassword(email, verifyPassword)
+    signInWithEmailAndPassword(auth, email, verifyPassword)
       .then((userCredential) => {
         if (userCredential) {
           setIsCredentialsValid(true);
@@ -42,8 +42,7 @@ const AccountEmail = ({ setEmail, email }) => {
 
   const updateEmail = () => {
     setIsUpdatingEmailProcess(true);
-    auth
-      .signInWithEmailAndPassword(email, verifyPassword)
+    signInWithEmailAndPassword(auth, email, verifyPassword)
       .then((userCredential) => {
         setIsCredentialsValid(true);
         userCredential.user

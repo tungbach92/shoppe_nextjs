@@ -3,8 +3,9 @@ import Layout from "@/components/Layout/Layout";
 import {useUser} from "@/context/UserProvider";
 import AccountMenu from "@/components/Account/AccountMenu";
 import AccountEmail from "@/components/Account/AccountEmail";
+import withContainer from "@/components/withContainer";
 
-export default function Email() {
+function Email() {
   const {user} = useUser();
   const [email, setEmail] = useState<string>('')
   useEffect(() => {
@@ -21,6 +22,9 @@ export default function Email() {
       </div>
     </div>)
 }
+
 Email.getLayout = function (page: ReactElement) {
   return <Layout>{page}</Layout>
 }
+
+export default withContainer(Email, true)
