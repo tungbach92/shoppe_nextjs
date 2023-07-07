@@ -1,4 +1,3 @@
-import nobrand from "../../public/img/nobrand.png";
 import {iconImg} from "@/services/getIcon";
 
 export const getCardImgByBrand = (brand) => {
@@ -14,5 +13,5 @@ export const getCardImgByBrand = (brand) => {
   if (brand === "jcb") {
     return iconImg.jcbIcon;
   }
-  return nobrand;
+  return iconImg.noBrandIcon;
 };

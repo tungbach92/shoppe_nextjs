@@ -1,14 +1,14 @@
 import React, {useRef} from "react";
 import {BaseModal, BaseModalProps} from "@/components/base";
 
-interface Props extends BaseModalProps, ShipUnitsModalFooterProps {
+interface Props extends BaseModalProps {
   shipChecked?: any
   setShipChecked?: any
   shipUnit?: any
   setShipUnit?: any
   shipUnitList?: any
   isShipUnits: boolean
-  toggleShipUnits: any
+  toggleShipUnits: () => void
 }
 
 interface ShipUnitsModalFooterProps {
@@ -33,15 +33,11 @@ export const ShipUnitsModal: React.FC<Props> & ShipUnitsModalInterface = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleBack = () => {
-    toggleShipUnits(!isShipUnits);
+    toggleShipUnits();
     //setCheckedByShipUnit
     let checked: any[] = [];
     shipUnitList.forEach((item: any) => {
-      if (item.id === shipUnit.id) {
-        checked[item.id] = true;
-      } else {
-        checked[item.id] = false;
-      }
+      checked[item.id] = item.id === shipUnit.id;
     });
     setShipChecked(checked);
   };
@@ -70,7 +66,7 @@ export const ShipUnitsModal: React.FC<Props> & ShipUnitsModalInterface = ({
     } else {
       setShipUnit({});
     }
-    toggleShipUnits(!isShipUnits);
+    toggleShipUnits();
   };
   return (
     <BaseModal

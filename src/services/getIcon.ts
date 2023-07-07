@@ -14,4 +14,8 @@ export const iconImg = {
   jcbIcon: getUri("jcb.png"),
   masterIcon: getUri("master.png"),
   expressIcon: getUri("express.png"),
+  qrCodeNavImg: getUri('qr-code-home.png'),
+  appShopeeImg: getUri("app-shopee.png"),
+  ggShopeeImg: getUri("gg-shopee.png"),
+  appGalShopeeImg: getUri("app-gal-shopee.png")
 };

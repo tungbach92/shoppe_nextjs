@@ -1,9 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import qrCodeNavImg from "../../../public/img/qr-code-home.png";
-import appShopeeImg from "../../../public/img/app-shopee.png";
-import ggShopeeImg from "../../../public/img/gg-shopee.png";
-import appGalShopeeImg from "../../../public/img/app-gal-shopee.png";
 // import { Link, useLocation, useNavigate } from "react-router-dom";
 import {Box, Stack, useMediaQuery} from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
@@ -11,6 +7,7 @@ import {useUser} from "@/context/UserProvider";
 import HeaderSearch from "./HeaderSearch";
 import classNames from "classnames";
 import Link from "next/link";
+import {iconImg} from "@/services/getIcon";
 
 const Header = ({
   isProductPage,
@@ -63,27 +60,27 @@ const Header = ({
                   </a>
                   <div className="header__nav-qr">
                     <img
-                      src={qrCodeNavImg}
+                      src={iconImg.qrCodeNavImg}
                       alt="qr-code"
                       className="header__nav-qr-img"
                     />
-                    <a href="# " className="header__nav-app">
+                    <Link href="" className="header__nav-app">
                       <img
-                        src={appShopeeImg}
+                        src={iconImg.appShopeeImg}
                         alt="qr-code"
                         className="header__nav-app-img"
                       />
                       <img
-                        src={ggShopeeImg}
+                        src={iconImg.ggShopeeImg}
                         alt="qr-code"
                         className="header__nav-app-img"
                       />
                       <img
-                        src={appGalShopeeImg}
+                        src={iconImg.appGalShopeeImg}
                         alt="qr-code"
                         className="header__nav-app-img header__nav-app-img--smaller"
                       />
-                    </a>
+                    </Link>
                   </div>
                 </li>
 

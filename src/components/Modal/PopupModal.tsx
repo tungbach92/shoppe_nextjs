@@ -17,7 +17,7 @@ interface Props {
   setPaymentMethodID?: (arg: string | null) => void,
   handlePaymentDeleteTrue?: () => void,
   deleteID?: string,
-  setDeleteID?: (arg: string | null) => void,
+  setDeleteID?: (arg: string) => void,
   isDeleteSelected?: boolean,
   setIsDeleteSelected?: (arg: boolean) => void,
   handleDeleteSelectionTrue?: () => void,
@@ -185,7 +185,7 @@ export default function PopupModal(props: Props) {
 
     // set those values to defaultm undefined if setState function true
     if (setDeleteID) {
-      setDeleteID(null);
+      setDeleteID('');
     }
     if (setPaymentMethodID) {
       setPaymentMethodID(null);
@@ -231,7 +231,7 @@ export default function PopupModal(props: Props) {
 
     if (isCartPage && deleteID) {
       handleDeleteCartTrue();
-      setDeleteID(null);
+      setDeleteID('');
     }
     if (isCartPage && isDeleteSelected) {
       handleDeleteSelectionTrue();

@@ -44,7 +44,7 @@ export default function AccountMenu({user}: Props) {
         </div>
         <div className="user-profile__name">{user?.displayName}</div>
 
-        <Link href="/profile" className="user-profile__name-btn">
+        <Link href="/account/profile" className="user-profile__name-btn">
           Sửa Hồ Sơ
         </Link>
       </div>

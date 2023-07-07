@@ -17,17 +17,17 @@ const useModal = () => {
     setIsPasswordResetShowing(value);
   }, []);
 
-  const toggleShipUnits = useCallback((value) => {
-    setIsShipUnits(value);
+  const toggleShipUnits = useCallback(() => {
+    setIsShipUnits(prevState => !prevState);
   }, []);
 
-  const toggleVoucher = useCallback((value) => {
-    setIsVoucherShowing(value);
+  const toggleVoucher = useCallback(() => {
+    setIsVoucherShowing(prevState => !prevState);
   }, []);
 
   const togglePopup = useCallback(() => {
-    setIsPopupShowing(!isPopupShowing);
-  }, [isPopupShowing]);
+    setIsPopupShowing(prevState => !prevState);
+  }, []);
 
   const toggleCardInfo = useCallback((value) => {
     setIsCardInfoShowing(value);

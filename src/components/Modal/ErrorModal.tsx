@@ -10,14 +10,11 @@ export default function ErrorModal({isErrorOpen}: Props) {
   return (
     <BaseModal isOpen={isErrorOpen} handleClose={() => {
     }}>
-      <div className="cart-product__modal-overlay"></div>
-      <div className="cart-product__modal-container">
-        <div className="cart-product__error-label">Không có sản phẩm.</div>
-        <div className="cart-product__modal-footer">
-          <Link href="/cart" className="btn cart-product__error-btn">
-            OK
-          </Link>
-        </div>
+      <div className="cart-product__error-label">Không có sản phẩm.</div>
+      <div className="cart-product__modal-footer">
+        <Link href="/cart" className="btn cart-product__error-btn">
+          OK
+        </Link>
       </div>
     </BaseModal>
   )

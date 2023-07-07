@@ -1,15 +1,13 @@
 import React, {useState} from "react";
-import useVoucher from "../../hooks/useVoucher";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import {voucherStore} from "@/store/voucherStore.atomProxy";
 
 interface Props {
-  isVoucherShowing: boolean
-  toggleVoucher: (value: boolean) => void
+  toggleVoucher: () => void
 }
 
-export default function VoucherModal({isVoucherShowing, toggleVoucher}: Props) {
-  const {voucher, isValidVoucher, updateVoucher} = useVoucher();
+export default function VoucherModal({toggleVoucher}: Props) {
   const [isVoucherNotifyShowing, setIsVoucherNotifyShowing] = useState(false);
 
   const formik = useFormik({
@@ -24,13 +22,13 @@ export default function VoucherModal({isVoucherShowing, toggleVoucher}: Props) {
     voucherCode = voucherCode.trim();
 
     if (voucherCode.length > 0) {
-      updateVoucher(voucherCode);
+      voucherStore.updateVoucher(voucherCode);
       setIsVoucherNotifyShowing(true);
     }
   }
 
   const handleBack = () => {
-    toggleVoucher(!isVoucherShowing);
+    toggleVoucher();
   };
   return (
     <div className="cart-product__modal">
@@ -81,7 +79,7 @@ export default function VoucherModal({isVoucherShowing, toggleVoucher}: Props) {
             )}
             {!Boolean(formik.errors.voucherCode) && isVoucherNotifyShowing && (
               <span className="cart-product__voucher-notify">
-                {isValidVoucher
+                {voucherStore.isValidVoucher
                   ? "Thành công"
                   : "Rất tiếc! Không thể tìm thấy mã voucher này.Xin vui lòng kiểm tra lại."}
               </span>

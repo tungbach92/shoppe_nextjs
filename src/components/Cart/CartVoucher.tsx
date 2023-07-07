@@ -1,19 +1,16 @@
 import {NumericFormat} from "react-number-format";
 import VoucherModal from "@/components/Modal/VoucherModal";
 import React from "react";
-import useModal from "@/hooks/useModal";
+import {voucherStoreAtom} from "@/store/voucherStore.atomProxy";
+import {useAtomValue} from "jotai";
 
 interface Props {
-  voucher: any
-  handleVoucherDelete: () => void
   handleVoucherModal: () => void
+  isVoucherShowing: boolean
 }
 
-export default function CartVoucher({voucher, handleVoucherDelete, handleVoucherModal}: Props) {
-  const {
-    isVoucherShowing,
-    toggleVoucher,
-  } = useModal();
+export default function CartVoucher({isVoucherShowing, handleVoucherModal}: Props) {
+  const {voucher, resetVoucher} = useAtomValue(voucherStoreAtom)
   return (
     <>
       {voucher && (
@@ -33,7 +30,9 @@ export default function CartVoucher({voucher, handleVoucherDelete, handleVoucher
       )}
       {voucher && (
         <span
-          onClick={handleVoucherDelete}
+          onClick={() => {
+            resetVoucher()
+          }}
           className="cart-product__voucher-del"
         >
                     Xóa
@@ -47,8 +46,7 @@ export default function CartVoucher({voucher, handleVoucherDelete, handleVoucher
       </div>
       {isVoucherShowing && (
         <VoucherModal
-          isVoucherShowing={isVoucherShowing}
-          toggleVoucher={toggleVoucher}
+          toggleVoucher={handleVoucherModal}
         ></VoucherModal>
       )}
     </>

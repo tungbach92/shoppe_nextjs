@@ -9,7 +9,6 @@ import {useUser} from "@/context/UserProvider";
 import {RootStateOrAny, useDispatch, useSelector} from "react-redux";
 import {deleteProducts, deleteSelectedProducts, updateProducts,} from "@/redux/cartSlice";
 import {useAddCartToFireStoreMutation, useFetchCartQuery,} from "@/services/cartApi";
-import useVoucher from "@/hooks/useVoucher";
 import withContainer from "@/components/withContainer";
 import Link from "next/link";
 import CartItem from "@/components/Cart/CartItem";
@@ -20,15 +19,17 @@ import useModal from "@/hooks/useModal";
 import PopupModal from "@/components/Modal/PopupModal";
 import AddCartModal from "@/components/Modal/AddCartModal";
 import {ClipLoading} from "@/components/ClipLoading";
+import {voucherStore, voucherStoreAtom} from "@/store/voucherStore.atomProxy";
+import {useAtomValue} from "jotai";
 
 interface Props {
   isCartPage: boolean
 }
 
 function CartContainer({isCartPage}: Props) {
+  const {voucher} = useAtomValue(voucherStoreAtom)
   const router = useRouter();
   const {user} = useUser();
-  const {voucher, resetVoucher} = useVoucher();
   const {isLoading: cartItemsLoading} = useFetchCartQuery(user);
   const cartProducts = useSelector((state: RootStateOrAny) => state.cart.products);
   const [addCartToFireStore] = useAddCartToFireStoreMutation();
@@ -48,6 +49,7 @@ function CartContainer({isCartPage}: Props) {
     isVoucherShowing, toggleVoucher, isAddCartPopup, toggleIsAddCardPopup, isPopupShowing, togglePopup,
   } = useModal();
   const [domLoaded, setDomLoaded] = useState(false);
+
   useEffect(() => {
     setDomLoaded(true);
   }, []);
@@ -196,11 +198,11 @@ function CartContainer({isCartPage}: Props) {
   };
 
   const handleVoucherModal = () => {
-    toggleVoucher(!isVoucherShowing);
+    toggleVoucher();
   };
 
   const handleVoucherDelete = () => {
-    resetVoucher();
+    voucherStore.resetVoucher();
   };
 
   const handleCheck = (item: any) => {
@@ -389,8 +391,7 @@ function CartContainer({isCartPage}: Props) {
                     Shopee Voucher
                   </span>
             </div>
-            <CartVoucher voucher={voucher} handleVoucherDelete={handleVoucherDelete}
-                         handleVoucherModal={handleVoucherModal}/>
+            <CartVoucher handleVoucherModal={handleVoucherModal} isVoucherShowing={isVoucherShowing}/>
           </div>
           <div className="cart-product__checkout-wrapper">
             <input

@@ -24,7 +24,6 @@ import {useUpdateDefaultPaymentMethodIDToStripe} from "@/hooks/useUpdateDefaultP
 import {resetCart} from "@/redux/cartSlice";
 import {useDispatch} from "react-redux";
 import {useAddCartToFireStoreMutation} from "@/services/cartApi";
-import useVoucher from "../../hooks/useVoucher";
 import withContainer from "../withContainer";
 import {checkoutDocRef, orderDocRef, productDocRef} from "@/common/dbRef";
 import {runTransaction, setDoc} from "firebase/firestore";
@@ -34,8 +33,24 @@ import VoucherModal from "@/components/Modal/VoucherModal";
 import CardInfoModal from "@/components/Modal/CardInfoModal";
 import PopupModal from "@/components/Modal/PopupModal";
 import Link from "next/link";
+import {Voucher, voucherStore, voucherStoreAtom} from "@/store/voucherStore.atomProxy";
+import {useAtomValue} from "jotai";
 
-function CheckoutContainer({isCheckoutPage}) {
+interface CheckoutContainerProps {
+  isCheckoutPage: boolean
+}
+
+interface ShipUnit {
+  id: number,
+  name: string,
+  price: number,
+  date: string,
+  method: string,
+  isDefault?: string
+}
+
+function CheckoutContainer({isCheckoutPage}: CheckoutContainerProps) {
+  const {voucher} = useAtomValue(voucherStoreAtom)
   const [addCartToFireStore] = useAddCartToFireStoreMutation();
   const dispatch = useDispatch();
   const {updateDefaultPaymentMethodID, updateDefaultPaymentMethodIDLoading} =
@@ -76,7 +91,6 @@ function CheckoutContainer({isCheckoutPage}) {
     toggleAddressAdd,
   } = useModal();
 
-  const {voucher, resetVoucher} = useVoucher();
   const {user} = useGetUserByObserver();
   const {defaultPaymentMethodID, setDefaultPaymentMethodID} =
     useDefaultPaymentMethodID(user);
@@ -86,11 +100,11 @@ function CheckoutContainer({isCheckoutPage}) {
   );
   const {shipInfos, updateShipInfoToFirebase} = useGetShipInfos(user);
   const stripe = useStripe();
-  const [shipUnit, setShipUnit] = useState({});
+  const [shipUnit, setShipUnit] = useState<ShipUnit | null>(null);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [isShipInfoChoosing, setIsShipInfoChoosing] = useState(false);
   const [isPaymentMethod, setIsPaymentMethod] = useState(false);
-  const [shipChecked, setShipChecked] = useState([]);
+  const [shipChecked, setShipChecked] = useState<any[]>([]);
   const [isCardPayment, setIsCardPayment] = useState(false);
   const [isDeliveryPayment, setIsDeliveryPayment] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -99,7 +113,7 @@ function CheckoutContainer({isCheckoutPage}) {
 
   const shipPriceProvince = useMemo(() => {
     let shipPrice = [0, 0];
-    shipInfos?.forEach((item) => {
+    shipInfos?.forEach((item: any) => {
       if (item.isDefault) {
         shipPrice = item.province.shipPrice;
       }
@@ -107,7 +121,7 @@ function CheckoutContainer({isCheckoutPage}) {
     return shipPrice;
   }, [shipInfos]);
 
-  const shipUnitList = useMemo(() => {
+  const shipUnitList: ShipUnit[] = useMemo(() => {
     return [
       {
         id: 0,
@@ -148,21 +162,19 @@ function CheckoutContainer({isCheckoutPage}) {
   // }, [setCheckoutItemsFromFirebase]);
 
   //Get and set province and set districts and district depend on province
-  const getShipPrice = (shipUnit) =>
+  const getShipPrice = (shipUnit: ShipUnit | null) =>
     Number(shipUnit?.price) ? Number(shipUnit?.price) : 0;
 
-  const getItemsPriceFinal = (items, shipUnit, voucher) => {
-    let result =
-      getItemsPriceTotal(items) +
+  const getItemsPriceFinal = (items: any, shipUnit: ShipUnit | null, voucher: Voucher | null) => {
+    return getItemsPriceTotal(items) +
       getShipPrice(shipUnit) -
       getVoucherDiscount(voucher, items);
-    return result;
   };
   const handleChangeShipInfoClick = () => {
     setIsShipInfoChoosing(!isShipInfoChoosing);
   };
 
-  const handleShowCardInfo = (e) => {
+  const handleShowCardInfo = () => {
     toggleCardInfo(true);
   };
 
@@ -172,11 +184,11 @@ function CheckoutContainer({isCheckoutPage}) {
       // make an docsId (array of doc name) first by checkoutItem.id
       // Promise.all([transaction.get(docsId)])
       // or forEach checkut and run multi transaction
-      let promises = checkoutItems.map((checkoutItem) => {
+      let promises = checkoutItems.map((checkoutItem: any) => {
         return transaction.get(productDocRef(checkoutItem.id));
       });
       return Promise.all(promises).then((docs) => {
-        checkoutItems.forEach((checkoutItem) =>
+        checkoutItems.forEach((checkoutItem: any) =>
           docs.forEach((doc) => {
             if (!doc.exists) {
               throw new Error("Document does not exist!");
@@ -199,10 +211,10 @@ function CheckoutContainer({isCheckoutPage}) {
         console.log(error);
       });
   };
-  const saveOrdersToFirebase = async (id, amount, created) => {
+  const saveOrdersToFirebase = async (id: any, amount: number, created: any) => {
     try {
-      let shipInfo;
-      shipInfos.forEach((item) => {
+      let shipInfo = {};
+      shipInfos.forEach((item: any) => {
         if (item.isDefault) {
           const {isDefault, province, district, street, ward, ...rest} = item;
           shipInfo = {...rest};
@@ -219,7 +231,7 @@ function CheckoutContainer({isCheckoutPage}) {
     }
   };
 
-  const saveCheckoutItemsToFirebase = async (checkoutItems) => {
+  const saveCheckoutItemsToFirebase = async (checkoutItems: any) => {
     try {
       const created = Date.now();
       user?.uid && await setDoc(checkoutDocRef(user.uid), {
@@ -231,7 +243,7 @@ function CheckoutContainer({isCheckoutPage}) {
     }
   };
 
-  const handleOrderSucceeded = async ({id, amount, created}) => {
+  const handleOrderSucceeded = async ({id, amount, created}: { id: any, amount: number, created: any }) => {
     try {
       setLoadingOrder(true)
       await saveOrdersToFirebase(id, amount, created);
@@ -254,10 +266,10 @@ function CheckoutContainer({isCheckoutPage}) {
   //Update after edit shipchecked + edit info
   useEffect(() => {
     //set checked, set shipUnit
-    let checked = [];
+    let checked: any[] = [];
     const setCheckedAndShipUnit = () => {
       shipUnitList.forEach((item) => {
-        if (item.id === shipUnit.id) {
+        if (item.id === shipUnit?.id) {
           checked[item.id] = true;
           setShipUnit(item);
         } else {
@@ -270,7 +282,7 @@ function CheckoutContainer({isCheckoutPage}) {
     setCheckedAndShipUnit();
   }, [shipUnit, shipUnitList]);
 
-  const handlePaymentMethodSelect = (e) => {
+  const handlePaymentMethodSelect = (e: any) => {
     const paymentMethod = e.target.innerText;
     if (paymentMethod === "Thẻ Tín dụng/Ghi nợ") {
       setIsCardPayment(true);
@@ -284,11 +296,11 @@ function CheckoutContainer({isCheckoutPage}) {
     }
   };
 
-  const handlePaymentMethodChange = (e) => {
+  const handlePaymentMethodChange = () => {
     setIsPaymentMethod(!isPaymentMethod);
   };
 
-  const handlePaymentDefaultChange = async (paymentMethodID) => {
+  const handlePaymentDefaultChange = async (paymentMethodID: any) => {
     const defaultPaymentMethodID = await updateDefaultPaymentMethodID(
       user,
       paymentMethodID
@@ -301,12 +313,12 @@ function CheckoutContainer({isCheckoutPage}) {
     setName("");
     setPhone("");
     setStreet("");
-    setProvince(undefined);
-    setDistrict(undefined);
-    setWard(undefined);
+    setProvince(null);
+    setDistrict(null);
+    setWard(null);
   };
 
-  const handleShipInfoDefaultChange = async (e) => {
+  const handleShipInfoDefaultChange = async (e: any) => {
     const index = e.target.value;
     let tempShipInfos = [...shipInfos];
     tempShipInfos = tempShipInfos.map((shipInfo) =>
@@ -327,18 +339,17 @@ function CheckoutContainer({isCheckoutPage}) {
     setIsShipInfoChoosing(!isShipInfoChoosing);
   };
 
-  const handleShipUnitModal = (e) => {
-    toggleShipUnits(!isShipUnits);
+  const handleShipUnitModal = () => {
+    toggleShipUnits();
   };
 
-  const handleVoucherModal = (e) => {
-    toggleVoucher(!isVoucherShowing);
+  const handleVoucherModal = () => {
+    toggleVoucher();
   };
 
   const handleOrder = async () => {
     if (
-      isCardInfoShowing === false &&
-      Object.keys(shipUnit).length > 0 &&
+      !isCardInfoShowing && shipUnit && Object.keys(shipUnit).length > 0 &&
       paymentMethod.length > 0
     ) {
       if (isCardPayment && defaultPaymentMethodID.length === 0) {
@@ -347,8 +358,8 @@ function CheckoutContainer({isCheckoutPage}) {
 
       if (isCardPayment && defaultPaymentMethodID) {
         setProcessing(true);
-        let defaultshipInfo;
-        shipInfos.forEach((item) => {
+        let defaultshipInfo: any;
+        shipInfos.forEach((item: any) => {
           if (item.isDefault) {
             defaultshipInfo = {...item};
           }
@@ -368,13 +379,13 @@ function CheckoutContainer({isCheckoutPage}) {
             email: user.email,
             shipping: {
               // shipping detail when confirm paymentIntent-> charge card
-              name: defaultshipInfo.name,
-              phone: defaultshipInfo.phone,
+              name: defaultshipInfo?.name,
+              phone: defaultshipInfo?.phone,
               address: {
-                state: defaultshipInfo.province.name,
-                city: defaultshipInfo.district.name,
-                line1: defaultshipInfo.ward.name,
-                line2: defaultshipInfo.street,
+                state: defaultshipInfo?.province.name,
+                city: defaultshipInfo?.district.name,
+                line1: defaultshipInfo?.ward.name,
+                line2: defaultshipInfo?.street,
                 country: "VN",
                 postal_code: 10000,
               },
@@ -394,10 +405,9 @@ function CheckoutContainer({isCheckoutPage}) {
             );
             // Tương đương với sd PPaymentIntents method to confirm paymentIntent
 
-            stripe
-              .confirmCardPayment(result.data.clientSecret, {
-                payment_method: result.data.paymentMethod,
-              })
+            stripe?.confirmCardPayment(result.data.clientSecret, {
+              payment_method: result.data.paymentMethod,
+            })
               .then((stripeJsResult) => {
                 if (
                   stripeJsResult.error &&
@@ -467,7 +477,7 @@ function CheckoutContainer({isCheckoutPage}) {
   };
 
   const handleVoucherDelete = () => {
-    resetVoucher();
+    voucherStore.resetVoucher();
   };
 
   return (
@@ -506,11 +516,8 @@ function CheckoutContainer({isCheckoutPage}) {
                   street={street}
                   setStreet={setStreet}
                   district={district}
-                  setDistrict={setDistrict}
                   province={province}
-                  setProvince={setProvince}
                   ward={ward}
-                  setWard={setWard}
                   phone={phone}
                   setPhone={setPhone}
                   provinces={provinces}
@@ -532,14 +539,14 @@ function CheckoutContainer({isCheckoutPage}) {
           </div>
           <div className="checkout-product__address-container">
             {isShipInfoChoosing
-              ? shipInfos?.map((item, index) => (
+              ? shipInfos?.map((item: any, index: number) => (
                 <div
                   key={index}
                   className="checkout-product__address-content"
                 >
                   <input
                     type="radio"
-                    id={index}
+                    id={index.toString()}
                     name="shipInfo"
                     value={index}
                     checked={item.isDefault === true}
@@ -559,17 +566,16 @@ function CheckoutContainer({isCheckoutPage}) {
                   )}
                 </div>
               ))
-              : shipInfos?.map(
-                (item, index) =>
-                  item.isDefault && (
-                    <div
-                      key={index}
-                      className="checkout-product__address-content"
-                    >
+              : shipInfos?.map((item: any, index: number) =>
+                item.isDefault && (
+                  <div
+                    key={index}
+                    className="checkout-product__address-content"
+                  >
                         <span className="checkout-product__user-name">
                           {item.name} {item.phone}
                         </span>
-                      <span className="checkout-product__user-address">
+                    <span className="checkout-product__user-address">
                           {item.fullAddress}
                         </span>
                       <span className="checkout-product__default">
@@ -618,7 +624,7 @@ function CheckoutContainer({isCheckoutPage}) {
           <span className="checkout-product__total">Thành tiền</span>
         </div>
         <ul className="checkout-product__item-list">
-          {checkoutItems?.map((item, index) => (
+          {checkoutItems?.map((item: any, index: number) => (
             <div key={index} className="checkout-product-item-wrapper">
               <li className="checkout-product__item">
                 <div className="checkout-product__name-wrapper">
@@ -696,20 +702,20 @@ function CheckoutContainer({isCheckoutPage}) {
               Đơn vị vận chuyển:
             </span>
 
-            {Object.keys(shipUnit).length === 0 ? (
+            {shipUnit && Object.keys(shipUnit).length === 0 ? (
               <span className="checkout-product__transport-notchoose">
                 Chưa chọn đơn vị vận chuyển
               </span>
             ) : (
               <span className="checkout-product__transport-info">
                 <span className="checkout-product__transport-name">
-                  {shipUnit.name}
+                  {shipUnit?.name}
                 </span>
                 <span className="checkout-product__transport-date">
-                  {shipUnit.date}
+                  {shipUnit?.date}
                 </span>
                 <span className="checkout-product__transport-method">
-                  {shipUnit.method}
+                  {shipUnit?.method}
                 </span>
               </span>
             )}
@@ -718,22 +724,22 @@ function CheckoutContainer({isCheckoutPage}) {
                 onClick={handleShipUnitModal}
                 className="checkout-product__transport-action"
               >
-                {Object.keys(shipUnit).length <= 0 ? "Chọn" : "Thay đổi"}
+                {shipUnit && Object.keys(shipUnit).length <= 0 ? "Chọn" : "Thay đổi"}
               </span>
             )}
 
-            {isShipUnits && (
-              <ShipUnitsModal
-                isShipUnits={isShipUnits}
-                toggleShipUnits={toggleShipUnits}
-                shipUnit={shipUnit}
-                shipUnitList={shipUnitList}
-                setShipUnit={setShipUnit}
-                shipChecked={shipChecked}
-                setShipChecked={setShipChecked}
-              ></ShipUnitsModal>
-            )}
-            {Object.keys(shipUnit).length > 0 && (
+            <ShipUnitsModal
+              isOpen={isShipUnits}
+              handleClose={toggleShipUnits}
+              isShipUnits={isShipUnits}
+              toggleShipUnits={toggleShipUnits}
+              shipUnit={shipUnit}
+              shipUnitList={shipUnitList}
+              setShipUnit={setShipUnit}
+              shipChecked={shipChecked}
+              setShipChecked={setShipChecked}
+            ></ShipUnitsModal>
+            {shipUnit && Object.keys(shipUnit).length > 0 && (
               <span className="checkout-product__transport-price">
                 <NumericFormat
                   value={shipUnit.price}
@@ -896,7 +902,6 @@ function CheckoutContainer({isCheckoutPage}) {
             </span>
             {isVoucherShowing && (
               <VoucherModal
-                isVoucherShowing={isVoucherShowing}
                 toggleVoucher={toggleVoucher}
               ></VoucherModal>
             )}
@@ -956,11 +961,11 @@ function CheckoutContainer({isCheckoutPage}) {
               {isCardPayment && (
                 <div className="checkout-product__card-list">
                   {paymentMethodList?.length > 0 &&
-                    paymentMethodList.map((item, index) => (
+                    paymentMethodList.map((item: any, index) => (
                       <div key={index} className="checkout-product__card-item">
                         <input
                           type="radio"
-                          id={index}
+                          id={index.toString()}
                           name="payment"
                           value={index}
                           checked={item.id === defaultPaymentMethodID}

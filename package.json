@@ -35,6 +35,8 @@
     "eslint-config-next": "13.2.4",
     "firebase": "9.17.1",
     "formik": "^2.2.9",
+    "jotai": "^2.2.2",
+    "jotai-valtio": "^0.3.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "next": "13.2.4",
@@ -52,6 +54,7 @@
     "stripe": "^10.8.0",
     "styled-components": "^5.3.5",
     "typescript": "5.0.2",
+    "valtio": "^1.10.6",
     "web-vitals": "^1.1.1",
     "yup": "^0.32.11"
   },
