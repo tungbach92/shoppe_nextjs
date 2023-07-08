@@ -19,7 +19,7 @@ import useModal from "@/hooks/useModal";
 import PopupModal from "@/components/Modal/PopupModal";
 import AddCartModal from "@/components/Modal/AddCartModal";
 import {ClipLoading} from "@/components/ClipLoading";
-import {voucherStore, voucherStoreAtom} from "@/store/voucherStore.atomProxy";
+import {voucherStoreAtom, voucherStoreProxy} from "@/store/voucherStore.atomProxy";
 import {useAtomValue} from "jotai";
 
 interface Props {
@@ -202,7 +202,7 @@ function CartContainer({isCartPage}: Props) {
   };
 
   const handleVoucherDelete = () => {
-    voucherStore.resetVoucher();
+    voucherStoreProxy.resetVoucher();
   };
 
   const handleCheck = (item: any) => {

@@ -33,7 +33,7 @@ import VoucherModal from "@/components/Modal/VoucherModal";
 import CardInfoModal from "@/components/Modal/CardInfoModal";
 import PopupModal from "@/components/Modal/PopupModal";
 import Link from "next/link";
-import {Voucher, voucherStore, voucherStoreAtom} from "@/store/voucherStore.atomProxy";
+import {voucherStoreAtom, voucherStoreProxy} from "@/store/voucherStore.atomProxy";
 import {useAtomValue} from "jotai";
 
 interface CheckoutContainerProps {
@@ -477,7 +477,7 @@ function CheckoutContainer({isCheckoutPage}: CheckoutContainerProps) {
   };
 
   const handleVoucherDelete = () => {
-    voucherStore.resetVoucher();
+    voucherStoreProxy.resetVoucher();
   };
 
   return (
@@ -578,10 +578,10 @@ function CheckoutContainer({isCheckoutPage}: CheckoutContainerProps) {
                     <span className="checkout-product__user-address">
                           {item.fullAddress}
                         </span>
-                      <span className="checkout-product__default">
+                    <span className="checkout-product__default">
                           Mặc định
                         </span>
-                      <span
+                    <span
                         onClick={handleChangeShipInfoClick}
                         className="checkout-product__address-action"
                       >

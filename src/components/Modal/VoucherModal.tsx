@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {voucherStore} from "@/store/voucherStore.atomProxy";
+import {voucherStoreProxy} from "@/store/voucherStore.atomProxy";
 
 interface Props {
   toggleVoucher: () => void
@@ -22,7 +22,7 @@ export default function VoucherModal({toggleVoucher}: Props) {
     voucherCode = voucherCode.trim();
 
     if (voucherCode.length > 0) {
-      voucherStore.updateVoucher(voucherCode);
+      voucherStoreProxy.updateVoucher(voucherCode);
       setIsVoucherNotifyShowing(true);
     }
   }
@@ -79,7 +79,7 @@ export default function VoucherModal({toggleVoucher}: Props) {
             )}
             {!Boolean(formik.errors.voucherCode) && isVoucherNotifyShowing && (
               <span className="cart-product__voucher-notify">
-                {voucherStore.isValidVoucher
+                {voucherStoreProxy.isValidVoucher
                   ? "Thành công"
                   : "Rất tiếc! Không thể tìm thấy mã voucher này.Xin vui lòng kiểm tra lại."}
               </span>
