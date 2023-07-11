@@ -21,7 +21,7 @@ export default function Account() {
 Account.getLayout = function (page: ReactElement) {
   return (
     <Elements stripe={stripePromise}>
-      <Layout>{page}</Layout>
+      <Layout isAccountPage={true}>{page}</Layout>
     </Elements>
   )
 }

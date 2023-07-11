@@ -1,14 +1,25 @@
 import Link from "next/link";
 import NavLink from "@/components/base/NavLink";
+import {useMediaQuery} from "@mui/material";
+import * as React from "react";
+import {useSetAtom} from "jotai";
+import {anchorElAtom} from "@/store/anchorEl.atom";
 
 interface Props {
   user: any
 }
 
 export default function AccountMenu({user}: Props) {
+  const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
+  const setAnchorEl = useSetAtom(anchorElAtom)
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <div className="user-profile">
-      <div className="user-profile__name-container">
+    <div className={`user-profile ${xsBreakpointMatches && 'px-4'}`}>
+      {!xsBreakpointMatches && <div className="user-profile__name-container">
         <div className="user-profile__image-container">
           {user?.photoURL ? (
             <img
@@ -47,22 +58,23 @@ export default function AccountMenu({user}: Props) {
         <Link href="/account/profile" className="user-profile__name-btn">
           Sửa Hồ Sơ
         </Link>
-      </div>
-      <div className="user-profile__category">
+      </div>}
+      <div className="user-profile__category text-right">
         {/* <div className="user-profile__my-user">Tài Khoản Của Tôi</div> */}
-        <NavLink exact={true} href="/account/profile" className="user-profile__my-info" replace>
+        <NavLink exact={true} href="/account/profile" className="user-profile__my-info" onClick={handleClose} replace>
           Hồ sơ
         </NavLink>
-        <NavLink exact={true} href="/account/payment" className="user-profile__my-bank" replace>
+        <NavLink exact={true} href="/account/payment" className="user-profile__my-bank" onClick={handleClose} replace>
           Thẻ tín dụng/ghi nợ
         </NavLink>
-        <NavLink exact={true} href="/account/address" className="user-profile__my-adress" replace>
+        <NavLink exact={true} href="/account/address" className="user-profile__my-adress" onClick={handleClose} replace>
           Địa chỉ
         </NavLink>
-        <NavLink exact={true} href="/account/password" className="user-profile__change-password" replace>
+        <NavLink exact={true} href="/account/password" className="user-profile__change-password" onClick={handleClose}
+                 replace>
           Đổi mật khẩu
         </NavLink>
-        <NavLink exact={true} href="/account/purchase" className="user-profile__order" replace>
+        <NavLink exact={true} href="/account/purchase" className="user-profile__order" onClick={handleClose} replace>
           Đơn Mua
         </NavLink>
       </div>

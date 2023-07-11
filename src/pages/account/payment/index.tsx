@@ -28,7 +28,7 @@ function Payment() {
 
 Payment.getLayout = function (page: ReactElement) {
   return (
-    <Layout>{page}</Layout>
+    <Layout isAccountPage={true}>{page}</Layout>
   )
 }
 

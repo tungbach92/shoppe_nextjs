@@ -24,7 +24,7 @@ function Email() {
 }
 
 Email.getLayout = function (page: ReactElement) {
-  return <Layout>{page}</Layout>
+  return <Layout isAccountPage={true}>{page}</Layout>
 }
 
 export default withContainer(Email, true)

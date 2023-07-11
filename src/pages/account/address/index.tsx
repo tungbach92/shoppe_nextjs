@@ -1,23 +1,11 @@
 import React, {ReactElement} from "react";
 import Layout from "@/components/Layout/Layout";
-import AccountAddress from "@/components/Account/AccountAddress";
-import AccountMenu from "@/components/Account/AccountMenu";
-import {useUser} from "@/context/UserProvider";
-import withContainer from "@/components/withContainer";
+import AccountAddressContainer from "@/components/Account/AccountAddressContainer";
 
-function Address() {
-  const {user} = useUser();
-
-  return (
-    <div className="main">
-      <AccountMenu user={user}/>
-      <div className="user-content">
-        <AccountAddress/>
-      </div>
-    </div>
-  )
+export default function Address() {
+  return <AccountAddressContainer/>
 }
+
 Address.getLayout = function (page: ReactElement) {
-  return <Layout>{page}</Layout>
+  return <Layout isAccountPage={true}>{page}</Layout>
 }
-export default withContainer(Address, true);

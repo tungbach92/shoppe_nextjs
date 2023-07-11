@@ -11,6 +11,7 @@ interface Props {
   isLoginPage?: boolean,
   isRegisterPage?: boolean,
   headerText?: string,
+  isAccountPage?: boolean
 }
 
 export default function Layout({
@@ -21,6 +22,7 @@ export default function Layout({
                                  isLoginPage = false,
                                  isRegisterPage = false,
                                  headerText = '',
+                                 isAccountPage = false
                                }: Props) {
   return (
     <>
@@ -31,9 +33,10 @@ export default function Layout({
         <link rel="icon" href="/favicon.ico"/>
       </Head>
       <Header isProductPage={isProductPage} isCartPage={isCartPage} isCheckoutPage={isCheckoutPage}
-              isLoginPage={isLoginPage} isRegisterPage={isRegisterPage} headerText={headerText}></Header>
+              isLoginPage={isLoginPage} isRegisterPage={isRegisterPage} isAccountPage={isAccountPage}
+              headerText={headerText}/>
       {children}
-      <Footer></Footer>
+      <Footer/>
     </>
   )
 }
