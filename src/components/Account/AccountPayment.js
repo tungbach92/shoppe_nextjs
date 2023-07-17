@@ -4,17 +4,18 @@ import PopupModal from "../Modal/PopupModal";
 import CardInfoModal from "../Modal/CardInfoModal";
 import usePaymentMethodList from "../../hooks/usePaymentMethodList";
 import useDefaultPaymentMethodID from "../../hooks/useDefaultPaymentMethodID";
-import {getCardImgByBrand} from "../../services/getCardImgByBrand";
-import {detachPaymentMethodID} from "../../services/detachPaymentMethodID";
-import {useUser} from "../../context/UserProvider";
+import {getCardImgByBrand} from "@/services/getCardImgByBrand";
+import {detachPaymentMethodID} from "@/services/detachPaymentMethodID";
+import {useUser} from "@/context/UserProvider";
 import getCustomerID from "../../services/getCustomerID";
 import useNavigateAndRefreshBlocker from "../../hooks/useNavigateAndRefreshBlocker";
 import {ClipLoading} from "../ClipLoading";
-import {useUpdateDefaultPaymentMethodIDToStripe} from "../../hooks/useUpdateDefaultPaymentMethodIDToStripe";
+import {useUpdateDefaultPaymentMethodIDToStripe} from "@/hooks/useUpdateDefaultPaymentMethodIDToStripe";
+import {useMediaQuery} from "@mui/material";
 
 const AccountPayment = () => {
-  const { user } = useUser();
-  const { defaultPaymentMethodID, setDefaultPaymentMethodID } =
+  const {user} = useUser();
+  const {defaultPaymentMethodID, setDefaultPaymentMethodID} =
     useDefaultPaymentMethodID(user);
   const {
     paymentMethodList,
@@ -22,12 +23,14 @@ const AccountPayment = () => {
     setPaymentMethodList,
     paymentMethodListLoading,
   } = usePaymentMethodList(user, setDefaultPaymentMethodID);
-  const { updateDefaultPaymentMethodID, updateDefaultPaymentMethodIDLoading } =
+  const {updateDefaultPaymentMethodID, updateDefaultPaymentMethodIDLoading} =
     useUpdateDefaultPaymentMethodIDToStripe();
   const [paymentMethodID, setPaymentMethodID] = useState();
   const [deletePaymentLoading, setDeletePaymentLoading] = useState(false);
-  const { isPopupShowing, togglePopup, isCardInfoShowing, toggleCardInfo } =
+  const {isPopupShowing, togglePopup, isCardInfoShowing, toggleCardInfo} =
     useModal();
+  const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
+
 
   useNavigateAndRefreshBlocker(
     deletePaymentLoading || updateDefaultPaymentMethodIDLoading
@@ -64,7 +67,7 @@ const AccountPayment = () => {
     <>
       <div className="user-profile__title-container">
         <div className="user-profile__title">
-          <div className="user-profile__label">
+          <div className={`user-profile__label ${xsBreakpointMatches && 'flex-col'}`}>
             Thẻ Tín Dụng/Ghi Nợ
             <button
               onClick={handleAddCardClick}

@@ -1378,6 +1378,9 @@ header {
   flex: none;
   flex-basis: 51rem;
   color: var(--text-color);
+  @include mobile {
+    flex-basis: unset;
+  }
 }
 
 .cart-product__price,
@@ -2001,10 +2004,16 @@ header {
   width: 50rem;
   padding: 3rem 3rem 0rem;
   background: var(--white-color);
+  @include mobile {
+    width: 90%;
+  }
 }
 
 .address-profile__modal-container {
   width: 62rem;
+  @include mobile {
+    width: 90%;
+  }
 }
 
 .forgot-password__modal-container {
@@ -2198,6 +2207,9 @@ header {
 .cart-product__modal-footer {
   padding: 2.5rem 0rem;
   text-align: end;
+  @include mobile {
+    text-align: center;
+  }
 }
 
 .cart-product__modal-close {
@@ -3437,6 +3449,7 @@ header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.09);
   @include mobile {
     flex-wrap: wrap;
+    padding: 3rem 0;
   }
 }
 
@@ -3504,6 +3517,9 @@ header {
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
   grid-template-columns: 1fr 38rem;
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
 }
 
 .user-profile__oldpassword-label {
@@ -3883,6 +3899,9 @@ header {
   column-gap: 1rem;
   row-gap: 1.4rem;
   grid-template-columns: 18rem 18rem 18rem;
+  @include mobile {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .address-profile__name {
@@ -4062,6 +4081,9 @@ header {
   align-items: center;
   width: 30rem;
   justify-content: flex-end;
+  @include mobile {
+    width: unset;
+  }
 }
 
 .payment-profile__card-delete {
