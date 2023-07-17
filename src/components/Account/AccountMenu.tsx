@@ -59,7 +59,7 @@ export default function AccountMenu({user}: Props) {
           Sửa Hồ Sơ
         </Link>
       </div>}
-      <div className="user-profile__category text-right">
+      <div className={`user-profile__category ${xsBreakpointMatches && 'text-right'}`}>
         {/* <div className="user-profile__my-user">Tài Khoản Của Tôi</div> */}
         <NavLink exact={true} href="/account/profile" className="user-profile__my-info" onClick={handleClose} replace>
           Hồ sơ

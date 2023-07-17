@@ -3412,7 +3412,9 @@ header {
   align-items: center;
   justify-content: space-between;
   @include mobile {
-    justify-content: space-around;
+    gap: 4rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
@@ -4012,6 +4014,9 @@ header {
   align-items: center;
   justify-content: space-between;
   font-size: 1.4rem;
+  @include mobile {
+    flex-wrap: wrap;
+  }
 }
 
 .payment-profile__payment-empty {
