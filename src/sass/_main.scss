@@ -4151,7 +4151,7 @@ header {
   width: 30rem;
   justify-content: flex-end;
   @include mobile {
-    width: auto;
+    width: 100%;
   }
 }
 
