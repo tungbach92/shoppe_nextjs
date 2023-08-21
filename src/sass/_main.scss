@@ -1888,7 +1888,7 @@ header {
 .cart-product__checkout-wrapper {
   grid-column-start: 1;
   grid-column-end: 4;
-  padding: 1.6rem 2rem;
+  padding: 1.6rem 4.7rem;
   display: flex;
   font-size: 1.6rem;
   align-items: center;
@@ -3453,7 +3453,7 @@ header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.09);
   @include mobile {
     flex-wrap: wrap;
-    padding: 3rem;
+    padding: 2rem;
   }
 }
 

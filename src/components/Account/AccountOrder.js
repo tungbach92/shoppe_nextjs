@@ -9,6 +9,7 @@ import usePagination from "../../hooks/usePagination";
 import {useUser} from "../../context/UserProvider";
 import {ClipLoading} from "../ClipLoading";
 import Link from "next/link";
+import {useMediaQuery} from "@mui/material";
 
 const AccountOrder = () => {
   const {user} = useUser();
@@ -18,6 +19,7 @@ const AccountOrder = () => {
   const [searchOrderItemsFiltered, setSearchOrderItemsFiltered] = useState([]);
   const {pageIndex, setPageIndex, orderPageSize, pageTotal} = usePagination(searchOrderItemsFiltered);
   const currentOrderItems = [...searchOrderItemsFiltered].slice((pageIndex - 1) * orderPageSize, pageIndex * orderPageSize);
+  const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
 
   const handleSearchInput = (e) => {
     const text = e.target.value;
@@ -153,7 +155,7 @@ const AccountOrder = () => {
         <div className={'bg-white text-[1.4rem]'}>
           <table style={{
             borderCollapse: 'inherit',
-            borderSpacing: '24px'
+            borderSpacing: xsBreakpointMatches ? '6px' : '24px'
           }}>
             <thead>
             <tr>
