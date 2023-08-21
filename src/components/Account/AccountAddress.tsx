@@ -184,7 +184,7 @@ const AccountAddress = () => {
                       ? undefined
                       : () => handleDefaultClick(index)
                   }
-                  className="btn address-profile__btn-default w-full md:w-auto"
+                  className="btn address-profile__btn-default w-full md:w-clamp"
                 >
                   Thiết lập mặc định
                 </button>

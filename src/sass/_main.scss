@@ -3846,14 +3846,12 @@ header {
 }
 
 .address-profile__user-container {
-  margin-left: 14.4rem;
   display: grid;
   row-gap: 1rem;
   column-gap: 2rem;
   grid-template-columns: 1fr 33rem;
   font-size: 1.4rem;
   @include mobile {
-    margin-left: unset;
     grid-template-columns: 95px 1fr;
   }
 }
