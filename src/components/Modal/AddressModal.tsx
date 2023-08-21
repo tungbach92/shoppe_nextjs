@@ -46,13 +46,13 @@ type RefButtonProps = ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement
 
 interface AddressModalProps {
   isAddressAddShowing: boolean
-  toggleAddressAdd: any
+  toggleAddressAdd: () => void
   phone: string
-  setPhone: any
+  setPhone: React.Dispatch<React.SetStateAction<string>>
   name: string
-  setName: any
+  setName: React.Dispatch<React.SetStateAction<string>>
   street: string
-  setStreet: any
+  setStreet: React.Dispatch<React.SetStateAction<string>>
   ward: any
   province: any
   district: any
@@ -87,8 +87,7 @@ const AddressModal = ({
                       }: AddressModalProps) => {
   const {user} = useUser();
   const {shipInfos, updateShipInfoToFirebase} = useGetShipInfos(user);
-  const [errors, setErrors] = useState<any>({});
-  console.log(shipInfos)
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const validateName = () => {
     let error: string;
     let isNameValid = true
@@ -169,7 +168,7 @@ const AddressModal = ({
   };
   //TODO use formik
   const handleBack = () => {
-    toggleAddressAdd(false);
+    toggleAddressAdd();
     // setIsNameValid(null);
     // setIsPhoneValid(null);
     // setIsStreetValid(null);
@@ -179,7 +178,7 @@ const AddressModal = ({
     setErrors({});
   };
 
-  const handleApply = (e: any) => {
+  const handleApply = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const isNameValid = validateName();
     const isPhoneValid = validatePhone();
@@ -187,23 +186,14 @@ const AddressModal = ({
     const isDistrictValid = validateDistrict();
     const isWardsValid = validateWard();
     const isStreetValid = validateStreet();
-    debugger
-    if (
-      !isNameValid ||
-      !isPhoneValid ||
-      !isProvinceValid ||
-      !isDistrictValid ||
-      !isWardsValid ||
-      !isStreetValid
-    ) {
-      return;
-    }
+    if (!isNameValid || !isPhoneValid || !isProvinceValid || !isDistrictValid || !isWardsValid || !isStreetValid) return
+
     if (shipInfoIndex !== null) {
       updateShipInfo().then();
     } else {
       addNewShipInfo().then();
     }
-    toggleAddressAdd(!isAddressAddShowing);
+    toggleAddressAdd();
   };
 
   const updateShipInfo = async () => {
@@ -318,7 +308,7 @@ const AddressModal = ({
                 value={province?.name || null}
                 onChange={handleProvinceChoose}
                 onBlur={validateProvince}
-                disablePortal
+                // disablePortal
                 id="province"
                 options={provinces.map((province) => province.name)}
                 renderInput={(params) => (
@@ -341,7 +331,7 @@ const AddressModal = ({
                 value={district?.name || null}
                 onChange={handleDistrictChoose}
                 onBlur={validateDistrict}
-                disablePortal
+                // disablePortal
                 id="district"
                 options={districts.map((district) => district.name)}
                 renderInput={(params) => (
@@ -363,7 +353,7 @@ const AddressModal = ({
                 value={ward?.name || null}
                 onChange={handleWardChoose}
                 onBlur={validateWard}
-                disablePortal
+                // disablePortal
                 id="ward"
                 options={wards.map((ward) => ward.name)}
                 renderInput={(params) => (

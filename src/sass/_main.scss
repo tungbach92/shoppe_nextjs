@@ -3900,7 +3900,7 @@ header {
   row-gap: 1.4rem;
   grid-template-columns: 18rem 18rem 18rem;
   @include mobile {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -3909,6 +3909,9 @@ header {
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 2;
+  @include mobile {
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__phone {
@@ -3916,6 +3919,10 @@ header {
   grid-column-end: 3;
   grid-row-start: 1;
   grid-row-end: 2;
+  @include mobile {
+    grid-row: 3;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__name-error {
@@ -3925,6 +3932,10 @@ header {
   grid-row-end: 3;
   color: var(--primary-color);
   font-size: 1.2rem;
+  @include mobile {
+    grid-row: 2;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__phone-error {
@@ -3934,6 +3945,10 @@ header {
   grid-row-end: 3;
   color: var(--primary-color);
   font-size: 1.2rem;
+  @include mobile {
+    grid-row: 4;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__province {
@@ -3941,6 +3956,10 @@ header {
   grid-column-end: 2;
   grid-row-start: 3;
   grid-row-end: 4;
+  @include mobile {
+    grid-row: 5;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__district {
@@ -3948,6 +3967,10 @@ header {
   grid-column-end: 3;
   grid-row-start: 3;
   grid-row-end: 4;
+  @include mobile {
+    grid-row: 7;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__ward {
@@ -3955,6 +3978,10 @@ header {
   grid-column-end: 4;
   grid-row-start: 3;
   grid-row-end: 4;
+  @include mobile {
+    grid-row: 9;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__province-error {
@@ -3964,6 +3991,10 @@ header {
   grid-row-end: 5;
   color: var(--primary-color);
   font-size: 1.2rem;
+  @include mobile {
+    grid-row: 6;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__district-error {
@@ -3973,6 +4004,10 @@ header {
   grid-row-end: 5;
   color: var(--primary-color);
   font-size: 1.2rem;
+  @include mobile {
+    grid-row: 8;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__ward-error {
@@ -3982,6 +4017,10 @@ header {
   grid-row-end: 5;
   color: var(--primary-color);
   font-size: 1.2rem;
+  @include mobile {
+    grid-row: 10;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__address-detail {
@@ -3989,6 +4028,10 @@ header {
   grid-column-end: 4;
   grid-row-start: 5;
   grid-row-end: 6;
+  @include mobile {
+    grid-row: 11;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__street-error {
@@ -3998,6 +4041,10 @@ header {
   grid-row-end: 7;
   color: var(--primary-color);
   font-size: 1.2rem;
+  @include mobile {
+    grid-row: 12;
+    grid-column: 1/span3;
+  }
 }
 
 .address-profile__popup-footer {

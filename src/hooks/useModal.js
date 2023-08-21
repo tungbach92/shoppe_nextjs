@@ -9,8 +9,8 @@ const useModal = () => {
   const [isPasswordResetShowing, setIsPasswordResetShowing] = useState(false);
   const [isAddressAddShowing, setIsAddressAddShowing] = useState(false);
 
-  const toggleAddressAdd = useCallback((value) => {
-    setIsAddressAddShowing(value);
+  const toggleAddressAdd = useCallback(() => {
+    setIsAddressAddShowing(prev => !prev);
   }, []);
 
   const togglePasswordReset = useCallback((value) => {
