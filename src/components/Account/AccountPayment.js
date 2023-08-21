@@ -112,7 +112,7 @@ const AccountPayment = () => {
               <div className="payment-profile__card-number">
                 **** **** **** {item.card.last4}
               </div>
-              <div className="payment-profile__btn-container w-full">
+              <div className="payment-profile__btn-container">
                 {item.id !== defaultPaymentMethodID &&
                   !updateDefaultPaymentMethodIDLoading &&
                   !deletePaymentLoading && (

@@ -176,7 +176,7 @@ const AccountOrder = () => {
             <tbody>
             {item.data.basket.map((basketItem, index) => (
               <tr key={basketItem.id}>
-                <td align={"center"} className={'flex flex-wrap'}>
+                <td align={"center"} className={'flex flex-wrap gap-2'}>
                   <Link
                     href={{
                       pathname: `/product/${basketItem.metaTitle}/${basketItem.id}`, state: {id: basketItem.id},

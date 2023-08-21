@@ -4150,6 +4150,9 @@ header {
   align-items: center;
   width: 30rem;
   justify-content: flex-end;
+  @include mobile {
+    width: auto;
+  }
 }
 
 .payment-profile__card-delete {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Box, Stack, useMediaQuery} from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
 import {useUser} from "@/context/UserProvider";
@@ -37,7 +37,10 @@ const Header = ({
   const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useAtom(anchorElAtom)
-
+  useEffect(() => {
+    if (!xsBreakpointMatches)
+      handleClose()
+  }, [xsBreakpointMatches])
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
