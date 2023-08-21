@@ -153,7 +153,7 @@ const AccountOrder = () => {
         <div className={'bg-white text-[1.4rem]'}>
           <table style={{
             borderCollapse: 'inherit',
-            borderSpacing: '6px'
+            borderSpacing: '24px'
           }}>
             <thead>
             <tr>

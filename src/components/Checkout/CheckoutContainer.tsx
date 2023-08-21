@@ -309,7 +309,7 @@ function CheckoutContainer({isCheckoutPage}: CheckoutContainerProps) {
   };
 
   const handleShipInfoAddClick = () => {
-    toggleAddressAdd(!isAddressAddShowing);
+    toggleAddressAdd();
     setName("");
     setPhone("");
     setStreet("");

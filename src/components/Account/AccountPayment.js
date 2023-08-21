@@ -71,7 +71,7 @@ const AccountPayment = () => {
             Thẻ Tín Dụng/Ghi Nợ
             <button
               onClick={handleAddCardClick}
-              className="btn user-profile__card-add"
+              className="btn user-profile__card-add w-full md:w-auto"
             >
               Thêm thẻ mới
             </button>
@@ -102,7 +102,7 @@ const AccountPayment = () => {
                 alt="card-brand"
                 className="payment-profile__card-logo"
               />
-              <div className="payment-profile__card-name">
+              <div className="payment-profile__card-name hidden md:block">
                 {item.card.brand}
               </div>
               {item.id === defaultPaymentMethodID && (
@@ -112,7 +112,7 @@ const AccountPayment = () => {
               <div className="payment-profile__card-number">
                 **** **** **** {item.card.last4}
               </div>
-              <div className="payment-profile__btn-container">
+              <div className="payment-profile__btn-container w-full">
                 {item.id !== defaultPaymentMethodID &&
                   !updateDefaultPaymentMethodIDLoading &&
                   !deletePaymentLoading && (
@@ -141,7 +141,7 @@ const AccountPayment = () => {
                     deletePaymentLoading
                   }
                   onClick={() => handleDefaultClick(item.id)}
-                  className="btn payment-profile__default-btn"
+                  className="btn payment-profile__default-btn w-full md:w-auto"
                 >
                   Thiết lập mặc định
                 </button>

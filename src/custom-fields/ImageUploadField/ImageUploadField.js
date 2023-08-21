@@ -97,7 +97,7 @@ const ImageUploadField = (props) => {
           onClick={() => {
             inputEl.current.click();
           }}
-          className="btn user-profile__image-btn"
+          className="btn user-profile__image-btn w-full md:w-auto"
         >
           Chọn ảnh
         </button>

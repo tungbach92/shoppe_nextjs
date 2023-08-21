@@ -54,7 +54,7 @@ const AccountAddress = () => {
   };
 
   const handleAddressAddClick = () => {
-    toggleAddressAdd(!isAddressAddShowing);
+    toggleAddressAdd();
     setName("");
     setPhone("");
     setStreet("");
@@ -65,7 +65,7 @@ const AccountAddress = () => {
   };
 
   const handleEditClick = (index: any) => {
-    toggleAddressAdd(!isAddressAddShowing);
+    toggleAddressAdd();
     const name = shipInfos[index].name;
     const phone = shipInfos[index].phone;
     const street = shipInfos[index].street;
@@ -102,7 +102,7 @@ const AccountAddress = () => {
             Địa Chỉ Của Tôi
             <button
               onClick={handleAddressAddClick}
-              className="btn user-profile__address-add"
+              className="btn user-profile__address-add w-full md:w-auto"
             >
               Thêm địa chỉ mới
             </button>
@@ -136,7 +136,7 @@ const AccountAddress = () => {
           shipInfos?.map((shipInfo: any, index: any) => (
             <div key={index} className="address-profile__address-content">
               <div className="address-profile__user-container">
-                <label className="address-profile__name-label">Họ Và Tên</label>
+                <label className="address-profile__name-label">Họ Và Tên:</label>
                 <span className="address-profile__name-text">
                   {shipInfo.name}
                   {shipInfo.isDefault && (
@@ -146,21 +146,21 @@ const AccountAddress = () => {
                   )}
                 </span>
                 <label className="address-profile__phone-label">
-                  Số Điện Thoại
+                  Số Điện Thoại:
                 </label>
                 <span className="address-profile__phone-text">
                   {shipInfo.phone}
                 </span>
                 <label className="address-profile__address-label">
-                  Địa Chỉ
+                  Địa Chỉ:
                 </label>
                 <span className="address-profile__address-text">
                   {shipInfo.fullAddress}
                 </span>
               </div>
-              <div className="address-profile__btn-container">
+              <div className="address-profile__btn-container flex-1">
                 {!shipInfosUpdateLoading && (
-                  <div>
+                  <div className={'flex w-full justify-around md:flex-none md:w-auto'}>
                     <span
                       onClick={() => handleEditClick(index)}
                       className="address-profile__edit-btn"
@@ -184,7 +184,7 @@ const AccountAddress = () => {
                       ? undefined
                       : () => handleDefaultClick(index)
                   }
-                  className="btn address-profile__btn-default"
+                  className="btn address-profile__btn-default w-full md:w-auto"
                 >
                   Thiết lập mặc định
                 </button>

@@ -2209,6 +2209,7 @@ header {
   text-align: end;
   @include mobile {
     text-align: center;
+    padding: 0
   }
 }
 
@@ -2356,6 +2357,9 @@ header {
   margin-top: 4rem;
   display: flex;
   flex-direction: column;
+  @include mobile {
+    margin-top: 3rem;
+  }
 }
 
 .cart-product__address-label {
@@ -3401,7 +3405,7 @@ header {
   padding: 0 3rem;
   background: var(--white-color);
   @include mobile {
-    padding: unset;
+    padding: 2rem 3rem;
   }
 }
 
@@ -3449,7 +3453,7 @@ header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.09);
   @include mobile {
     flex-wrap: wrap;
-    padding: 3rem 0;
+    padding: 3rem;
   }
 }
 
@@ -3518,7 +3522,7 @@ header {
   grid-row-gap: 1rem;
   grid-template-columns: 1fr 38rem;
   @include mobile {
-    grid-template-columns: 1fr;
+    grid-template-columns: 9rem 1fr 1fr;
   }
 }
 
@@ -3621,6 +3625,12 @@ header {
   background-color: var(--primary-color);
   color: var(--white-color);
   max-width: 10rem;
+  @include mobile {
+    max-width: unset;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    width: 100%;
+  }
 }
 
 .user-profile__info-form {
@@ -3632,7 +3642,7 @@ header {
   flex-wrap: wrap;
   @include mobile {
     flex-direction: column-reverse;
-    gap: 4rem
+    gap: 4rem;
   }
 }
 
@@ -3642,7 +3652,7 @@ header {
   align-items: center;
   grid-row-gap: 1.4rem;
   grid-column-gap: 1.4rem;
-  grid-template-columns: 10rem 1fr;
+  grid-template-columns: 9rem 1fr;
 }
 
 .user-profile__user-label,
@@ -3651,7 +3661,7 @@ header {
 .user-profile__phone-label,
 .user-profile__gender-label,
 .user-profile__birthday-label {
-  justify-self: end;
+  justify-self: start;
   grid-column-start: 1;
   grid-column-end: 2;
   color: rgba(85, 85, 85, 0.8);
@@ -3682,6 +3692,7 @@ header {
   grid-column-start: 2;
   grid-column-end: 3;
   color: #05a;
+
 }
 
 .user-profile__password-input {
@@ -3747,6 +3758,7 @@ header {
   @include mobile {
     max-width: unset;
     width: 100%;
+    grid-column-start: 1;
   }
 }
 
@@ -3842,7 +3854,7 @@ header {
   font-size: 1.4rem;
   @include mobile {
     margin-left: unset;
-    grid-template-columns: 1fr 20rem;
+    grid-template-columns: 95px 1fr;
   }
 }
 
@@ -3871,10 +3883,19 @@ header {
   cursor: pointer;
 }
 
+.address-profile__edit-btn:hover {
+  color: var(--primary-color)
+}
+
 .address-profile__delete-btn {
   cursor: pointer;
   margin-left: 2rem;
 }
+
+.address-profile__delete-btn:hover {
+  color: var(--primary-color)
+}
+
 
 .address-profile__btn-default {
   text-align: center;
@@ -4082,6 +4103,7 @@ header {
   font-size: 1.4rem;
   @include mobile {
     flex-wrap: wrap;
+    gap: 2rem
   }
 }
 
@@ -4128,9 +4150,6 @@ header {
   align-items: center;
   width: 30rem;
   justify-content: flex-end;
-  @include mobile {
-    width: unset;
-  }
 }
 
 .payment-profile__card-delete {
