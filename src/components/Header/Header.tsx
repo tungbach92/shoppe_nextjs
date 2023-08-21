@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import {Box, Stack, useMediaQuery} from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
 import {useUser} from "@/context/UserProvider";
@@ -37,6 +37,8 @@ const Header = ({
   const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useAtom(anchorElAtom)
+  const count = useRef<number>(0)
+
   useEffect(() => {
     if (!xsBreakpointMatches)
       handleClose()
@@ -52,6 +54,8 @@ const Header = ({
   const handleLogout = () => {
     signOut();
   };
+
+  console.log(count.current)
   return (
     <header
       className={classNames(
@@ -281,8 +285,13 @@ const Header = ({
           {xsBreakpointMatches && !isProductPage && (
             <ArrowBack
               sx={{fontSize: "3rem", color: "white", marginLeft: "0.6rem"}}
-              onClick={() => {
-                router.back()
+              onClick={async () => {
+                count.current += 1
+                await router.back()
+                if (count.current === 3) {
+                  count.current = 0
+                  await router.replace("/");
+                }
               }}
             ></ArrowBack>
           )}

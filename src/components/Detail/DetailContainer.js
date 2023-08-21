@@ -1,5 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
-import protectImg from "../../../public/img/protect.png";
+import React, {useEffect, useRef, useState} from "react";
 // import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useModal from "../../hooks/useModal";
 import AddCartModal from "../Modal/AddCartModal";
@@ -168,7 +167,7 @@ function DetailContainer() {
 
   const handleAddCart = () => {
     if (!user) {
-      router.push("/login", {replace: true});
+      router.replace('/login')
       return;
     }
     addToCartItems();
