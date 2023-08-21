@@ -55,7 +55,6 @@ const Header = ({
     signOut();
   };
 
-  console.log(count.current)
   return (
     <header
       className={classNames(
