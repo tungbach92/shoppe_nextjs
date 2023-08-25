@@ -21,6 +21,7 @@ import AddCartModal from "@/components/Modal/AddCartModal";
 import {ClipLoading} from "@/components/ClipLoading";
 import {voucherStoreAtom, voucherStoreProxy} from "@/store/voucherStore.atomProxy";
 import {useAtomValue} from "jotai";
+import {useMediaQuery} from "@mui/material";
 
 interface Props {
   isCartPage: boolean
@@ -44,6 +45,7 @@ function CartContainer({isCartPage}: Props) {
   const selectedProduct = useMemo(() => {
     return cartProducts.filter((item: any) => selectedIdVariation.some((e: any) => e.id === item.id && e.variation === item.variation));
   }, [cartProducts, selectedIdVariation]);
+  const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
 
   const {
     isVoucherShowing, toggleVoucher, isAddCartPopup, toggleIsAddCardPopup, isPopupShowing, togglePopup,
@@ -316,11 +318,13 @@ function CartContainer({isCartPage}: Props) {
             // className="grid__col cart-product__checkbox"
             className="cart-product__checkbox"
           />
-          <div className="col-span-4">Sản Phẩm</div>
-          <div className="">Đơn Giá</div>
-          <div className="">Số Lượng</div>
-          <div className="">Số Tiền</div>
-          <div className="">Thao Tác</div>
+          <div className="col-span-9 md:col-span-4">Sản Phẩm</div>
+          {!xsBreakpointMatches && <>
+            <div className="">Đơn Giá</div>
+            <div className="">Số Lượng</div>
+            <div className="">Số Tiền</div>
+            <div className="">Thao Tác</div>
+          </>}
         </div>
         {cartProducts.map((item: any) => (
           <CartItem key={item.id} item={item} decrCartItem={decrCartItem} variation={variation}

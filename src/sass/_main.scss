@@ -1473,7 +1473,8 @@ header {
 
 .cart-product__img,
 .order-product__img {
-  width: 8rem;
+  max-width: 8rem;
+  object-fit: cover;
 }
 
 .cart-product__name,
@@ -1481,6 +1482,9 @@ header {
   text-align: left;
   width: 25rem;
   padding: 0.5rem 2rem 0rem 1rem;
+  @include mobile {
+    width: auto;
+  }
 }
 
 /*
@@ -1777,6 +1781,9 @@ header {
   background-color: var(--white-color);
   position: sticky;
   bottom: 0;
+  @include mobile {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+  }
 }
 
 .cart-product__footer--overlap {
@@ -1808,6 +1815,9 @@ header {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  @include mobile {
+    grid-column: span 10 / span 10;
+  }
 }
 
 .cart-product__icon-wrapper {

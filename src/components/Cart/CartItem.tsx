@@ -1,7 +1,8 @@
-import Link from "next/link";
 import classNames from "classnames";
 import {NumericFormat} from "react-number-format";
 import React from "react";
+import {useMediaQuery} from "@mui/material";
+import {router} from "next/client";
 
 interface Props {
   item: any,
@@ -34,6 +35,8 @@ export default function CartItem({
                                    changeAmountCartItem,
                                    handleDelete
                                  }: Props) {
+  const xsBreakpointMatches = useMediaQuery("(max-width:600px)");
+
   return (
     <div key={item.id}
          className="cart-product__item grid grid-cols-10 gap-3 place-items-center bg-white my-2 p-2 shadow-sm">
@@ -44,14 +47,12 @@ export default function CartItem({
         // className="grid__col cart-product__checkbox"
         className="cart-product__checkbox"
       />
-      <div className={'col-span-4'}>
+      <div className={'col-span-9 md:col-span-4'}>
         <div className={'flex justify-center items-center'}>
-          <Link
-            // href={{
-            //   pathname: `/product/${item.metaTitle}/${item.id}`,
-            //   state: { id: item.id },
-            // }}
-            href={`/product/${item.metaTitle}/${item.id}`}
+          <div
+            onClick={(e) => {
+              router.push(`/product/${item.metaTitle}/${item.id}`)
+            }}
             // className="grid__col cart-product__overview"
             className="flex text no-underline text-black"
           >
@@ -60,13 +61,97 @@ export default function CartItem({
               alt=""
               className="cart-product__img"
             />
-            <span className="cart-product__name">{item.name}</span>
-          </Link>
+            <div className="cart-product__name flex flex-col gap-2">
+              <p>
+                {item.name}
+              </p>
+              {xsBreakpointMatches &&
+                <>
+                  <div
+                    data-name="variation"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handlePopup(item.variation, item.id)
+                    }}
+                    // className="grid__col cart-product__variation"
+                    className="cart-product__variation"
+                  >
+                  <span className="cart-product__variation-label">
+                    Phân Loại Hàng:
+                    <span
+                      className={classNames("cart-product__variation-icon", {
+                        "cart-product__variation-icon--rotate":
+                        item.variationDisPlay,
+                      })}
+                    ></span>
+                  </span>
+                    <span className="cart-product__variation-numb">
+                    {item.variation}
+                  </span>
+                  </div>
+                  <div className="cart-product__total !text-start">
+                    <NumericFormat
+                      value={item.price * item.amount}
+                      thousandSeparator={true}
+                      displayType="text"
+                      prefix={"₫"}
+                    ></NumericFormat>
+                  </div>
+                  <div className="cart-product__amount">
+                    <div className="cart-product__amount-wrapper !justify-start">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          decrCartItem(item.id, item.variation);
+                        }}
+                        className="btn cart-product__amount-desc"
+                      >
+                        -
+                      </button>
+                      <input
+                        data-id={item.id}
+                        data-name="inputAmount"
+                        data-variation={item.variation}
+                        type="text"
+                        className="cart-product__amount-numb"
+                        value={item.amount}
+                        onChange={(e) => {
+                          e.stopPropagation()
+                          e.target.value = e.target.value
+                            .replace(/[^0-9.]/g, "")
+                            .replace(/(\..*)\./g, "$1");
+                          const value = Number(e.target.value);
+                          if (value > 0) {
+                            changeAmountCartItem(item.id, item.variation, value);
+                          }
+                        }}
+                      />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          incrCartItem(item.id, item.variation);
+                        }}
+                        className="btn cart-product__amount-incr"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  {/* cart-product__price-item--before  */}
+                  {/* cart-product__price-item--after  */}
+                  {/* <span className="cart-product__price-item cart-product__price-item--before">
+                  {item.price}
+                </span> */}
+                </>
+              }
+            </div>
+
+          </div>
           <div
             data-name="variation"
             onClick={() => handlePopup(item.variation, item.id)}
             // className="grid__col cart-product__variation"
-            className="cart-product__variation"
+            className="cart-product__variation hidden md:block"
           >
                   <span className="cart-product__variation-label">
                     Phân Loại Hàng:
@@ -154,7 +239,7 @@ export default function CartItem({
           )}
         </div>
       </div>
-      <div className="cart-product__price">
+      <div className="cart-product__price hidden md:block">
         {/* cart-product__price-item--before  */}
         {/* cart-product__price-item--after  */}
         {/* <span className="cart-product__price-item cart-product__price-item--before">
@@ -169,7 +254,7 @@ export default function CartItem({
                     ></NumericFormat>
                   </span>
       </div>
-      <div className="cart-product__amount">
+      <div className="cart-product__amount hidden md:block">
         <div className="cart-product__amount-wrapper">
           <button
             onClick={() => {
@@ -206,7 +291,7 @@ export default function CartItem({
           </button>
         </div>
       </div>
-      <div className="cart-product__total">
+      <div className="cart-product__total hidden md:block">
         <NumericFormat
           value={item.price * item.amount}
           thousandSeparator={true}
